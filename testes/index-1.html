@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudo de Comportamento Digital — Relações Geracionais com a Tecnologia</title>
+
+<!-- ============================================================
+  GOOGLE TAG MANAGER
+  Troque GTM-XXXXXXX pelo seu container ID assim que criar
+  o contêiner em tagmanager.google.com. Instruções completas
+  no arquivo LEIA-ME.md
+============================================================ -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#F1F3EF;
+    --paper:#FFFFFF;
+    --ink:#1A2421;
+    --ink-soft:#4B564F;
+    --ink-faint:#7C877F;
+    --teal:#2F6F63;
+    --teal-dark:#1E4A42;
+    --teal-pale:#DCEAE5;
+    --mustard:#C98A2B;
+    --mustard-pale:#F4E6C9;
+    --rust:#A6432B;
+    --rust-pale:#F3DFD8;
+    --line:rgba(26,36,33,0.14);
+    --radius:14px;
+    --font-display:'Fraunces', serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:17px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:var(--font-display);
+    font-weight:600;
+    line-height:1.15;
+    margin:0 0 .5em;
+    letter-spacing:-0.01em;
+  }
+  p{margin:0 0 1em;}
+  button{font-family:inherit;}
+  a{color:var(--teal-dark);}
+
+  /* -------- accessibility floor -------- */
+  :focus-visible{
+    outline:3px solid var(--mustard);
+    outline-offset:2px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .app{
+    max-width:760px;
+    margin:0 auto;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ============ STEPPER (elemento-assinatura) ============ */
+  .stepper{
+    padding:20px 20px 0;
+  }
+  .stepper-track{
+    display:flex;
+    align-items:center;
+    gap:4px;
+  }
+  .stepper-seg{
+    flex:1;
+    height:3px;
+    background:var(--line);
+    border-radius:3px;
+    position:relative;
+    overflow:hidden;
+  }
+  .stepper-seg::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:var(--teal);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .4s ease;
+  }
+  .stepper-seg.done::after{transform:scaleX(1);}
+  .stepper-seg.active::after{transform:scaleX(1); background:var(--mustard);}
+  .stepper-label{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+    margin-top:8px;
+  }
+  .stepper-label b{color:var(--teal-dark);}
+
+  main{
+    flex:1;
+    padding:28px 20px 60px;
+  }
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:28px 24px;
+  }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal-dark);
+    background:var(--teal-pale);
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    margin-bottom:14px;
+  }
+
+  .lead{color:var(--ink-soft); font-size:16px;}
+
+  /* -------- botões -------- */
+  .btn{
+    appearance:none;
+    border:none;
+    border-radius:10px;
+    padding:14px 22px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:var(--font-body);
+    transition:transform .15s ease, background .15s ease;
+    min-height:48px;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--teal); color:#fff;}
+  .btn-primary:hover{background:var(--teal-dark);}
+  .btn-primary:disabled{background:#B9C2BE; cursor:not-allowed;}
+  .btn-ghost{background:transparent; color:var(--teal-dark); border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--teal);}
+  .btn-row{display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;}
+
+  /* -------- opções de escolha (perfil) -------- */
+  .choice-group{margin-bottom:24px;}
+  .choice-group>label.group-label{
+    display:block;
+    font-weight:600;
+    margin-bottom:10px;
+    font-size:15px;
+  }
+  .choice-options{display:flex; flex-wrap:wrap; gap:10px;}
+  .choice-pill{
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:12px 16px;
+    cursor:pointer;
+    font-size:15px;
+    background:#fff;
+    min-height:48px;
+    display:flex;
+    align-items:center;
+    transition:border-color .15s, background .15s;
+    flex:1 1 auto;
+    justify-content:center;
+    text-align:center;
+  }
+  .choice-pill input{position:absolute; opacity:0; pointer-events:none;}
+  .choice-pill.selected{
+    border-color:var(--teal);
+    background:var(--teal-pale);
+    color:var(--teal-dark);
+    font-weight:600;
+  }
+
+  .consent-box{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px;
+    margin-top:20px;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .consent-box input{margin-top:3px; width:18px; height:18px; flex-shrink:0;}
+
+  /* -------- banner de tarefa -------- */
+  .task-banner{
+    background:var(--mustard-pale);
+    border:1px solid var(--mustard);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:20px;
+    font-size:15px;
+  }
+  .task-banner .tag{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#8a5f1e;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  /* -------- mock site (usado dentro das tarefas) -------- */
+  .mock-site{
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    background:#fff;
+  }
+  .mock-nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 18px;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .mock-nav .brand{font-family:var(--font-display); font-weight:600; font-size:18px;}
+  .mock-nav .links{display:flex; gap:18px; color:var(--ink-soft);}
+  .mock-body{padding:22px 18px;}
+  .mock-footer{
+    border-top:1px solid var(--line);
+    padding:16px 18px;
+    font-size:12px;
+    color:var(--ink-faint);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .mock-footer a{color:var(--ink-faint); text-decoration:none;}
+  .mock-footer a.contato-link{color:var(--teal-dark); text-decoration:underline; font-weight:600;}
+
+  .product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(130px,1fr));
+    gap:12px;
+    margin-top:16px;
+  }
+  .product-card{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px;
+    cursor:pointer;
+    text-align:center;
+    font-size:13px;
+    background:#fafaf8;
+  }
+  .product-card:hover{border-color:var(--teal);}
+  .product-card .thumb{
+    height:56px;
+    border-radius:6px;
+    background:var(--teal-pale);
+    margin-bottom:8px;
+  }
+  .search-bar{
+    display:flex;
+    gap:8px;
+    margin-bottom:4px;
+  }
+  .search-bar input{flex:1;}
+
+  input[type=text], input[type=email]{
+    width:100%;
+    padding:12px 14px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    font-size:15px;
+    font-family:inherit;
+    min-height:46px;
+  }
+  input[type=text]:focus, input[type=email]:focus{border-color:var(--teal);}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:14px; font-weight:600; margin-bottom:6px;}
+  .field-error{
+    color:var(--rust);
+    background:var(--rust-pale);
+    border:1px solid var(--rust);
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:13px;
+    margin-top:6px;
+    display:none;
+  }
+  .field.has-error input{border-color:var(--rust);}
+  .field.has-error .field-error{display:block;}
+
+  /* -------- botão de acessibilidade flutuante -------- */
+  .a11y-btn{
+    position:fixed;
+    right:16px;
+    bottom:16px;
+    z-index:40;
+    background:var(--ink);
+    color:#fff;
+    border:none;
+    border-radius:50px;
+    padding:12px 16px;
+    display:flex;
+    gap:10px;
+    font-family:var(--font-mono);
+    font-size:13px;
+    box-shadow:0 6px 20px rgba(26,36,33,0.25);
+    cursor:pointer;
+  }
+  .a11y-btn span{padding:0 4px; cursor:pointer;}
+  .a11y-btn span:hover{color:var(--mustard);}
+
+  /* -------- SUS (likert) -------- */
+  .likert-q{margin-bottom:26px;}
+  .likert-q p{font-weight:600; margin-bottom:10px;}
+  .likert-scale{display:flex; gap:6px; justify-content:space-between;}
+  .likert-opt{
+    flex:1;
+    text-align:center;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    padding:10px 4px;
+    cursor:pointer;
+    font-size:13px;
+    min-height:46px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .likert-opt.selected{border-color:var(--teal); background:var(--teal-pale); font-weight:700; color:var(--teal-dark);}
+  .likert-caption{
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    color:var(--ink-faint);
+    margin-top:4px;
+  }
+
+  /* -------- resultado -------- */
+  .result-badge{
+    text-align:center;
+    padding:32px 20px;
+    background:var(--teal-dark);
+    color:#fff;
+    border-radius:var(--radius);
+    margin-bottom:20px;
+  }
+  .result-badge .eyebrow{background:rgba(255,255,255,0.15); color:#fff;}
+  .result-badge h2{font-size:32px; color:#fff; margin-bottom:6px;}
+  .result-badge p{color:rgba(255,255,255,0.8); margin:0;}
+
+  .stat-row{
+    display:flex;
+    gap:12px;
+    margin-top:20px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    flex:1 1 100px;
+    background:var(--bg);
+    border-radius:10px;
+    padding:12px 14px;
+    text-align:center;
+  }
+  .stat .num{font-family:var(--font-mono); font-size:20px; font-weight:600; color:var(--teal-dark);}
+  .stat .lbl{font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em;}
+
+  .step-section{display:none;}
+  .step-section.active{display:block; animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  @media (max-width:480px){
+    main{padding:20px 16px 50px;}
+    .card{padding:22px 18px;}
+    .mock-nav .links{gap:10px; font-size:12px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- GTM (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div class="app">
+
+  <!-- STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="stepper-track" id="stepperTrack"></div>
+    <div class="stepper-label" id="stepperLabel"></div>
+  </div>
+
+  <main>
+
+    <!-- 0. BOAS-VINDAS / CONSENTIMENTO -->
+    <section class="step-section" data-step="welcome">
+      <div class="card">
+        <span class="eyebrow">Pesquisa acadêmica · TCC</span>
+        <h1>Como as gerações usam a internet?</h1>
+        <p class="lead">Este é um pequeno estudo sobre usabilidade e acessibilidade em diferentes faixas etárias. Você vai realizar 3 tarefas simples em um site fictício — leva menos de 5 minutos.</p>
+        <p class="lead">Nenhum dado pessoal identificável é coletado. As respostas são usadas de forma agregada e anônima para um Trabalho de Conclusão de Curso em Sistemas de Informação.</p>
+        <div class="consent-box">
+          <input type="checkbox" id="consentCheck">
+          <label for="consentCheck">Li as informações acima e concordo em participar voluntariamente desta pesquisa, ciente de que meus dados serão tratados de forma anônima e agregada, conforme a LGPD.</label>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btnStart" disabled>Começar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. PERFIL -->
+    <section class="step-section" data-step="profile">
+      <div class="card">
+        <span class="eyebrow">Etapa 1 de 5</span>
+        <h2>Rapidamente, sobre você</h2>
+        <p class="lead">Só isso — nada de nome, e-mail ou dados de contato.</p>
+
+        <div class="choice-group">
+          <label class="group-label">Sua faixa etária</label>
+          <div class="choice-options" data-group="faixa">
+            <label class="choice-pill" data-value="18-29">18–29</label>
+            <label class="choice-pill" data-value="30-49">30–49</label>
+            <label class="choice-pill" data-value="50-64">50–64</label>
+            <label class="choice-pill" data-value="65+">65+</label>
+          </div>
+        </div>
+
+        <div class="choice-group">
+          <label class="group-label">Como você avalia sua familiaridade com tecnologia?</label>
+          <div class="choice-options" data-group="afinidade">
+            <label class="choice-pill" data-value="baixa">Baixa</label>
+            <label class="choice-pill" data-value="media">Média</label>
+            <label class="choice-pill" data-value="alta">Alta</label>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btnProfileNext" disabled>Continuar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. TAREFA 1 — encontrar contato -->
+    <section class="step-section" data-step="task1">
+      <div class="task-banner">
+        <span class="tag">Tarefa 1 de 3</span>
+        Encontre uma forma de <b>entrar em contato</b> com a empresa e clique nela.
+      </div>
+      <div class="mock-site">
+        <div class="mock-nav">
+          <div class="brand">Ateliê Raiz</div>
+          <div class="links"><span>Início</span><span>Produtos</span><span>Sobre</span></div>
+        </div>
+        <div class="mock-body">
+          <h3 style="margin-top:0">Móveis autorais, feitos à mão</h3>
+          <p style="color:var(--ink-soft)">A Ateliê Raiz produz móveis artesanais desde 2011, unindo madeira de reflorestamento e design atemporal para casas que respiram história.</p>
+          <div class="product-grid">
+            <div class="product-card"><div class="thumb"></div>Cadeira Ipê</div>
+            <div class="product-card"><div class="thumb"></div>Banco Cumaru</div>
+            <div class="product-card"><div class="thumb"></div>Mesa Angico</div>
+          </div>
+        </div>
+        <div class="mock-footer">
+          <span>© 2026 Ateliê Raiz</span>
+          <span>Trabalhe conosco</span>
+          <a href="#" class="contato-link" id="contatoLink">Contato</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TAREFA 2 — formulário + acessibilidade -->
+    <section class="step-section" data-step="task2">
+      <div class="task-banner">
+        <span class="tag">Tarefa 2 de 3</span>
+        Preencha o formulário abaixo com um nome e e-mail e clique em <b>Concluir cadastro</b>.
+      </div>
+      <div class="mock-site">
+        <div class="mock-nav">
+          <div class="brand">Ateliê Raiz</div>
+          <div class="links"><span>Newsletter</span></div>
+        </div>
+        <div class="mock-body">
+          <p style="color:var(--ink-soft)">Cadastre-se para receber novidades da coleção.</p>
+          <form id="signupForm" novalidate>
+            <div class="field">
+              <label for="fName">Nome</label>
+              <input type="text" id="fName" placeholder="Seu nome">
+            </div>
+            <div class="field" id="emailField">
+              <label for="fEmail">E-mail</label>
+              <input type="text" id="fEmail" placeholder="seu@email.com">
+              <div class="field-error">E-mail inválido — verifique e tente novamente.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Concluir cadastro</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TAREFA 3 — busca vs menu -->
+    <section class="step-section" data-step="task3">
+      <div class="task-banner">
+        <span class="tag">Tarefa 3 de 3</span>
+        Encontre o produto <b>"Cadeira Ipê"</b> e clique nele.
+      </div>
+      <div class="mock-site">
+        <div class="mock-nav">
+          <div class="brand">Ateliê Raiz</div>
+          <div class="links"><span>Todos os produtos</span></div>
+        </div>
+        <div class="mock-body">
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar produto...">
+          </div>
+          <div class="product-grid" id="productGrid">
+            <div class="product-card" data-name="Banco Cumaru"><div class="thumb"></div>Banco Cumaru</div>
+            <div class="product-card" data-name="Mesa Angico"><div class="thumb"></div>Mesa Angico</div>
+            <div class="product-card" data-name="Luminária Peroba"><div class="thumb"></div>Luminária Peroba</div>
+            <div class="product-card" data-name="Cadeira Ipê"><div class="thumb"></div>Cadeira Ipê</div>
+            <div class="product-card" data-name="Estante Jatobá"><div class="thumb"></div>Estante Jatobá</div>
+            <div class="product-card" data-name="Aparador Sucupira"><div class="thumb"></div>Aparador Sucupira</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. SUS REDUZIDO -->
+    <section class="step-section" data-step="sus">
+      <div class="card">
+        <span class="eyebrow">Etapa 5 de 5</span>
+        <h2>Últimas 3 perguntas</h2>
+
+        <div class="likert-q" data-q="1">
+          <p>1. Achei as tarefas fáceis de realizar.</p>
+          <div class="likert-scale"></div>
+          <div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div>
+        </div>
+
+        <div class="likert-q" data-q="2">
+          <p>2. Me senti confuso(a) em algum momento.</p>
+          <div class="likert-scale"></div>
+          <div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div>
+        </div>
+
+        <div class="likert-q" data-q="3">
+          <p>3. Eu usaria um site como este no dia a dia sem dificuldade.</p>
+          <div class="likert-scale"></div>
+          <div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btnSusSubmit" disabled>Ver resultado</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. RESULTADO -->
+    <section class="step-section" data-step="result">
+      <div class="result-badge">
+        <span class="eyebrow">Seu perfil</span>
+        <h2 id="resultTitle">—</h2>
+        <p id="resultDesc">—</p>
+      </div>
+      <div class="card">
+        <div class="stat-row" id="statRow"></div>
+        <p class="lead" style="margin-top:20px">Obrigada por participar! Se quiser ajudar ainda mais a pesquisa, envie este link para alguém de uma geração diferente da sua.</p>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="btnCopyLink">Copiar link do estudo</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- botão flutuante de acessibilidade -->
+<button class="a11y-btn" id="a11yBtn" aria-label="Ajustar tamanho do texto">
+  <span id="a11yMinus">A−</span>
+  <span id="a11yPlus">A+</span>
+</button>
+
+<script>
+/* ================================================================
+   ESTADO E DATALAYER
+   Cada push() vira um evento disponível como gatilho no GTM.
+   Ver LEIA-ME.md para a lista completa de eventos e como
+   configurar as tags no GTM / dimensões personalizadas no GA4.
+================================================================ */
+window.dataLayer = window.dataLayer || [];
+function track(event, params){
+  window.dataLayer.push(Object.assign({event:event}, params || {}));
+  console.log('[dataLayer]', event, params || {});
+}
+
+const state = {
+  faixa:null, afinidade:null,
+  dispositivo: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+  t1:{start:0,end:0,clicks:0},
+  t2:{start:0,end:0,errors:0},
+  t3:{start:0,end:0,usedSearch:false,clicks:0},
+  sus:[null,null,null],
+  fontStep:0
+};
+
+const steps = ['welcome','profile','task1','task2','task3','sus','result'];
+const stepLabels = {
+  welcome:'Início', profile:'Perfil', task1:'Tarefa 1',
+  task2:'Tarefa 2', task3:'Tarefa 3', sus:'Avaliação', result:'Resultado'
+};
+let currentIndex = 0;
+
+function renderStepper(){
+  const track = document.getElementById('stepperTrack');
+  const label = document.getElementById('stepperLabel');
+  track.innerHTML = '';
+  steps.forEach((s,i)=>{
+    const seg = document.createElement('div');
+    seg.className = 'stepper-seg' + (i < currentIndex ? ' done' : '') + (i === currentIndex ? ' active' : '');
+    track.appendChild(seg);
+  });
+  label.innerHTML = 'Etapa ' + (currentIndex+1) + ' de ' + steps.length + ' · <b>' + stepLabels[steps[currentIndex]] + '</b>';
+}
+
+function goTo(name){
+  document.querySelectorAll('.step-section').forEach(el=>el.classList.remove('active'));
+  document.querySelector('[data-step="'+name+'"]').classList.add('active');
+  currentIndex = steps.indexOf(name);
+  renderStepper();
+  window.scrollTo({top:0, behavior:'smooth'});
+  track('step_view', {step_name:name, faixa_etaria:state.faixa, afinidade_tecnologica:state.afinidade, dispositivo:state.dispositivo});
+
+  if(name==='task1'){ state.t1.start = Date.now(); }
+  if(name==='task2'){ state.t2.start = Date.now(); }
+  if(name==='task3'){ state.t3.start = Date.now(); }
+}
+
+/* -------- 0. consentimento -------- */
+const consentCheck = document.getElementById('consentCheck');
+const btnStart = document.getElementById('btnStart');
+consentCheck.addEventListener('change', ()=>{ btnStart.disabled = !consentCheck.checked; });
+btnStart.addEventListener('click', ()=>{
+  track('consent_given', {});
+  goTo('profile');
+});
+
+/* -------- 1. perfil -------- */
+document.querySelectorAll('.choice-options').forEach(group=>{
+  const key = group.dataset.group;
+  group.querySelectorAll('.choice-pill').forEach(pill=>{
+    pill.addEventListener('click', ()=>{
+      group.querySelectorAll('.choice-pill').forEach(p=>p.classList.remove('selected'));
+      pill.classList.add('selected');
+      state[key] = pill.dataset.value;
+      checkProfileReady();
+    });
+  });
+});
+function checkProfileReady(){
+  document.getElementById('btnProfileNext').disabled = !(state.faixa && state.afinidade);
+}
+document.getElementById('btnProfileNext').addEventListener('click', ()=>{
+  track('profile_submitted', {faixa_etaria:state.faixa, afinidade_tecnologica:state.afinidade, dispositivo:state.dispositivo});
+  goTo('task1');
+});
+
+/* -------- 2. tarefa 1: contato -------- */
+document.getElementById('contatoLink').addEventListener('click', (e)=>{
+  e.preventDefault();
+  state.t1.end = Date.now();
+  const seconds = ((state.t1.end - state.t1.start)/1000).toFixed(1);
+  track('task_complete', {task:'encontrar_contato', tempo_segundos:seconds, faixa_etaria:state.faixa});
+  goTo('task2');
+});
+
+/* -------- 3. tarefa 2: formulário -------- */
+document.getElementById('signupForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const emailVal = document.getElementById('fEmail').value.trim();
+  const emailField = document.getElementById('emailField');
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+  if(!validEmail){
+    emailField.classList.add('has-error');
+    state.t2.errors++;
+    track('form_error', {campo:'email', task:'cadastro', faixa_etaria:state.faixa});
+    return;
+  }
+  emailField.classList.remove('has-error');
+  state.t2.end = Date.now();
+  const seconds = ((state.t2.end - state.t2.start)/1000).toFixed(1);
+  track('task_complete', {task:'cadastro', tempo_segundos:seconds, erros:state.t2.errors, faixa_etaria:state.faixa});
+  goTo('task3');
+});
+
+/* -------- 4. tarefa 3: busca vs menu -------- */
+document.getElementById('searchInput').addEventListener('input', ()=>{
+  if(!state.t3.usedSearch){
+    state.t3.usedSearch = true;
+    track('search_used', {task:'encontrar_produto', faixa_etaria:state.faixa});
+  }
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('#productGrid .product-card').forEach(card=>{
+    card.style.display = card.dataset.name.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+document.querySelectorAll('#productGrid .product-card').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    state.t3.clicks++;
+    if(card.dataset.name === 'Cadeira Ipê'){
+      state.t3.end = Date.now();
+      const seconds = ((state.t3.end - state.t3.start)/1000).toFixed(1);
+      track('task_complete', {task:'encontrar_produto', tempo_segundos:seconds, usou_busca:state.t3.usedSearch, cliques:state.t3.clicks, faixa_etaria:state.faixa});
+      goTo('sus');
+    } else {
+      track('wrong_click', {task:'encontrar_produto', alvo_clicado:card.dataset.name, faixa_etaria:state.faixa});
+    }
+  });
+});
+
+/* -------- 5. SUS reduzido -------- */
+document.querySelectorAll('.likert-q').forEach(q=>{
+  const scaleEl = q.querySelector('.likert-scale');
+  for(let i=1;i<=5;i++){
+    const opt = document.createElement('div');
+    opt.className='likert-opt';
+    opt.textContent=i;
+    opt.addEventListener('click', ()=>{
+      scaleEl.querySelectorAll('.likert-opt').forEach(o=>o.classList.remove('selected'));
+      opt.classList.add('selected');
+      state.sus[parseInt(q.dataset.q)-1] = i;
+      checkSusReady();
+    });
+    scaleEl.appendChild(opt);
+  }
+});
+function checkSusReady(){
+  document.getElementById('btnSusSubmit').disabled = state.sus.includes(null);
+}
+document.getElementById('btnSusSubmit').addEventListener('click', ()=>{
+  track('sus_submitted', {q1:state.sus[0], q2:state.sus[1], q3:state.sus[2], faixa_etaria:state.faixa});
+  showResult();
+  goTo('result');
+});
+
+/* -------- 6. resultado -------- */
+function showResult(){
+  const t1 = (state.t1.end - state.t1.start)/1000;
+  const t2 = (state.t2.end - state.t2.start)/1000;
+  const t3 = (state.t3.end - state.t3.start)/1000;
+  const tempoTotal = (t1+t2+t3).toFixed(1);
+  const cliquesExtra = state.t3.clicks - 1;
+
+  let perfil, desc;
+  if(cliquesExtra >= 2 || state.t2.errors >= 2){
+    perfil = 'Explorador(a)'; desc = 'Você testa antes de decidir — clica, erra, ajusta e segue em frente.';
+  } else if(tempoTotal > 45){
+    perfil = 'Cauteloso(a)'; desc = 'Você lê com calma antes de agir, priorizando ter certeza a cada passo.';
+  } else {
+    perfil = 'Direto(a) ao ponto'; desc = 'Você identifica o caminho mais curto e vai direto a ele, sem rodeios.';
+  }
+
+  document.getElementById('resultTitle').textContent = perfil;
+  document.getElementById('resultDesc').textContent = desc;
+
+  const statRow = document.getElementById('statRow');
+  statRow.innerHTML = '';
+  const stats = [
+    {num: tempoTotal+'s', lbl:'Tempo total'},
+    {num: state.t2.errors, lbl:'Erros no formulário'},
+    {num: state.t3.usedSearch ? 'Sim' : 'Não', lbl:'Usou a busca'}
+  ];
+  stats.forEach(s=>{
+    const el = document.createElement('div');
+    el.className='stat';
+    el.innerHTML = '<div class="num">'+s.num+'</div><div class="lbl">'+s.lbl+'</div>';
+    statRow.appendChild(el);
+  });
+
+  track('flow_completed', {
+    faixa_etaria:state.faixa, afinidade_tecnologica:state.afinidade, dispositivo:state.dispositivo,
+    tempo_total_segundos:tempoTotal, erros_formulario:state.t2.errors, usou_busca:state.t3.usedSearch,
+    perfil_resultado:perfil
+  });
+}
+
+document.getElementById('btnCopyLink').addEventListener('click', ()=>{
+  navigator.clipboard.writeText(window.location.href).then(()=>{
+    const btn = document.getElementById('btnCopyLink');
+    const original = btn.textContent;
+    btn.textContent = 'Link copiado!';
+    track('share_link_copied', {faixa_etaria:state.faixa});
+    setTimeout(()=>{btn.textContent = original;}, 2000);
+  });
+});
+
+/* -------- botão de acessibilidade (também é dado de pesquisa) -------- */
+let a11yUsed = false;
+function adjustFont(delta){
+  state.fontStep = Math.max(-2, Math.min(3, state.fontStep + delta));
+  document.documentElement.style.fontSize = (100 + state.fontStep*10) + '%';
+  if(!a11yUsed){
+    a11yUsed = true;
+    track('accessibility_button_used', {faixa_etaria:state.faixa, step_atual:steps[currentIndex]});
+  }
+}
+document.getElementById('a11yPlus').addEventListener('click', ()=>adjustFont(1));
+document.getElementById('a11yMinus').addEventListener('click', ()=>adjustFont(-1));
+
+/* -------- detecção de rage click (frustração) -------- */
+let lastClick = {target:null, time:0, count:0};
+document.addEventListener('click', (e)=>{
+  const now = Date.now();
+  if(e.target === lastClick.target && (now - lastClick.time) < 700){
+    lastClick.count++;
+    if(lastClick.count === 2){
+      track('rage_click', {elemento:e.target.tagName+(e.target.id?'#'+e.target.id:''), faixa_etaria:state.faixa, step_atual:steps[currentIndex]});
+    }
+  } else {
+    lastClick = {target:e.target, time:now, count:0};
+  }
+  lastClick.time = now;
+}, true);
+
+/* -------- boot -------- */
+goTo('welcome');
+</script>
+
+</body>
+</html>
