@@ -3,1175 +3,294 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Órbita — Estudo de Comportamento Digital</title>
-
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
+<title>Estudo de Usabilidade — Protótipo Intergeracional</title>
 <style>
-  :root{
-    --bg:#F1F3EF; --paper:#FFFFFF; --ink:#1A2421; --ink-soft:#4B564F; --ink-faint:#7C877F;
-    --teal:#2F6F63; --teal-dark:#1E4A42; --teal-pale:#DCEAE5;
-    --mustard:#C98A2B; --mustard-pale:#F4E6C9;
-    --rust:#A6432B; --rust-pale:#F3DFD8;
-    --line:rgba(26,36,33,0.14); --radius:14px;
-    --font-display:'Fraunces', serif; --font-body:'Inter', sans-serif; --font-mono:'IBM Plex Mono', monospace;
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;}
-  h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.15;margin:0 0 .5em;letter-spacing:-0.01em;}
-  p{margin:0 0 1em;}
-  button{font-family:inherit;}
-  a{color:var(--teal-dark);}
-  :focus-visible{outline:3px solid var(--mustard); outline-offset:2px;}
-  @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important; transition-duration:.01ms !important;}}
+:root{
+  --bg:#f4f3ef;--paper:#fff;--ink:#17211f;--muted:#68736f;--line:#dfe4e1;
+  --brand:#246b61;--brand-dark:#174b44;--brand-soft:#e5f1ee;--accent:#e3a72f;
+  --danger:#c84b3d;--danger-soft:#fae9e6;--blue:#2f74d0;--shadow:0 18px 50px rgba(23,33,31,.12);
+  --system:#f5f6f8;--system-dark:#111315;--app-green:#176f5d;--bank:#132f5b;--mail:#4c5f92;
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:var(--font);color:var(--ink);background:var(--bg)}
+body{font-size:16px;line-height:1.5}button,input{font:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid #e3a72f;outline-offset:2px}
+.app{max-width:860px;min-height:100vh;margin:auto;display:flex;flex-direction:column}
+.top{padding:18px 22px 0}.progress{height:4px;background:#dfe4e1;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}.progress-label{font-size:11px;color:var(--muted);margin-top:8px;text-transform:uppercase;letter-spacing:.08em}
+main{flex:1;padding:30px 22px 50px}.card{max-width:580px;margin:auto;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:0 8px 30px rgba(23,33,31,.05)}
+h1,h2,h3{line-height:1.15;margin:0 0 12px}h1{font-size:36px;letter-spacing:-.035em}h2{font-size:28px;letter-spacing:-.025em}h3{font-size:18px}.eyebrow{display:inline-block;background:var(--brand-soft);color:var(--brand-dark);padding:5px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px}.lead{color:#56615d}.fine{font-size:13px;color:var(--muted)}
+.step{display:none}.step.active{display:block;animation:up .25s ease}@keyframes up{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.choice-group{margin:24px 0}.group-label{font-weight:700;font-size:14px;display:block;margin-bottom:9px}.choices{display:flex;gap:9px;flex-wrap:wrap}.choice{flex:1;min-width:110px;min-height:48px;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:11px 14px;text-align:center}.choice.selected{border-color:var(--brand);background:var(--brand-soft);color:var(--brand-dark);font-weight:700}
+.consent{display:flex;gap:10px;background:#f7f7f4;border:1px solid var(--line);padding:13px;border-radius:12px;font-size:13px;color:var(--muted)}.consent input{width:18px;height:18px;margin-top:2px;flex:none}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.btn{border:0;border-radius:11px;padding:12px 18px;min-height:46px;font-weight:750}.primary{background:var(--brand);color:white}.primary:hover{background:var(--brand-dark)}.secondary{background:white;border:1.5px solid var(--line);color:var(--brand-dark)}.danger{background:var(--danger);color:white}.btn:disabled{opacity:.45;cursor:not-allowed}
+.task{max-width:680px;margin:0 auto 14px;background:#fff;border:1px solid #d9dfdc;border-radius:14px;padding:12px 14px;box-shadow:0 5px 18px rgba(23,33,31,.05)}.task small{font-size:10px;font-weight:800;text-transform:uppercase;color:#86631f;letter-spacing:.08em}.task p{font-size:17px;line-height:1.48;margin:7px 0 0}.task-actions{display:flex;justify-content:flex-end;margin-top:10px}.skip-btn{font-size:12px!important;padding:8px 12px!important;min-height:36px!important}.phone-stage{display:flex;justify-content:center;align-items:center;min-height:calc(100vh - 180px)}
+/* PHONE: fixed physical dimensions. Only the content changes. */
+.phone{width:min(380px,92vw);height:min(720px,calc(100vh - 185px));min-height:600px;background:#17191b;border-radius:46px;padding:10px;box-shadow:0 24px 70px rgba(0,0,0,.24),0 0 0 1px #555;position:relative}.phone::before{content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.14);border-radius:42px;pointer-events:none}.screen{height:100%;border-radius:38px;overflow:hidden;background:#fff;position:relative;display:flex;flex-direction:column}.island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:94px;height:25px;border-radius:20px;background:#111315;z-index:20}.status{height:42px;flex:none;padding:8px 18px 0;display:flex;justify-content:space-between;font-size:12px;font-weight:750;position:relative;z-index:15}.status-icons{display:flex;gap:8px;align-items:center}.status-icons svg{width:14px;height:14px}.screen-body{flex:1;min-height:0;overflow:hidden;position:relative}.homebar{height:25px;flex:none;display:flex;align-items:center;justify-content:center;background:#fff}.homebar:after{content:"";width:118px;height:5px;border-radius:99px;background:#9da09f}.view{position:absolute;inset:0;display:none;overflow:hidden;min-height:0}.view.active{display:flex;flex-direction:column;min-height:0}.home{background:linear-gradient(155deg,#214f48 0%,#102d29 100%);padding:22px 18px 14px;color:#fff;overflow:hidden}.home-date{font-size:12px;opacity:.72;text-align:center;margin-bottom:18px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:19px 7px}.app-tile{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;color:#fff;padding:0}.icon{width:55px;height:55px;border-radius:16px;display:grid;place-items:center;box-shadow:0 5px 11px rgba(0,0,0,.18);position:relative}.icon svg{width:29px;height:29px}.icon.app-vitrine{background:#2c9c77}.icon.app-bank{background:#fff;color:#173d70}.icon.app-mail{background:#e55f43}.icon.app-system{background:#858a8b}.icon.app-note{background:#e6c85c;color:#554300}.icon.app-blue{background:#397bc7}.icon.app-green{background:#39a96c}.icon.app-red{background:#d95a4d}.label{font-size:10.5px;text-shadow:0 1px 2px rgba(0,0,0,.3)}.badge{position:absolute;right:-5px;top:-5px;background:#ef3e35;color:white;border:2px solid #17302c;width:18px;height:18px;border-radius:50%;font-size:9px;display:grid;place-items:center}.dock{margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px 6px;border-radius:23px;background:rgba(255,255,255,.15);backdrop-filter:blur(12px)}
+/* shared app chrome */
+.app{background:#fff}.app-head{height:56px;flex:none;display:flex;align-items:center;gap:9px;padding:0 16px;border-bottom:1px solid var(--line);font-weight:800;background:#fff;position:relative;z-index:5}.back{border:0;background:none;color:#1b5e55;padding:5px;font-size:22px}.app-content{padding:16px;overflow-y:auto;overflow-x:hidden;flex:1;min-height:0}.app-nav{height:62px;flex:none;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);background:#fff}.navbtn{border:0;background:none;color:#7a827f;font-size:10px;font-weight:650;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.navbtn svg{width:20px;height:20px}.navbtn.active{color:var(--brand)}
+/* login */.brand-lockup{display:flex;align-items:center;gap:10px;margin-bottom:20px}.brand-mark{width:42px;height:42px;border-radius:13px;background:var(--app-green);color:#fff;display:grid;place-items:center;font-size:21px;font-weight:850}.brand-lockup strong{font-size:19px}.field{margin:0 0 13px}.field label{display:block;font-size:12px;font-weight:750;margin-bottom:5px}.field input{width:100%;height:45px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;background:#fff}.field input:focus{border-color:var(--brand)}.password{position:relative}.password input{padding-right:42px}.eye{position:absolute;right:5px;top:5px;width:36px;height:35px;border:0;background:none;color:#64706c}.link{border:0;background:none;color:var(--brand);font-weight:700;text-decoration:underline;padding:6px 0}.error{display:none;background:var(--danger-soft);border:1px solid #e7aaa1;color:#9e3329;border-radius:9px;padding:9px;font-size:12px}.error.show{display:block}.login-extra{border-top:1px solid var(--line);margin-top:18px;padding-top:15px;display:flex;gap:8px}
+/* store */.store-hero{background:linear-gradient(135deg,#edf5f1,#dcebe5);border-radius:14px;padding:15px;margin-bottom:13px}.store-hero strong{display:block;font-size:18px}.store-tools{display:flex;gap:7px;margin-bottom:11px}.search{flex:1;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 11px}.filter-button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:0 12px;font-weight:700}.filter-panel{display:none;background:#f7f8f6;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}.filter-panel.open{display:block}.filter-title{font-weight:800;font-size:13px;margin-bottom:8px}.filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check{font-size:12px;display:flex;gap:6px;align-items:center}.price{display:flex;gap:6px}.price input{width:100%;height:36px;border:1px solid var(--line);border-radius:8px;padding:0 8px;font-size:12px}.apply-filter{margin-top:9px;width:100%;height:38px}.chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}.chip{font-size:10px;background:var(--brand-soft);color:var(--brand-dark);padding:4px 8px;border-radius:99px}.products{display:grid;grid-template-columns:1fr 1fr;gap:9px}.product{border:1px solid var(--line);border-radius:12px;padding:9px;background:#fff}.product-img{height:65px;border-radius:8px;background:linear-gradient(135deg,#e7e1d7,#bfc7c0);display:grid;place-items:center;margin-bottom:8px}.product-img svg{width:43px;height:43px;color:#55605a}.product strong{font-size:12px;display:block}.product small{font-size:10px;color:var(--muted);display:block}.price-tag{font-size:11px;font-weight:800;color:var(--brand);margin:4px 0 7px}.mini{width:100%;height:34px;border:0;border-radius:8px;background:var(--brand);color:#fff;font-size:11px;font-weight:750}.product.wrong{cursor:pointer}.cart-view{display:none}.cart-view.active{display:block}.payment-list{display:grid;gap:8px;margin:13px 0}.payment{border:1.5px solid var(--line);border-radius:11px;padding:11px;display:flex;align-items:center;gap:9px}.payment.selected{border-color:var(--brand);background:var(--brand-soft)}.payment input{width:17px;height:17px}.success{background:var(--brand-soft);border:1px solid #bcd9d1;padding:13px;border-radius:11px;color:var(--brand-dark)}
+/* account */.profile-head{display:flex;align-items:center;gap:11px;margin-bottom:16px}.avatar{width:48px;height:48px;border-radius:50%;background:#d8e7e2;color:var(--brand-dark);display:grid;place-items:center;font-weight:850}.account-row{width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;text-align:left;padding:14px 4px;display:flex;justify-content:space-between;align-items:center;font-size:13px}.account-row span:last-child{color:#89918e}.font-control{background:#f7f8f6;border:1px solid var(--line);border-radius:12px;padding:14px}.font-size-preview{font-size:16px;margin:9px 0 12px}.font-slider{width:100%}.aa-row{display:flex;justify-content:space-between;align-items:center}.logout{color:var(--danger)!important;font-weight:750}
+/* bank */.bank-head{background:linear-gradient(135deg,#173f76,#10284b);color:#fff;padding:18px;border-radius:15px}.bank-head small{opacity:.72}.balance{font-size:27px;font-weight:800;margin-top:5px}.bank-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:13px 0}.bank-action{border:0;background:#f4f6f8;border-radius:11px;padding:9px 3px;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;font-weight:700}.bank-action svg{width:21px;height:21px;color:#173f76}.statement{border-top:1px solid var(--line);padding-top:12px}.transaction{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #eef0ef;font-size:12px}.transaction small{display:block;color:var(--muted);font-size:10px}.positive{color:#20835f}.pix-brand{display:flex;align-items:center;gap:9px;margin-bottom:14px}.pix-logo{width:38px;height:38px;border-radius:10px;background:#32bcad;display:grid;place-items:center;color:white;font-weight:900}.contact-list{border:1px solid var(--line);border-radius:10px;max-height:145px;overflow:auto;margin-top:7px}.contact{padding:10px;border-bottom:1px solid var(--line);font-size:12px}.contact:last-child{border:0}.contact.selected{background:#e8f5f2;color:var(--brand-dark);font-weight:800}.pix-review{background:#f5f7f8;border-radius:12px;padding:13px;margin:12px 0}.review-line{display:flex;justify-content:space-between;font-size:12px;padding:6px 0}.review-line b{font-size:13px}
+/* mail */.mail-brand{display:flex;align-items:center;gap:8px}.mail-logo{width:32px;height:32px;border-radius:9px;background:var(--mail);display:grid;place-items:center;color:#fff}.mail-row{display:flex;gap:8px;padding:12px 15px;border-bottom:1px solid var(--line);background:#fff;text-align:left;width:100%;border-left:0;border-right:0;border-top:0}.mail-row.unread{background:#f6f8fb}.mail-dot{width:8px;height:8px;border-radius:50%;background:#4975c0;margin-top:5px;flex:none}.mail-main{min-width:0;flex:1}.mail-sender{font-size:12px;font-weight:800}.mail-subject{font-size:12px;font-weight:700}.mail-preview{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mail-time{font-size:9px;color:var(--muted)}.mail-detail{padding:16px}.warning-box{background:#fff8e7;border:1px solid #e7c76f;border-radius:10px;padding:10px;font-size:11px}.mail-actions{display:flex;gap:8px;margin-top:14px}.mail-actions button{flex:1}.suspicious-label{font-size:10px;font-weight:800;color:#9e3329;text-transform:uppercase;letter-spacing:.06em}
+/* modal */.modal{position:fixed;inset:0;background:rgba(12,18,16,.52);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.open{display:flex}.modal-box{background:#fff;border-radius:16px;padding:22px;max-width:340px;width:100%;box-shadow:var(--shadow)}
+.phone-note{max-width:420px;margin:8px auto 0;text-align:center;font-size:11px;color:var(--muted)}
+@media(max-height:760px){.phone{height:calc(100vh - 165px);min-height:560px}.phone-stage{min-height:calc(100vh - 165px)}}
+@media(max-width:520px){main{padding:18px 8px 30px}.top{padding:12px 14px 0}.card{padding:22px 18px}h1{font-size:30px}.phone{width:370px;max-width:calc(100vw - 14px)}.task{margin-left:8px;margin-right:8px}.phone-stage{min-height:calc(100vh - 145px)}}
 
-  .app{max-width:800px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
-
-  .stepper{padding:20px 20px 0;}
-  .stepper-track{display:flex;align-items:center;gap:3px;}
-  .stepper-seg{flex:1;height:3px;background:var(--line);border-radius:3px;position:relative;overflow:hidden;}
-  .stepper-seg::after{content:'';position:absolute;inset:0;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
-  .stepper-seg.done::after{transform:scaleX(1);}
-  .stepper-seg.active::after{transform:scaleX(1); background:var(--mustard);}
-  .stepper-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint);text-transform:uppercase;margin-top:8px;}
-  .stepper-label b{color:var(--teal-dark);}
-
-  main{flex:1;padding:28px 20px 60px;}
-  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;}
-  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-dark);background:var(--teal-pale);display:inline-block;padding:4px 10px;border-radius:20px;margin-bottom:14px;}
-  .lead{color:var(--ink-soft); font-size:16px;}
-
-  .btn{appearance:none;border:none;border-radius:10px;padding:14px 22px;font-size:16px;font-weight:600;cursor:pointer;transition:transform .15s ease, background .15s ease, border-color .15s ease;min-height:48px;}
-  .btn:active{transform:scale(.98);}
-  .btn-primary{background:var(--teal); color:#fff;}
-  .btn-primary:hover{background:var(--teal-dark);}
-  .btn-primary:disabled{background:#B9C2BE; cursor:not-allowed;}
-  .btn-ghost{background:transparent; color:var(--teal-dark); border:1.5px solid var(--line);}
-  .btn-ghost:hover{border-color:var(--teal);}
-  .btn-outline-teal{background:#fff;color:var(--teal-dark);border:2px solid var(--teal);}
-  .btn-outline-teal:hover{background:var(--teal-pale);}
-  .btn-sm{padding:8px 14px;font-size:13px;min-height:36px;}
-  .btn-row{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;}
-
-  .choice-group{margin-bottom:24px;}
-  .choice-group>label.group-label{display:block;font-weight:600;margin-bottom:10px;font-size:15px;}
-  .choice-options{display:flex; flex-wrap:wrap; gap:10px;}
-  .choice-pill{border:1.5px solid var(--line);border-radius:10px;padding:12px 16px;cursor:pointer;font-size:15px;background:#fff;min-height:48px;display:flex;align-items:center;transition:border-color .15s, background .15s;flex:1 1 auto;justify-content:center;text-align:center;}
-  .choice-pill.selected{border-color:var(--teal); background:var(--teal-pale); color:var(--teal-dark); font-weight:600;}
-
-  .consent-box{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:16px;font-size:14px;color:var(--ink-soft);}
-  .consent-box input{margin-top:3px; width:18px; height:18px; flex-shrink:0;}
-
-  .task-banner{background:var(--mustard-pale);border:1px solid var(--mustard);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:15px;}
-  .task-banner .tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a5f1e;display:block;margin-bottom:4px;}
-
-  input[type=text], input[type=email], input[type=date]{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit;min-height:46px;background:#fff;}
-  input:focus{border-color:var(--teal);}
-  .field{margin-bottom:16px; position:relative;}
-  .field label{display:block; font-size:14px; font-weight:600; margin-bottom:6px;}
-  .field-error{color:var(--rust);background:var(--rust-pale);border:1px solid var(--rust);border-radius:8px;padding:8px 12px;font-size:13px;margin-top:6px;display:none;}
-  .field-error.show{display:block;}
-
-  .a11y-btn{position:fixed;right:16px;bottom:16px;z-index:40;background:var(--ink);color:#fff;border:none;border-radius:50px;padding:12px 16px;display:flex;gap:10px;font-family:var(--font-mono);font-size:13px;box-shadow:0 6px 20px rgba(26,36,33,0.25);cursor:pointer;}
-  .a11y-btn span{padding:0 4px; cursor:pointer;}
-  .a11y-btn span:hover{color:var(--mustard);}
-
-  .likert-q{margin-bottom:26px;}
-  .likert-q p{font-weight:600; margin-bottom:10px;}
-  .likert-scale{display:flex; gap:6px; justify-content:space-between;}
-  .likert-opt{flex:1;text-align:center;border:1.5px solid var(--line);border-radius:8px;padding:10px 4px;cursor:pointer;font-size:13px;min-height:46px;display:flex;align-items:center;justify-content:center;}
-  .likert-opt.selected{border-color:var(--teal); background:var(--teal-pale); font-weight:700; color:var(--teal-dark);}
-  .likert-caption{display:flex; justify-content:space-between; font-size:11px; color:var(--ink-faint); margin-top:4px;}
-
-  .result-badge{text-align:center;padding:32px 20px;background:var(--teal-dark);color:#fff;border-radius:var(--radius);margin-bottom:20px;}
-  .result-badge .eyebrow{background:rgba(255,255,255,0.15); color:#fff;}
-  .result-badge h2{font-size:32px; color:#fff; margin-bottom:6px;}
-  .result-badge p{color:rgba(255,255,255,0.8); margin:0;}
-  .stat-row{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;}
-  .stat{flex:1 1 100px;background:var(--bg);border-radius:10px;padding:12px 14px;text-align:center;}
-  .stat .num{font-family:var(--font-mono); font-size:18px; font-weight:600; color:var(--teal-dark);}
-  .stat .lbl{font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em;}
-
-  .step-section{display:none;}
-  .step-section.active{display:block; animation:fadein .35s ease;}
-  @keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
-
-  .site-header{display:none; position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:1px solid var(--line);}
-  .site-header-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;position:relative;}
-  .site-header .brand{font-family:var(--font-display);font-weight:600;font-size:19px;color:var(--teal-dark);}
-  .nav-left{display:flex;align-items:center;gap:6px;}
-  .nav-group{position:relative;}
-  .nav-trigger{background:none;border:none;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;padding:9px 10px;border-radius:8px;}
-  .nav-trigger:hover{background:var(--bg);}
-  .nav-dropdown{position:absolute;top:110%;left:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(26,36,33,.14);min-width:240px;padding:8px;display:none;z-index:50;max-height:70vh;overflow:auto;}
-  .nav-dropdown.open{display:block;}
-  .nav-dropdown button.nav-item{display:block;width:100%;text-align:left;background:none;border:none;padding:10px 12px;border-radius:8px;font-size:14px;cursor:pointer;color:var(--ink);font-family:inherit;}
-  .nav-dropdown button.nav-item:hover{background:var(--teal-pale);color:var(--teal-dark);}
-  .nav-right{display:flex;align-items:center;gap:2px;}
-  .bell-btn{position:relative;background:none;border:none;cursor:pointer;padding:9px;border-radius:8px;font-size:18px;}
-  .bell-btn:hover{background:var(--bg);}
-  .bell-badge{position:absolute;top:2px;right:2px;background:var(--rust);color:#fff;font-size:10px;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);}
-  .notif-panel{position:absolute;top:110%;right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(26,36,33,.14);width:300px;padding:10px;display:none;z-index:50;}
-  .notif-panel.open{display:block;}
-  .notif-item{border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:8px;font-size:13px;}
-  .notif-item.scam{background:linear-gradient(135deg,#fff3cd,#ffe0e0);border-color:#e0a500;}
-  .notif-item.alert{background:#fff8ec;border-color:#d9a404;}
-  .notif-item .notif-title{font-weight:700;margin-bottom:4px;}
-  .notif-report{margin-top:8px;font-size:12px;color:var(--teal-dark);background:none;border:1px solid var(--teal);border-radius:6px;padding:5px 9px;cursor:pointer;}
-
-  .app-dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
-  .dash-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;}
-  .dash-card .dash-num{font-family:var(--font-mono);font-size:20px;font-weight:600;color:var(--teal-dark);}
-  .dash-card .dash-lbl{font-size:12px;color:var(--ink-faint);}
-
-  .task-panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-top:6px;}
-  .task-panel[hidden]{display:none;}
-
-  .select-field{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit;background:#fff;min-height:46px;}
-  .time-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
-  .time-pill{border:1.5px solid var(--line);border-radius:8px;padding:8px 14px;font-size:14px;cursor:pointer;background:#fff;}
-  .time-pill.selected{border-color:var(--teal);background:var(--teal-pale);color:var(--teal-dark);font-weight:600;}
-  .time-pill.disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through;}
-
-  .review-card{background:var(--bg);border-radius:10px;padding:16px;margin:16px 0;font-size:14px;}
-  .review-card .rlabel{color:var(--ink-faint);font-size:12px;text-transform:uppercase;letter-spacing:.03em;margin-top:8px;}
-  .review-card .rvalue{margin:2px 0 0;font-weight:600;}
-
-  .contact-list{max-height:170px;overflow:auto;border:1px solid var(--line);border-radius:8px;margin-top:8px;}
-  .contact-item{padding:10px 12px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--line);}
-  .contact-item:last-child{border-bottom:none;}
-  .contact-item:hover{background:var(--teal-pale);}
-  .contact-item.selected{background:var(--teal-pale);font-weight:600;color:var(--teal-dark);}
-
-  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);}
-  .toggle-switch{width:46px;height:26px;border-radius:20px;background:var(--line);position:relative;cursor:pointer;flex-shrink:0;}
-  .toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;}
-  .toggle-switch.on{background:var(--teal);}
-  .toggle-switch.on::after{transform:translateX(20px);}
-  .font-size-control{display:flex;align-items:center;gap:14px;}
-  .font-btn{width:38px;height:38px;border-radius:8px;border:1.5px solid var(--line);background:#fff;font-family:var(--font-mono);font-weight:600;cursor:pointer;}
-
-  .hint-text{font-size:13px;color:#8a5f1e;margin-top:10px;font-style:italic;}
-  .decoy-msg{font-size:14px;color:var(--ink-soft);}
-
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:60;padding:20px;}
-  .modal-overlay.open{display:flex;}
-  .modal-box{background:#fff;border-radius:12px;padding:24px;max-width:380px;width:100%;}
-  .modal-box .fine{font-size:12px;color:var(--ink-faint);}
-  .modal-box .manage-link{background:none;border:none;color:var(--ink-faint);text-decoration:underline;font-size:13px;cursor:pointer;padding:6px 0;}
-
-  /* catálogo */
-  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
-  .toolbar .field{flex:1 1 200px;margin-bottom:0;}
-  .toolbar select{flex:0 0 auto;}
-  .suggest-box{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:8px;margin-top:4px;box-shadow:0 8px 20px rgba(26,36,33,.12);z-index:20;display:none;}
-  .suggest-box.open{display:block;}
-  .suggest-item{padding:10px 12px;font-size:14px;cursor:pointer;}
-  .suggest-item:hover{background:var(--teal-pale);}
-  .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
-  .product-card{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fafaf8;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
-  .product-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(26,36,33,.10);border-color:var(--teal);}
-  .product-card .thumb{height:64px;border-radius:6px;background:var(--teal-pale);margin-bottom:8px;}
-  .product-card .pname{font-size:13.5px;font-weight:600;margin-bottom:2px;}
-  .product-card .pprice{font-family:var(--font-mono);font-size:13px;color:var(--teal-dark);margin-bottom:8px;}
-  .product-card .pbtns{display:flex;flex-direction:column;gap:6px;}
-
-  /* planos */
-  .plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
-  .plan-card{border:1.5px solid var(--line);border-radius:12px;padding:20px;background:#fff;position:relative;}
-  .plan-ribbon{position:absolute;top:-11px;left:16px;background:var(--mustard);color:#fff;font-size:11px;font-family:var(--font-mono);padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
-  .plan-card h3{font-size:19px;margin-bottom:4px;}
-  .plan-price{font-family:var(--font-mono);font-size:15px;color:var(--ink-soft);margin-bottom:6px;}
-  .plan-price b{font-size:22px;color:var(--ink);}
-  .plan-discount{font-size:12px;color:var(--teal-dark);font-weight:600;margin-bottom:14px;}
-
-  body.high-contrast{background:#000; color:#fff;}
-  body.high-contrast .card, body.high-contrast .task-panel, body.high-contrast .site-header,
-  body.high-contrast .review-card, body.high-contrast .dash-card, body.high-contrast .modal-box,
-  body.high-contrast .nav-dropdown, body.high-contrast .notif-panel, body.high-contrast .product-card,
-  body.high-contrast .plan-card, body.high-contrast .suggest-box{background:#000;border-color:#FFD400;color:#fff;}
-  body.high-contrast .btn-primary{background:#FFD400;color:#000;}
-  body.high-contrast a{color:#FFD400;}
-  body.high-contrast .eyebrow{background:#FFD400;color:#000;}
-  body.high-contrast .nav-trigger{color:#fff;}
-
-  @media (max-width:480px){
-    main{padding:20px 16px 50px;}
-    .card{padding:22px 18px;}
-    .site-header-inner{padding:10px 14px;}
-    .nav-trigger{font-size:13px;padding:8px;}
-  }
-</style>
+/* --- ajustes de usabilidade do experimento --- */
+body.study-active{overflow:hidden}
+body.study-active main{padding-top:12px;padding-bottom:14px;overflow:hidden}
+body.study-active .phone-stage{height:calc(100vh - 165px);min-height:0;overflow:hidden;align-items:center}
+.task{max-width:680px;margin:0 auto 10px;padding:14px 18px;border-radius:16px}
+.task-top{display:flex;align-items:center;gap:10px;border-bottom:1px solid #e8ecea;padding-bottom:7px;margin-bottom:6px}
+.task-top small{font-size:11px!important;color:#86631f;letter-spacing:.08em}
+.task-top strong{font-size:17px;color:#17211f}
+.task p{font-size:16px;line-height:1.42;margin:0;color:#26322f}
+.phone{height:clamp(500px,calc(100vh - 280px),650px);min-height:0}
+.screen-body{min-height:0;overflow:hidden}
+.view.active{min-height:0}
+.app-content{min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.android-nav{height:34px!important;flex:none!important;background:#f7f7f7!important;border-top:1px solid #e5e7e6;display:grid!important;grid-template-columns:repeat(3,1fr)!important;align-items:center;z-index:30}
+.android-nav button{height:34px;border:0;background:transparent;color:#343a38;display:grid;place-items:center;padding:0}
+.android-nav svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.android-nav button:nth-child(2) svg{stroke-width:2.4}
+.home{overflow-y:auto!important;overflow-x:hidden;padding-bottom:12px}
+.home .grid{gap:15px 7px}
+.label{font-size:11px}
+.icon{width:52px;height:52px;border-radius:15px}
+.phone-note{font-size:11px;line-height:1.35}
+/* e-commerce visual */
+.store-hero{background:linear-gradient(135deg,#f1f5ff,#e6eefb);border:1px solid #dce5f2}
+.store-hero .store-logo{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.store-logo-mark{width:30px;height:30px;border-radius:9px;background:#2459a6;color:#fff;display:grid;place-items:center;font-weight:900}
+.category-row{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px;scrollbar-width:none}
+.category{white-space:nowrap;border:1px solid #dbe2eb;background:#fff;border-radius:99px;padding:6px 10px;font-size:11px;font-weight:700}
+.product-img{height:100px!important;background:#f3f5f6!important;border:1px solid #e7eae9;overflow:hidden}
+.product-img svg{width:72px!important;height:72px!important}
+.product{padding:10px!important}
+.product strong{font-size:13px!important}
+.product small{font-size:10.5px!important}
+.price-tag{font-size:13px!important}
+.mini{height:36px!important;font-size:11px!important}
+.checkout-card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;margin-bottom:12px}
+/* larger app typography for the study */
+.app-content h3{font-size:18px}
+.app-content p,.app-content label{font-size:13px}
+.app-content .btn{font-size:13px}
+/* make the e-commerce account discovery realistic */
+.account-row{font-size:14px;padding:15px 4px}
+.store-hero strong{font-size:17px}.store-hero .fine{display:block;margin-top:3px}.checkout-card .product-img{background:#f4f6f7}.success b{font-size:15px}
+.pix-payment-card{margin-top:12px;border:1px solid var(--line);border-radius:13px;padding:13px;text-align:center}.mock-qr{width:145px;height:145px;margin:0 auto 10px;background:#fff;border:7px solid #fff;display:grid;place-items:center}.mock-qr svg{width:100%;height:100%;shape-rendering:crispEdges}.pix-payment-card textarea{width:100%;min-height:72px;margin-top:8px;border:1px solid var(--line);border-radius:9px;padding:8px;font-size:9px;resize:none}.pix-payment-card summary{font-size:12px;font-weight:700;cursor:pointer;text-align:left;margin-top:10px}.android-nav{background:#fff}.android-nav button{width:52px;height:25px;border:0;background:none;display:grid;place-items:center}.android-nav{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center}.android-nav svg{width:18px;height:18px;stroke:#4f5654;stroke-width:1.8;fill:none}.android-nav button:first-child svg{stroke-width:2.3}.android-nav button:nth-child(2) svg{stroke-width:2}.android-nav button:nth-child(3) svg{stroke-width:2}</style>
 </head>
 <body>
-
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
-<header class="site-header" id="siteHeader">
-  <div class="site-header-inner">
-    <div class="nav-left">
-      <span class="brand">Órbita</span>
-      <div class="nav-group">
-        <button class="nav-trigger" data-dd="servicos">Serviços ▾</button>
-        <div class="nav-dropdown" id="dd-servicos">
-          <button class="nav-item" data-key="agendar-consulta">Agendar consulta médica</button>
-          <button class="nav-item" data-key="reagendar-consulta">Reagendar consulta</button>
-          <button class="nav-item" data-key="comprar-produto">Comprar produtos</button>
-          <button class="nav-item" data-key="ver-planos">Ver planos</button>
-          <button class="nav-item" data-key="nova-transferencia">Nova transferência</button>
-          <button class="nav-item" data-key="ver-extrato">Ver extrato</button>
-        </div>
-      </div>
-      <div class="nav-group">
-        <button class="nav-trigger" data-dd="conta">Minha Conta ▾</button>
-        <div class="nav-dropdown" id="dd-conta">
-          <button class="nav-item" data-key="dados-pessoais">Dados pessoais</button>
-          <button class="nav-item" data-key="config-acessibilidade">Configurações de acessibilidade</button>
-          <button class="nav-item" data-key="sair">Sair</button>
-        </div>
-      </div>
-    </div>
-    <div class="nav-right">
-      <div class="nav-group">
-        <button class="bell-btn" id="bellBtn">🔔<span class="bell-badge">4</span></button>
-        <div class="notif-panel" id="notifPanel">
-          <div class="notif-item" data-key="consulta">
-            <div class="notif-title">Consulta confirmada</div>
-            <div>Sua consulta de Clínico Geral foi confirmada para amanhã às 14h.</div>
-            <button class="notif-report" data-key="consulta">Reportar como suspeita</button>
-          </div>
-          <div class="notif-item" data-key="fatura">
-            <div class="notif-title">Fatura disponível</div>
-            <div>Sua fatura de outubro já está disponível para consulta.</div>
-            <button class="notif-report" data-key="fatura">Reportar como suspeita</button>
-          </div>
-          <div class="notif-item alert" data-key="acesso">
-            <div class="notif-title">🔒 Novo acesso detectado</div>
-            <div>Identificamos um acesso à sua conta a partir de um novo aparelho. Se foi você, nenhuma ação é necessária.</div>
-            <button class="notif-report" data-key="acesso">Reportar como suspeita</button>
-          </div>
-          <div class="notif-item scam" data-key="premio">
-            <div class="notif-title">🎉 VOCÊ GANHOU!!</div>
-            <div>Parabéns!! Vc foi sorteado(a) p/ receber R$500,00 AGORA. Clique e resgate em ATÉ 2 HORAS antes que expire!!!</div>
-            <button class="notif-report" data-key="premio">Reportar como suspeita</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-
 <div class="app">
-  <div class="stepper" id="stepper">
-    <div class="stepper-track" id="stepperTrack"></div>
-    <div class="stepper-label" id="stepperLabel"></div>
-  </div>
+<header class="top"><div class="progress"><i id="progressBar"></i></div><div class="progress-label" id="progressLabel">Início</div></header>
+<main>
+<section class="step active" data-step="welcome"><div class="card"><span class="eyebrow">Pesquisa acadêmica · TCC</span><h1>Como diferentes gerações usam interfaces digitais?</h1><p class="lead">Nesta pesquisa, você irá realizar uma simulação de uso de celular e tecnologia. O protótipo imita um aparelho real, com uma tela inicial e aplicativos que fazem parte do nosso dia a dia, como loja, banco e e-mail.</p><p class="lead">Durante a simulação, você receberá cinco situações para resolver. Não existe uma resposta “certa” de conhecimento: queremos observar como você navega, encontra funções e toma decisões.</p><p class="lead">A pesquisa observa navegação, descoberta de funcionalidades, acessibilidade, tomada de decisão e percepção de segurança.</p><div class="consent"><input id="consent" type="checkbox"><label for="consent">Li as informações e concordo em participar voluntariamente desta pesquisa. Os dados serão analisados de forma anônima e agregada.</label></div><div class="actions"><button class="btn primary" id="start" disabled>Começar</button></div></div></section>
+<section class="step" data-step="profile"><div class="card"><span class="eyebrow">Antes de começar</span><h2>Sobre você</h2><p class="lead">Não informe nome, e-mail ou qualquer dado pessoal real.</p><div class="choice-group"><span class="group-label">Faixa etária</span><div class="choices" data-key="faixa"><button class="choice" data-value="18-29">18–29</button><button class="choice" data-value="30-49">30–49</button><button class="choice" data-value="50-64">50–64</button><button class="choice" data-value="65+">65+</button></div></div><div class="choice-group"><span class="group-label">Familiaridade com tecnologia</span><div class="choices" data-key="afinidade"><button class="choice" data-value="baixa">Baixa</button><button class="choice" data-value="media">Média</button><button class="choice" data-value="alta">Alta</button></div></div><div class="actions"><button class="btn primary" id="profileNext" disabled>Continuar</button></div></div></section>
 
-  <main>
+<section class="step" data-step="phone-flow"><div class="task" id="taskBox"></div><div class="phone-stage"><div class="phone"><div class="screen"><div class="island"></div><div class="status"><span>9:41</span><span class="status-icons"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 18h3v4H2zm5-4h3v8H7zm5-4h3v12h-3zm5-4h3v16h-3z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="18" height="12" rx="2"/><path d="M22 10v4"/></svg></span></div><div class="screen-body">
+<!-- HOME -->
+<div class="view active home" id="homeView"><div class="home-date">terça-feira · 9 de outubro</div><div class="grid">
+<button class="app-tile" data-app="fotos"><span class="icon app-system"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="15" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg></span><span class="label">Fotos</span></button>
+<button class="app-tile" data-app="calc"><span class="icon app-blue"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.7"><rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="M8 6h8M8 10h2m4 0h2M8 14h2m4 0h2M8 18h2m4 0h2"/></svg></span><span class="label">Calculadora</span></button>
+<button class="app-tile" data-app="mapas"><span class="icon app-green"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.7"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2z"/><path d="M9 3v16m6-14v16"/></svg></span><span class="label">Mapas</span></button>
+<button class="app-tile" data-app="ajustes"><span class="icon app-system"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.8 1.8 0 000-6l1-1.7-1.7-1-1.4 1a8 8 0 00-2-.8L15 4h-2l-.3 2.5a8 8 0 00-2 .8l-1.4-1-1.7 1 1 1.7a1.8 1.8 0 000 6l-1 1.7 1.7 1 1.4-1a8 8 0 002 .8L11 20h2l.3-2.5a8 8 0 002-.8l1.4 1 1.7-1z"/></svg></span><span class="label">Ajustes</span></button>
+<button class="app-tile" data-app="vitrine"><span class="icon app-vitrine"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M4 9h16l-1 11H5L4 9z"/><path d="M8 9V7a4 4 0 0 1 8 0v2"/><path d="M9 13h6"/></svg></span><span class="label">Vitrine</span></button>
+<button class="app-tile" data-app="banco"><span class="icon app-bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 9l9-5 9 5"/><path d="M5 10v8m4-8v8m6-8v8m4-8v8M3 20h18M2 10h20"/></svg></span><span class="label">Banco</span></button>
+<button class="app-tile" data-app="email"><span class="icon app-mail"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg><span class="badge">3</span></span><span class="label">E-mail</span></button>
+<button class="app-tile" data-app="notas"><span class="icon app-note"><svg viewBox="0 0 24 24" fill="none" stroke="#5c4b05" stroke-width="1.7"><path d="M6 3h10l3 3v15H6z"/><path d="M16 3v4h4M9 11h7M9 15h7M9 19h4"/></svg></span><span class="label">Notas</span></button>
+</div><div class="dock">
+<button class="app-tile" data-app="telefone"><span class="icon app-green"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M7 3l3 2-2 4c1 2 3 4 5 5l4-2 2 3c-2 4-5 5-8 3-4-2-8-7-8-11 0-3 1-4 4-4z"/></svg></span></button>
+<button class="app-tile" data-app="mensagens"><span class="icon app-green"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M4 5h16v11H9l-4 4v-4H4z"/><path d="M8 10h8M8 13h5"/></svg></span></button>
+<button class="app-tile" data-app="navegador"><span class="icon app-blue"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-5 2 2-5z"/></svg></span></button>
+<button class="app-tile" data-app="musica"><span class="icon app-red"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg></span></button>
+</div></div>
 
-    <section class="step-section" data-step="welcome">
-      <div class="card">
-        <span class="eyebrow">Pesquisa acadêmica · TCC</span>
-        <h1>Como as gerações usam a internet?</h1>
-        <p class="lead">Você vai usar um app fictício (Órbita) para realizar 6 tarefas do dia a dia: agendar uma consulta, comprar um produto, escolher um plano, fazer uma transferência, identificar uma mensagem suspeita e ajustar configurações de acessibilidade. Leva de 8 a 12 minutos.</p>
-        <p class="lead">Nenhum dado pessoal identificável é coletado. As respostas são usadas de forma agregada e anônima para um Trabalho de Conclusão de Curso em Sistemas de Informação.</p>
-        <div class="consent-box">
-          <input type="checkbox" id="consentCheck">
-          <label for="consentCheck">Li as informações acima e concordo em participar voluntariamente desta pesquisa, ciente de que meus dados serão tratados de forma anônima e agregada, conforme a LGPD.</label>
-        </div>
-        <div class="btn-row"><button class="btn btn-primary" id="btnStart" disabled>Começar</button></div>
-      </div>
-    </section>
+<!-- VITRINE -->
+<div class="view app" id="vitrineView"></div>
+<!-- BANCO -->
+<div class="view app" id="bancoView"></div>
+<!-- EMAIL -->
+<div class="view app" id="emailView"></div>
+<!-- INERT -->
+<div class="view app" id="inertView"><div class="app-head"><button class="back" data-home>‹</button>Aplicativo</div><div class="app-content" style="display:grid;place-items:center;text-align:center"><div><div style="font-size:34px;margin-bottom:10px">Não disponível</div><p class="lead" id="inertText"></p><button class="btn secondary" data-home>Voltar à tela inicial</button></div></div></div>
+</div><div class="homebar android-nav" aria-label="Navegação do Android">
+<button data-home aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="M16 5L9 12l7 7" fill="none"/></svg></button>
+<button data-home aria-label="Tela inicial"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/></svg></button>
+<button aria-label="Aplicativos recentes" id="recentBtn"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/></svg></button>
+</div></div></div></div><p class="phone-note">O aparelho permanece no mesmo tamanho durante toda a tarefa; apenas o conteúdo da tela é alterado.</p></section>
 
-    <section class="step-section" data-step="profile">
-      <div class="card">
-        <span class="eyebrow">Etapa 1 de 9</span>
-        <h2>Rapidamente, sobre você</h2>
-        <p class="lead">Só isso — nada de nome, e-mail ou dados de contato.</p>
-        <div class="choice-group">
-          <label class="group-label">Sua faixa etária</label>
-          <div class="choice-options" data-group="faixa">
-            <label class="choice-pill" data-value="18-29">18–29</label>
-            <label class="choice-pill" data-value="30-49">30–49</label>
-            <label class="choice-pill" data-value="50-64">50–64</label>
-            <label class="choice-pill" data-value="65+">65+</label>
-          </div>
-        </div>
-        <div class="choice-group">
-          <label class="group-label">Como você avalia sua familiaridade com tecnologia?</label>
-          <div class="choice-options" data-group="afinidade">
-            <label class="choice-pill" data-value="baixa">Baixa</label>
-            <label class="choice-pill" data-value="media">Média</label>
-            <label class="choice-pill" data-value="alta">Alta</label>
-          </div>
-        </div>
-        <div class="btn-row"><button class="btn btn-primary" id="btnProfileNext" disabled>Continuar</button></div>
-      </div>
-    </section>
+<section class="step" data-step="sus"><div class="card"><span class="eyebrow">Avaliação final</span><h2>Como foi sua experiência?</h2><div id="likert"></div><div class="actions"><button class="btn primary" id="finish" disabled>Ver resultado</button></div></div></section>
+<section class="step" data-step="result"><div class="card"><span class="eyebrow">Pesquisa concluída</span><h2>Obrigada por participar!</h2><p class="lead">Sua participação ajudará a analisar diferenças de usabilidade e acessibilidade entre gerações.</p><div id="resultStats"></div></div></section>
+</main></div>
 
-    <!-- TAREFA 1: agendamento (com pop-up de cookies antes) -->
-    <section class="step-section" data-step="task1">
-      <div class="task-banner">
-        <span class="tag">Tarefa 1 de 6</span>
-        Use o menu <b>Serviços</b> para <b>agendar uma consulta médica</b>.
-        <div class="hint-text" id="hint-task1" hidden>💡 Dica: clique em "Serviços" no menu do topo.</div>
-      </div>
-      <div class="app-dashboard">
-        <div class="dash-card"><div class="dash-num">0</div><div class="dash-lbl">Consultas agendadas</div></div>
-        <div class="dash-card"><div class="dash-num">R$ 1.240,00</div><div class="dash-lbl">Saldo disponível</div></div>
-        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
-      </div>
-
-      <div class="task-panel" id="agendarPanel" hidden>
-        <h3>Agendar consulta médica</h3>
-        <div class="field"><label>Tipo de atendimento</label>
-          <select class="select-field" id="tipoAtendimento">
-            <option value="">Selecione...</option>
-            <option>Clínico geral</option><option>Odontologia</option><option>Nutrição</option>
-          </select>
-        </div>
-        <div class="field"><label>Unidade</label>
-          <select class="select-field" id="unidadeAtendimento">
-            <option value="">Selecione...</option>
-            <option>UBS Centro</option><option>UBS Norte</option><option>UBS Sul</option>
-          </select>
-        </div>
-        <div class="field"><label>Data</label><input type="date" id="dataAgendamento"></div>
-        <div class="field"><label>Horário disponível</label><div class="time-pills" id="timePills"></div></div>
-        <div class="field-error" id="agendarError">Preencha todos os campos e escolha um horário antes de continuar.</div>
-        <div class="btn-row"><button class="btn btn-primary" id="btnRevisarAgendamento">Revisar agendamento</button></div>
-
-        <div id="agendarReview" hidden>
-          <div class="review-card" id="agendarReviewContent"></div>
-          <div class="btn-row">
-            <button class="btn btn-ghost" id="btnEditarAgendamento">Editar</button>
-            <button class="btn btn-primary" id="btnConfirmarAgendamento">Confirmar agendamento</button>
-          </div>
-        </div>
-        <div id="agendarSucesso" hidden>
-          <p class="lead" style="margin-top:14px">✅ Consulta agendada com sucesso.</p>
-          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarT1">Continuar</button></div>
-        </div>
-      </div>
-
-      <div class="task-panel" id="reagendarPanel" hidden>
-        <p class="decoy-msg">Você ainda não possui consultas agendadas para reagendar.</p>
-        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarReagendar">Voltar</button></div>
-      </div>
-    </section>
-
-    <!-- TAREFA 2: catálogo -->
-    <section class="step-section" data-step="task2">
-      <div class="task-banner">
-        <span class="tag">Tarefa 2 de 6</span>
-        Use o menu <b>Serviços → Comprar produtos</b>. Ordene por <b>menor preço</b> e adicione ao carrinho a <b>"Cadeira Ipê"</b> (a original — sem "Slim" ou "Premium" no nome).
-        <div class="hint-text" id="hint-task2" hidden>💡 Dica: clique em "Serviços" → "Comprar produtos".</div>
-      </div>
-      <div class="app-dashboard">
-        <div class="dash-card"><div class="dash-num">1</div><div class="dash-lbl">Consultas agendadas</div></div>
-        <div class="dash-card"><div class="dash-num">R$ 1.240,00</div><div class="dash-lbl">Saldo disponível</div></div>
-        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
-      </div>
-
-      <div class="task-panel" id="catalogoPanel" hidden>
-        <h3>Loja Órbita</h3>
-        <div class="toolbar">
-          <div class="field">
-            <input type="text" id="prodSearch" placeholder="Buscar produto...">
-            <div class="suggest-box" id="prodSuggest"></div>
-          </div>
-          <select class="select-field" id="prodSort" style="width:auto">
-            <option value="relevancia">Ordenar por: Relevância</option>
-            <option value="menor">Menor preço</option>
-            <option value="maior">Maior preço</option>
-          </select>
-        </div>
-        <div class="product-grid" id="productGrid"></div>
-        <div id="catalogoSucesso" hidden>
-          <p class="lead" style="margin-top:16px">✅ "Cadeira Ipê" adicionada ao carrinho.</p>
-          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarT2">Continuar</button></div>
-        </div>
-      </div>
-
-      <div class="task-panel" id="extratoPanel2" hidden>
-        <p class="decoy-msg">Extrato: nenhuma movimentação nos últimos 7 dias.</p>
-        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarExtrato2">Voltar</button></div>
-      </div>
-      <div class="task-panel" id="agendarPanel2Decoy" hidden>
-        <p class="decoy-msg">Essa é a tela de agendamento — já usada na tarefa anterior.</p>
-        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarAgendarDecoy">Voltar</button></div>
-      </div>
-      <div class="task-panel" id="transfPanel2Decoy" hidden>
-        <p class="decoy-msg">Essa opção não é necessária para esta tarefa.</p>
-        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarTransfDecoy">Voltar</button></div>
-      </div>
-    </section>
-
-    <!-- TAREFA 3: planos -->
-    <section class="step-section" data-step="task3">
-      <div class="task-banner">
-        <span class="tag">Tarefa 3 de 6</span>
-        Use o menu <b>Serviços → Ver planos</b>. Assine o plano com o <b>maior percentual de desconto</b> no pagamento anual (não é necessariamente o mais "popular").
-        <div class="hint-text" id="hint-task3" hidden>💡 Dica: clique em "Serviços" → "Ver planos".</div>
-      </div>
-      <div class="app-dashboard">
-        <div class="dash-card"><div class="dash-num">1</div><div class="dash-lbl">Consultas agendadas</div></div>
-        <div class="dash-card"><div class="dash-num">R$ 1.240,00</div><div class="dash-lbl">Saldo disponível</div></div>
-        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
-      </div>
-
-      <div class="task-panel" id="planosPanel" hidden>
-        <h3>Escolha seu plano</h3>
-        <div class="plans-grid">
-          <div class="plan-card">
-            <h3>Básico</h3>
-            <div class="plan-price">R$ 29,90/mês<br><b>R$ 25,90</b>/mês no anual</div>
-            <div class="plan-discount">Economize 13% no anual</div>
-            <div class="btn-row" style="margin-top:0">
-              <button class="btn btn-primary btn-sm plan-assinar" data-plan="Básico" data-desconto="13">Assinar</button>
-              <button class="btn btn-ghost btn-sm plan-saibamais">Saiba mais</button>
-            </div>
-          </div>
-          <div class="plan-card">
-            <span class="plan-ribbon">Mais popular</span>
-            <h3>Plus</h3>
-            <div class="plan-price">R$ 49,90/mês<br><b>R$ 39,90</b>/mês no anual</div>
-            <div class="plan-discount">Economize 20% no anual</div>
-            <div class="btn-row" style="margin-top:0">
-              <button class="btn btn-primary btn-sm plan-assinar" data-plan="Plus" data-desconto="20">Assinar</button>
-              <button class="btn btn-ghost btn-sm plan-saibamais">Saiba mais</button>
-            </div>
-          </div>
-          <div class="plan-card">
-            <h3>Premium</h3>
-            <div class="plan-price">R$ 79,90/mês<br><b>R$ 59,90</b>/mês no anual</div>
-            <div class="plan-discount">Economize 25% no anual</div>
-            <div class="btn-row" style="margin-top:0">
-              <button class="btn btn-primary btn-sm plan-assinar" data-plan="Premium" data-desconto="25">Assinar</button>
-              <button class="btn btn-ghost btn-sm plan-saibamais">Saiba mais</button>
-            </div>
-          </div>
-        </div>
-        <div id="planosSucesso" hidden>
-          <p class="lead" style="margin-top:16px">✅ Plano Premium assinado — era o de maior desconto anual (25%).</p>
-          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarT3">Continuar</button></div>
-        </div>
-      </div>
-      <div class="task-panel" id="genericDecoyT3" hidden>
-        <p class="decoy-msg">Essa opção não é necessária para esta tarefa.</p>
-        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarDecoyT3">Voltar</button></div>
-      </div>
-    </section>
-
-    <!-- TAREFA 4: transferência -->
-    <section class="step-section" data-step="task4">
-      <div class="task-banner">
-        <span class="tag">Tarefa 4 de 6</span>
-        Use o menu <b>Serviços</b> para fazer uma <b>nova transferência</b>.
-        <div class="hint-text" id="hint-task4" hidden>💡 Dica: clique em "Serviços" → "Nova transferência".</div>
-      </div>
-      <div class="app-dashboard">
-        <div class="dash-card"><div class="dash-num">1</div><div class="dash-lbl">Consultas agendadas</div></div>
-        <div class="dash-card"><div class="dash-num">R$ 740,00</div><div class="dash-lbl">Saldo disponível</div></div>
-        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
-      </div>
-
-      <div class="task-panel" id="transferenciaPanel" hidden>
-        <h3>Nova transferência</h3>
-        <div class="field"><label>Buscar destinatário</label><input type="text" id="destSearch" placeholder="Digite um nome"></div>
-        <div class="contact-list" id="contactList"></div>
-        <div class="field" style="margin-top:14px"><label>Valor</label><input type="text" id="valorTransf" placeholder="R$ 0,00"></div>
-        <div class="choice-group">
-          <div class="choice-options" id="quandoGroup">
-            <label class="choice-pill" data-value="hoje">Hoje</label>
-            <label class="choice-pill" data-value="agendar">Agendar para depois</label>
-          </div>
-        </div>
-        <div class="field" id="dataTransfWrap" hidden><label>Data</label><input type="date" id="dataTransferencia"></div>
-        <div class="field-error" id="transfError">Selecione um destinatário e informe um valor válido.</div>
-        <div class="btn-row"><button class="btn btn-primary" id="btnRevisarTransf">Revisar transferência</button></div>
-
-        <div id="transfReview" hidden>
-          <div class="review-card" id="transfReviewContent"></div>
-          <div class="consent-box"><input type="checkbox" id="checkRevisado"><label for="checkRevisado">Confirmo que revisei os dados acima.</label></div>
-          <div class="field-error" id="confirmDecoyMsg">Isso adicionaria um novo destinatário. Use o botão à esquerda para confirmar a transferência.</div>
-          <div class="btn-row">
-            <button class="btn btn-ghost" id="btnEditarTransf">Editar</button>
-            <button class="btn btn-primary" id="btnConfirmarTransf" disabled>Confirmar transferência</button>
-            <button class="btn btn-outline-teal" id="btnConfirmarNovoDest" disabled>Confirmar e adicionar novo destinatário</button>
-          </div>
-        </div>
-        <div id="transfSucesso" hidden>
-          <p class="lead" style="margin-top:14px">✅ Transferência confirmada. Protocolo <span id="protocoloNum"></span>.</p>
-          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarT4">Continuar</button></div>
-        </div>
-      </div>
-
-      <div class="task-panel" id="extratoPanel" hidden>
-        <p class="decoy-msg">Extrato: nenhuma movimentação nos últimos 7 dias.</p>
-        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarExtrato">Voltar</button></div>
-      </div>
-      <div class="task-panel" id="genericDecoyT4" hidden>
-        <p class="decoy-msg">Essa opção não é necessária para esta tarefa.</p>
-        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarDecoyT4">Voltar</button></div>
-      </div>
-    </section>
-
-    <!-- TAREFA 5: phishing -->
-    <section class="step-section" data-step="task5">
-      <div class="task-banner">
-        <span class="tag">Tarefa 5 de 6</span>
-        Abra o ícone de <b>notificações (🔔)</b> no topo e identifique a mensagem que é uma <b>tentativa de golpe</b>, reportando-a. Cuidado: nem toda mensagem urgente é golpe.
-        <div class="hint-text" id="hint-task5" hidden>💡 Dica: clique no sino no canto superior direito.</div>
-      </div>
-      <div class="app-dashboard">
-        <div class="dash-card"><div class="dash-num">1</div><div class="dash-lbl">Consultas agendadas</div></div>
-        <div class="dash-card"><div class="dash-num">R$ 740,00</div><div class="dash-lbl">Saldo disponível</div></div>
-        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
-      </div>
-      <div id="t5Feedback"></div>
-      <div id="t5Sucesso" hidden>
-        <div class="card">
-          <p class="lead" style="margin:0">✅ Mensagem identificada corretamente como tentativa de golpe.</p>
-          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarT5">Continuar</button></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAREFA 6: acessibilidade -->
-    <section class="step-section" data-step="task6">
-      <div class="task-banner">
-        <span class="tag">Tarefa 6 de 6</span>
-        Vá em <b>Minha Conta</b> → <b>Configurações de acessibilidade</b>, ative o alto contraste, aumente o tamanho da fonte e salve.
-        <div class="hint-text" id="hint-task6" hidden>💡 Dica: clique em "Minha Conta" no menu do topo.</div>
-      </div>
-      <div class="app-dashboard">
-        <div class="dash-card"><div class="dash-num">1</div><div class="dash-lbl">Consultas agendadas</div></div>
-        <div class="dash-card"><div class="dash-num">R$ 740,00</div><div class="dash-lbl">Saldo disponível</div></div>
-        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
-      </div>
-
-      <div class="task-panel" id="configPanel" hidden>
-        <h3>Configurações de acessibilidade</h3>
-        <div class="toggle-row"><span>Modo alto contraste</span><div class="toggle-switch" id="contrastToggle"></div></div>
-        <div class="toggle-row"><span>Tamanho da fonte</span>
-          <div class="font-size-control">
-            <button class="font-btn" id="fontMinusSettings">A−</button>
-            <span id="fontStepLabel">Padrão</span>
-            <button class="font-btn" id="fontPlusSettings">A+</button>
-          </div>
-        </div>
-        <div class="btn-row"><button class="btn btn-primary" id="btnSalvarConfig" disabled>Salvar alterações</button></div>
-        <div id="configSucesso" hidden>
-          <p class="lead" style="margin-top:14px">✅ Preferências salvas.</p>
-          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarT6">Continuar</button></div>
-        </div>
-      </div>
-
-      <div class="task-panel" id="dadosPessoaisPanel" hidden>
-        <p class="decoy-msg">Nome, CPF e endereço cadastrados — nenhuma alteração disponível nesta tela.</p>
-        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarDados">Voltar</button></div>
-      </div>
-    </section>
-
-    <section class="step-section" data-step="sus">
-      <div class="card">
-        <span class="eyebrow">Etapa 9 de 9</span>
-        <h2>Últimas perguntas</h2>
-        <div class="likert-q" data-q="1"><p>1. Consegui concluir as tarefas sem ajuda externa.</p><div class="likert-scale"></div><div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div></div>
-        <div class="likert-q" data-q="2"><p>2. Em algum momento me senti perdido(a) ou inseguro(a).</p><div class="likert-scale"></div><div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div></div>
-        <div class="likert-q" data-q="3"><p>3. Em algum momento cliquei em algo achando que era outra coisa.</p><div class="likert-scale"></div><div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div></div>
-        <div class="likert-q" data-q="4"><p>4. Eu usaria um app como este no dia a dia sem dificuldade.</p><div class="likert-scale"></div><div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div></div>
-        <div class="btn-row"><button class="btn btn-primary" id="btnSusSubmit" disabled>Ver resultado</button></div>
-      </div>
-    </section>
-
-    <section class="step-section" data-step="result">
-      <div class="result-badge">
-        <span class="eyebrow">Seu perfil</span>
-        <h2 id="resultTitle">—</h2>
-        <p id="resultDesc">—</p>
-      </div>
-      <div class="card">
-        <div class="stat-row" id="statRow"></div>
-        <p class="lead" style="margin-top:20px">Obrigada por participar! Se quiser ajudar ainda mais a pesquisa, envie este link para alguém de uma geração diferente da sua.</p>
-        <div class="btn-row"><button class="btn btn-ghost" id="btnCopyLink">Copiar link do estudo</button></div>
-      </div>
-    </section>
-
-  </main>
-</div>
-
-<button class="a11y-btn" id="a11yBtn" aria-label="Ajustar tamanho do texto">
-  <span id="a11yMinus">A−</span><span id="a11yPlus">A+</span>
-</button>
-
-<div class="modal-overlay" id="sairModal">
-  <div class="modal-box">
-    <h3>Tem certeza que deseja sair?</h3>
-    <p class="lead">Você ainda está no meio de um atendimento.</p>
-    <div class="btn-row">
-      <button class="btn btn-ghost" id="btnCancelarSair">Cancelar</button>
-      <button class="btn btn-primary" id="btnConfirmarSair">Sair mesmo assim</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="cookieModal">
-  <div class="modal-box">
-    <h3>Este site usa cookies</h3>
-    <p class="fine">Usamos cookies para melhorar sua experiência, personalizar conteúdo e analisar o tráfego. Ao continuar, você concorda com nossa política de privacidade.</p>
-    <div class="btn-row"><button class="btn btn-primary" id="btnAceitarCookies" style="width:100%">Aceitar tudo</button></div>
-    <button class="manage-link" id="btnGerenciarCookies">Gerenciar preferências</button>
-  </div>
-</div>
+<div class="modal" id="logoutModal"><div class="modal-box"><h3>Sair da conta?</h3><p class="lead" style="font-size:13px">Você será desconectado do Vitrine.</p><div class="actions"><button class="btn secondary" id="cancelLogout">Cancelar</button><button class="btn danger" id="confirmLogout">Sair</button></div></div></div>
 
 <script>
-window.dataLayer = window.dataLayer || [];
-function track(event, params){
-  window.dataLayer.push(Object.assign({event:event}, params || {}));
-  console.log('[dataLayer]', event, params || {});
-}
-
-const state = {
-  faixa:null, afinidade:null,
-  dispositivo: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-  t1:{start:0,end:0,decoyClicks:0,errors:0},
-  t2:{start:0,end:0,decoyClicks:0},
-  t3:{start:0,end:0,decoyClicks:0},
-  t4:{start:0,end:0,decoyClicks:0,errors:0,searchUsed:false,wrongConfirmClicks:0},
-  t5:{start:0,end:0,falsePositives:0},
-  t6:{start:0,end:0,foundVia:null},
-  sus:[null,null,null,null],
-  fontStep:0,
-  highContrast:false,
-  a11yUsedEarly:false,
-  selectedContact:null,
-  cookieChoice:null
+window.dataLayer=window.dataLayer||[];
+function track(event,params={}){window.dataLayer.push({event,...params});console.log('[dataLayer]',event,params)}
+const state={faixa:null,afinidade:null,step:'welcome',logged:false,newPassword:null,selectedContact:null,cart:null,font:16,recoverySent:false,pixPending:null,
+ d1:{start:0,end:0,errors:0,recovery:false,skipped:false},d2:{start:0,end:0,decoys:0,fontFound:false,skipped:false},d3:{start:0,end:0,filters:false,wrongProduct:0,skipped:false},d4:{start:0,end:0,errors:0,search:false,skipped:false},d5:{start:0,end:0,falsePositive:0,skipped:false},answers:[]};
+const steps=['welcome','profile','d1','d2','d3','d4','d5','sus','result'];
+const labels={welcome:'Início',profile:'Perfil',d1:'Desafio 1',d2:'Desafio 2',d3:'Desafio 3',d4:'Desafio 4',d5:'Desafio 5',sus:'Avaliação',result:'Concluído'};
+const tasks={
+ d1:'Acesse a conta da Vitrine. Você não sabe a senha, então recupere o acesso usando o e-mail cadastrado.',
+ d2:'Entre no aplicativo Vitrine. Atualize seu telefone, encontre uma forma de aumentar o tamanho do texto e depois saia da conta.',
+ d3:'Na tela inicial do celular, abra o aplicativo Vitrine. Encontre uma cadeira entre R$ 400 e R$ 700, disponível em estoque, e gere o pagamento por Pix para essa compra.',
+ d4:'Na tela inicial do celular, abra o aplicativo Banco e use o Pix para pagar o pedido da Vitrine que está aguardando pagamento.',
+ d5:'Na tela inicial do celular, abra o aplicativo E-mail. Analise as mensagens recebidas, encontre uma mensagem suspeita e marque-a como tal.'
 };
-
-const steps = ['welcome','profile','task1','task2','task3','task4','task5','task6','sus','result'];
-const stepLabels = {welcome:'Início',profile:'Perfil',task1:'Tarefa 1',task2:'Tarefa 2',task3:'Tarefa 3',task4:'Tarefa 4',task5:'Tarefa 5',task6:'Tarefa 6',sus:'Avaliação',result:'Resultado'};
-let currentIndex = 0;
-let hintTimer = null;
-
-function renderStepper(){
-  const trackEl = document.getElementById('stepperTrack');
-  const label = document.getElementById('stepperLabel');
-  trackEl.innerHTML = '';
-  steps.forEach((s,i)=>{
-    const seg = document.createElement('div');
-    seg.className = 'stepper-seg' + (i < currentIndex ? ' done' : '') + (i === currentIndex ? ' active' : '');
-    trackEl.appendChild(seg);
-  });
-  label.innerHTML = 'Etapa ' + (currentIndex+1) + ' de ' + steps.length + ' · <b>' + stepLabels[steps[currentIndex]] + '</b>';
-}
-
-const taskSteps = ['task1','task2','task3','task4','task5','task6'];
-
-function goTo(name){
-  document.querySelectorAll('.step-section').forEach(el=>el.classList.remove('active'));
-  document.querySelector('[data-step="'+name+'"]').classList.add('active');
-  currentIndex = steps.indexOf(name);
-  renderStepper();
-  window.scrollTo({top:0, behavior:'smooth'});
-  closeAllDropdowns();
-  document.getElementById('siteHeader').style.display = taskSteps.includes(name) ? 'flex' : 'none';
-  track('step_view', {step_name:name, faixa_etaria:state.faixa, afinidade_tecnologica:state.afinidade, dispositivo:state.dispositivo});
-
-  if(hintTimer) clearTimeout(hintTimer);
-  if(taskSteps.includes(name)){
-    const hintEl = document.getElementById('hint-'+name);
-    if(hintEl){
-      hintTimer = setTimeout(()=>{
-        hintEl.hidden = false;
-        track('hint_shown', {step_name:name, faixa_etaria:state.faixa});
-      }, 18000);
-    }
-  }
-  if(name==='task1'){
-    state.t1.start = Date.now();
-    if(!state.cookieChoice) document.getElementById('cookieModal').classList.add('open');
-  }
-  if(name==='task2') state.t2.start = Date.now();
-  if(name==='task3') state.t3.start = Date.now();
-  if(name==='task4') state.t4.start = Date.now();
-  if(name==='task5') state.t5.start = Date.now();
-  if(name==='task6') state.t6.start = Date.now();
-}
-
-/* -------- cookie modal -------- */
-document.getElementById('btnAceitarCookies').addEventListener('click', ()=>{
-  state.cookieChoice = 'aceitar_tudo';
-  document.getElementById('cookieModal').classList.remove('open');
-  track('cookie_consent', {escolha:'aceitar_tudo', faixa_etaria:state.faixa});
-});
-document.getElementById('btnGerenciarCookies').addEventListener('click', ()=>{
-  state.cookieChoice = 'gerenciar';
-  document.getElementById('cookieModal').classList.remove('open');
-  track('cookie_consent', {escolha:'gerenciar_preferencias', faixa_etaria:state.faixa});
-});
-
-/* -------- 0. consentimento -------- */
-const consentCheck = document.getElementById('consentCheck');
-const btnStart = document.getElementById('btnStart');
-consentCheck.addEventListener('change', ()=>{ btnStart.disabled = !consentCheck.checked; });
-btnStart.addEventListener('click', ()=>{ track('consent_given', {}); goTo('profile'); });
-
-/* -------- 1. perfil -------- */
-document.querySelectorAll('.choice-options[data-group]').forEach(group=>{
-  const key = group.dataset.group;
-  group.querySelectorAll('.choice-pill').forEach(pill=>{
-    pill.addEventListener('click', ()=>{
-      group.querySelectorAll('.choice-pill').forEach(p=>p.classList.remove('selected'));
-      pill.classList.add('selected');
-      state[key] = pill.dataset.value;
-      document.getElementById('btnProfileNext').disabled = !(state.faixa && state.afinidade);
-    });
-  });
-});
-document.getElementById('btnProfileNext').addEventListener('click', ()=>{
-  track('profile_submitted', {faixa_etaria:state.faixa, afinidade_tecnologica:state.afinidade, dispositivo:state.dispositivo});
-  goTo('task1');
-});
-
-/* -------- navegação: dropdowns -------- */
-function closeAllDropdowns(){
-  document.querySelectorAll('.nav-dropdown, .notif-panel, .suggest-box').forEach(d=>d.classList.remove('open'));
-}
-document.querySelectorAll('.nav-trigger').forEach(btn=>{
-  btn.addEventListener('click', (e)=>{
-    e.stopPropagation();
-    const dd = document.getElementById('dd-'+btn.dataset.dd);
-    const wasOpen = dd.classList.contains('open');
-    closeAllDropdowns();
-    if(!wasOpen) dd.classList.add('open');
-  });
-});
-document.getElementById('bellBtn').addEventListener('click', (e)=>{
-  e.stopPropagation();
-  const p = document.getElementById('notifPanel');
-  const wasOpen = p.classList.contains('open');
-  closeAllDropdowns();
-  if(!wasOpen) p.classList.add('open');
-});
-document.addEventListener('click', closeAllDropdowns);
-
-/* -------- itens de navegação (alvo x isca) -------- */
-const navTargets = {task1:'agendar-consulta', task2:'comprar-produto', task3:'ver-planos', task4:'nova-transferencia', task6:'config-acessibilidade'};
-document.querySelectorAll('.nav-item').forEach(item=>{
-  item.addEventListener('click', (e)=>{
-    e.stopPropagation();
-    const key = item.dataset.key;
-    const stepName = steps[currentIndex];
-    track('nav_item_click', {item:key, step_atual:stepName});
-    if(key === 'sair'){ document.getElementById('sairModal').classList.add('open'); closeAllDropdowns(); return; }
-    if(navTargets[stepName] === key){
-      revealTarget(key, stepName);
-    } else {
-      handleDecoy(key, stepName);
-    }
-    closeAllDropdowns();
-  });
-});
-document.getElementById('btnCancelarSair').addEventListener('click', ()=>{document.getElementById('sairModal').classList.remove('open'); track('decoy_click',{item:'sair-cancelar'});});
-document.getElementById('btnConfirmarSair').addEventListener('click', ()=>{document.getElementById('sairModal').classList.remove('open'); track('decoy_click',{item:'sair-confirmado'});});
-
-function hideAllPanelsIn(stepName){
-  document.querySelector('[data-step="'+stepName+'"]').querySelectorAll('.task-panel').forEach(p=>p.hidden=true);
-}
-function revealTarget(key, stepName){
-  hideAllPanelsIn(stepName);
-  if(key==='agendar-consulta'){ document.getElementById('agendarPanel').hidden=false; buildTimePills(); }
-  if(key==='comprar-produto'){ document.getElementById('catalogoPanel').hidden=false; renderProducts(); }
-  if(key==='ver-planos'){ document.getElementById('planosPanel').hidden=false; }
-  if(key==='nova-transferencia'){ document.getElementById('transferenciaPanel').hidden=false; buildContactList(''); }
-  if(key==='config-acessibilidade'){
-    document.getElementById('configPanel').hidden=false;
-    if(!state.t6.foundVia) state.t6.foundVia='menu';
-    syncConfigUI();
-  }
-}
-function handleDecoy(key, stepName){
-  hideAllPanelsIn(stepName);
-  const map = {
-    task1:{state:state.t1, panel:{'reagendar-consulta':'reagendarPanel'}},
-    task2:{state:state.t2, panel:{'ver-extrato':'extratoPanel2','agendar-consulta':'agendarPanel2Decoy','nova-transferencia':'transfPanel2Decoy'}},
-    task3:{state:state.t3, panel:{}},
-    task4:{state:state.t4, panel:{'ver-extrato':'extratoPanel'}}
+function svg(name){
+  const s={
+    home:`<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>`,
+    bag:`<path d="M5 8h14l1 13H4z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>`,
+    user:`<circle cx="12" cy="8" r="3"/><path d="M5 21a7 7 0 0 1 14 0"/>`,
+    arrow:`<path d="M19 12H5m7-7-7 7 7 7"/>`,
+    pix:`<path d="M7 7l5-5 5 5-5 5zM7 17l5-5 5 5-5 5zM2 12l5-5 5 5-5 5zM12 12l5-5 5 5-5 5z"/>`
   };
-  if(map[stepName]){
-    map[stepName].state.decoyClicks++;
-    const panelId = map[stepName].panel[key];
-    if(panelId){ document.getElementById(panelId).hidden=false; }
-    else { const gd = document.getElementById('genericDecoyT3') || document.getElementById('genericDecoyT4'); if(document.querySelector('[data-step="'+stepName+'"] #genericDecoyT3')) document.getElementById('genericDecoyT3').hidden=false; if(document.querySelector('[data-step="'+stepName+'"] #genericDecoyT4')) document.getElementById('genericDecoyT4').hidden=false; }
-  } else if(stepName==='task6' && key==='dados-pessoais'){
-    document.getElementById('dadosPessoaisPanel').hidden=false;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${s[name]||''}</svg>`;
+}
+function showStep(name){
+  document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));
+  const target=steps.includes(name)&&['d1','d2','d3','d4','d5'].includes(name)?'phone-flow':name;
+  document.querySelector('[data-step="'+target+'"]').classList.add('active');
+  state.step=name;
+  document.body.classList.toggle('study-active',['d1','d2','d3','d4','d5'].includes(name));
+  const i=steps.indexOf(name);
+  document.getElementById('progressBar').style.width=(i/(steps.length-1)*100)+'%';
+  document.getElementById('progressLabel').textContent='Etapa '+(i+1)+' de '+steps.length+' · '+labels[name];
+  track('step_view',{step_name:name,faixa_etaria:state.faixa,afinidade_tecnologica:state.afinidade});
+  if(['d1','d2','d3','d4','d5'].includes(name)){
+    const taskNumber=Number(name.slice(1));
+    document.getElementById('taskBox').innerHTML=`<div class="task-top"><small>DESAFIO ${taskNumber} DE 5</small><strong>${labels[name]}</strong></div><p>${tasks[name]}</p><div class="task-actions"><button class="btn secondary skip-btn" id="skipTask">Pular desafio</button></div>`;
+    document.getElementById('skipTask').onclick=()=>skipTask(name);
+    openHome();
+    state[name].start=Date.now();
   }
-  track('decoy_click', {item:key, step_atual:stepName});
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-document.getElementById('btnVoltarReagendar').addEventListener('click', ()=>{document.getElementById('reagendarPanel').hidden=true;});
-document.getElementById('btnVoltarExtrato2').addEventListener('click', ()=>{document.getElementById('extratoPanel2').hidden=true;});
-document.getElementById('btnVoltarAgendarDecoy').addEventListener('click', ()=>{document.getElementById('agendarPanel2Decoy').hidden=true;});
-document.getElementById('btnVoltarTransfDecoy').addEventListener('click', ()=>{document.getElementById('transfPanel2Decoy').hidden=true;});
-document.getElementById('btnVoltarDecoyT3').addEventListener('click', ()=>{document.getElementById('genericDecoyT3').hidden=true;});
-document.getElementById('btnVoltarExtrato').addEventListener('click', ()=>{document.getElementById('extratoPanel').hidden=true;});
-document.getElementById('btnVoltarDecoyT4').addEventListener('click', ()=>{document.getElementById('genericDecoyT4').hidden=true;});
-document.getElementById('btnVoltarDados').addEventListener('click', ()=>{document.getElementById('dadosPessoaisPanel').hidden=true;});
+function nextChallenge(key){const order=['d1','d2','d3','d4','d5'];const i=order.indexOf(key);return order[i+1]||'sus'}
+function skipTask(key){state[key].skipped=true;state[key].end=Date.now();track('task_skipped',{task:key,tempo_segundos:((state[key].end-state[key].start)/1000).toFixed(1),faixa_etaria:state.faixa});showStep(nextChallenge(key))}
 
-/* -------- tarefa 1: agendamento -------- */
-function buildTimePills(){
-  const wrap = document.getElementById('timePills');
-  if(wrap.children.length) return;
-  const slots = ['09:00','09:30','10:00','10:30','14:00','14:30','15:00'];
-  const disabledIdx = [1,4];
-  slots.forEach((s,i)=>{
-    const el = document.createElement('div');
-    el.className = 'time-pill' + (disabledIdx.includes(i) ? ' disabled' : '');
-    el.textContent = s + (disabledIdx.includes(i) ? ' (indisponível)' : '');
-    if(!disabledIdx.includes(i)){
-      el.addEventListener('click', ()=>{
-        wrap.querySelectorAll('.time-pill').forEach(p=>p.classList.remove('selected'));
-        el.classList.add('selected');
-        el.dataset.selectedTime = s;
-      });
-    }
-    wrap.appendChild(el);
-  });
+function setHomeView(id){document.querySelectorAll('#homeView,#vitrineView,#bancoView,#emailView,#inertView').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function openHome(){setHomeView('homeView')}
+document.querySelectorAll('[data-home]').forEach(x=>x.addEventListener('click',openHome));
+function finishTask(key,extra={}){state[key].end=Date.now();track('task_complete',{task:key,tempo_segundos:((state[key].end-state[key].start)/1000).toFixed(1),faixa_etaria:state.faixa,...extra})}
+
+/* profile */
+document.getElementById('consent').addEventListener('change',e=>document.getElementById('start').disabled=!e.target.checked);document.getElementById('start').onclick=()=>showStep('profile');
+document.querySelectorAll('.choices').forEach(group=>group.querySelectorAll('.choice').forEach(btn=>btn.onclick=()=>{group.querySelectorAll('.choice').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');state[group.dataset.key]=btn.dataset.value;document.getElementById('profileNext').disabled=!(state.faixa&&state.afinidade)}));document.getElementById('profileNext').onclick=()=>{track('profile_submitted',{faixa_etaria:state.faixa,afinidade_tecnologica:state.afinidade});showStep('d1')}
+
+/* ---------- VITRINE TEMPLATES ---------- */
+function renderOrbitaLogin(){document.getElementById('vitrineView').innerHTML=`<div class="app-head"><button class="back" data-home>‹</button><div class="brand-lockup" style="margin:0"><span class="brand-mark">V</span><strong>Vitrine</strong></div></div><div class="app-content"><div class="brand-lockup"><span class="brand-mark">V</span><div><strong>Olá, Ana</strong><div class="fine">Acesse sua conta para continuar</div></div></div><div id="loginArea"><div class="field"><label>E-mail</label><input id="loginEmail" value="ana.silva@email.com"></div><div class="field"><label>Senha</label><div class="password"><input id="loginPass" type="password"><button class="eye" id="togglePass">Mostrar</button></div></div><div class="error" id="loginErr">A senha informada não confere. Você pode tentar novamente ou recuperar o acesso.</div><div class="actions"><button class="btn primary" id="loginBtn" style="width:100%">Entrar</button></div><button class="link" id="forgot">Esqueci minha senha</button></div><div id="recoveryArea" hidden></div></div>`;
+document.getElementById('loginBtn').onclick=()=>{if(state.newPassword&&document.getElementById('loginPass').value===state.newPassword){state.logged=true;
+  if(state.step==='d1'){finishTask('d1',{erros:state.d1.errors,usou_recuperacao:state.d1.recovery});renderOrbitaHome();showStep('d2');}
+  else if(state.step==='d3'){track('vitrine_login',{task:'d3',faixa_etaria:state.faixa});renderOrbitaHome();}
+  else {renderOrbitaHome();}
+}else{state.d1.errors++;document.getElementById('loginErr').classList.add('show');track('form_error',{task:'login',faixa_etaria:state.faixa})}};
+document.getElementById('togglePass').onclick=()=>{const i=document.getElementById('loginPass');i.type=i.type==='password'?'text':'password'};document.getElementById('forgot').onclick=showRecovery;document.querySelectorAll('[data-home]').forEach(x=>x.onclick=openHome)}
+function showRecovery(){
+  state.d1.recovery=true;
+  track('nav_item_click',{item:'esqueci-senha',step_atual:'d1'});
+  const area=document.getElementById('recoveryArea');
+  document.getElementById('loginArea').hidden=true;
+  area.hidden=false;
+  if(state.recoverySent){renderRecoveryCode();return;}
+  area.innerHTML=`<h3>Recuperar senha</h3><p class="fine">Informe o e-mail cadastrado para receber um código de verificação.</p><div class="field"><label>E-mail</label><input id="recEmail" value="ana.silva@email.com"></div><button class="btn primary" id="sendCode" style="width:100%">Enviar código</button>`;
+  document.getElementById('sendCode').onclick=()=>{state.recoverySent=true;renderRecoveryCode()};
 }
-document.getElementById('btnRevisarAgendamento').addEventListener('click', ()=>{
-  const tipo = document.getElementById('tipoAtendimento').value;
-  const unidade = document.getElementById('unidadeAtendimento').value;
-  const data = document.getElementById('dataAgendamento').value;
-  const horarioEl = document.querySelector('#timePills .time-pill.selected');
-  const errBox = document.getElementById('agendarError');
-  if(!tipo || !unidade || !data || !horarioEl){
-    errBox.classList.add('show');
-    state.t1.errors++;
-    track('form_error', {task:'agendamento', faixa_etaria:state.faixa});
-    return;
-  }
-  errBox.classList.remove('show');
-  const horario = horarioEl.dataset.selectedTime;
-  document.getElementById('agendarReviewContent').innerHTML =
-    '<div class="rlabel">Tipo</div><div class="rvalue">'+tipo+'</div>'+
-    '<div class="rlabel">Unidade</div><div class="rvalue">'+unidade+'</div>'+
-    '<div class="rlabel">Data e horário</div><div class="rvalue">'+data+' às '+horario+'</div>';
-  document.getElementById('agendarReview').hidden = false;
-});
-document.getElementById('btnEditarAgendamento').addEventListener('click', ()=>{document.getElementById('agendarReview').hidden=true;});
-document.getElementById('btnConfirmarAgendamento').addEventListener('click', ()=>{
-  state.t1.end = Date.now();
-  const seconds = ((state.t1.end - state.t1.start)/1000).toFixed(1);
-  track('task_complete', {task:'agendamento', tempo_segundos:seconds, tentativas_isca:state.t1.decoyClicks, erros:state.t1.errors, faixa_etaria:state.faixa});
-  document.getElementById('agendarReview').hidden = true;
-  document.getElementById('agendarSucesso').hidden = false;
-});
-document.getElementById('btnContinuarT1').addEventListener('click', ()=>goTo('task2'));
-
-/* -------- tarefa 2: catálogo -------- */
-const products = [
-  {name:'Cadeira Ipê', price:890},
-  {name:'Cadeira Ipê Slim', price:690},
-  {name:'Cadeira Ipê Premium', price:1290},
-  {name:'Banco Cumaru', price:450},
-  {name:'Mesa Angico', price:2100},
-  {name:'Luminária Peroba', price:320},
-  {name:'Estante Jatobá', price:1780},
-  {name:'Aparador Sucupira', price:990},
-  {name:'Poltrona Vinhático', price:1450},
-  {name:'Tapete Baru', price:610}
-];
-function renderProducts(){
-  const sort = document.getElementById('prodSort').value;
-  let list = products.slice();
-  if(sort==='menor') list.sort((a,b)=>a.price-b.price);
-  if(sort==='maior') list.sort((a,b)=>b.price-a.price);
-  const grid = document.getElementById('productGrid');
-  grid.innerHTML = '';
-  list.forEach(p=>{
-    const el = document.createElement('div');
-    el.className = 'product-card';
-    el.innerHTML = '<div class="thumb"></div><div class="pname">'+p.name+'</div><div class="pprice">R$ '+p.price.toLocaleString('pt-BR')+',00</div>'+
-      '<div class="pbtns"><button class="btn btn-primary btn-sm add-cart" data-name="'+p.name+'">Adicionar ao carrinho</button><button class="btn btn-ghost btn-sm ver-detalhes">Ver detalhes</button></div>';
-    grid.appendChild(el);
-  });
-  grid.querySelectorAll('.add-cart').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      if(btn.dataset.name === 'Cadeira Ipê'){
-        state.t2.end = Date.now();
-        const seconds = ((state.t2.end - state.t2.start)/1000).toFixed(1);
-        track('task_complete', {task:'catalogo', tempo_segundos:seconds, tentativas_isca:state.t2.decoyClicks, faixa_etaria:state.faixa});
-        document.getElementById('catalogoSucesso').hidden = false;
-      } else {
-        state.t2.decoyClicks++;
-        track('wrong_click', {task:'catalogo', alvo_clicado:btn.dataset.name, faixa_etaria:state.faixa});
-      }
-    });
-  });
-  grid.querySelectorAll('.ver-detalhes').forEach(btn=>{
-    btn.addEventListener('click', ()=>{ track('ambiguous_cta_click', {task:'catalogo', cta:'ver-detalhes', faixa_etaria:state.faixa}); });
-  });
+function renderRecoveryCode(){
+  const area=document.getElementById('recoveryArea');
+  area.innerHTML=`<div class="success"><b>Código enviado para seu e-mail.</b><br><span style="font-size:12px">Volte para a tela inicial do celular e abra o aplicativo <b>E-mail</b> para consultar a mensagem.</span></div><div class="field" style="margin-top:13px"><label>Código de verificação</label><input id="code" inputmode="numeric" placeholder="0000"></div><div class="error" id="codeErr">Código incorreto.</div><button class="btn primary" id="confirmCode" style="width:100%">Confirmar código</button>`;
+  document.getElementById('confirmCode').onclick=()=>{
+    if(document.getElementById('code').value==='4821'){
+      area.innerHTML=`<h3>Crie uma nova senha</h3><div class="field"><label>Nova senha</label><input id="new1" type="password"></div><div class="field"><label>Confirmar nova senha</label><input id="new2" type="password"></div><div class="error" id="newErr">Use pelo menos 6 caracteres e repita a mesma senha.</div><button class="btn primary" id="saveNew" style="width:100%">Redefinir senha</button>`;
+      document.getElementById('saveNew').onclick=()=>{
+        const a=document.getElementById('new1').value,b=document.getElementById('new2').value;
+        if(a.length>=6&&a===b){
+          state.newPassword=a;
+          area.innerHTML='<div class="success"><b>Senha redefinida.</b><br><span style="font-size:12px">Agora volte ao login.</span></div><button class="btn primary" id="backLogin" style="width:100%;margin-top:12px">Voltar para login</button>';
+          document.getElementById('backLogin').onclick=renderOrbitaLogin;
+        }else document.getElementById('newErr').classList.add('show');
+      };
+    }else document.getElementById('codeErr').classList.add('show');
+  };
 }
-document.getElementById('prodSort').addEventListener('change', renderProducts);
-document.getElementById('prodSearch').addEventListener('input', (e)=>{
-  const q = e.target.value.toLowerCase();
-  const box = document.getElementById('prodSuggest');
-  if(!q){ box.classList.remove('open'); return; }
-  const matches = products.filter(p=>p.name.toLowerCase().includes(q)).slice(0,4);
-  box.innerHTML = matches.map(m=>'<div class="suggest-item" data-name="'+m.name+'">'+m.name+'</div>').join('');
-  box.classList.toggle('open', matches.length>0);
-  box.querySelectorAll('.suggest-item').forEach(item=>{
-    item.addEventListener('click', ()=>{
-      track('search_used', {task:'catalogo', termo_selecionado:item.dataset.name, faixa_etaria:state.faixa});
-      document.getElementById('prodSearch').value = item.dataset.name;
-      box.classList.remove('open');
-    });
-  });
-});
 
-/* -------- tarefa 3: planos -------- */
-document.querySelectorAll('.plan-assinar').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    if(btn.dataset.plan === 'Premium'){
-      state.t3.end = Date.now();
-      const seconds = ((state.t3.end - state.t3.start)/1000).toFixed(1);
-      track('task_complete', {task:'planos', tempo_segundos:seconds, tentativas_isca:state.t3.decoyClicks, faixa_etaria:state.faixa});
-      document.getElementById('planosSucesso').hidden = false;
-    } else {
-      state.t3.decoyClicks++;
-      track('wrong_click', {task:'planos', plano_clicado:btn.dataset.plan, faixa_etaria:state.faixa});
-    }
-  });
-});
-document.querySelectorAll('.plan-saibamais').forEach(btn=>{
-  btn.addEventListener('click', ()=>{ track('ambiguous_cta_click', {task:'planos', cta:'saiba-mais', faixa_etaria:state.faixa}); });
-});
-document.getElementById('btnContinuarT3').addEventListener('click', ()=>goTo('task4'));
-document.getElementById('btnContinuarT2').addEventListener('click', ()=>goTo('task3'));
-
-/* -------- tarefa 4: transferência -------- */
-const contacts = ['Marcos Aurélio','Juliana Prado','Beatriz Nunes','Carlos Eduardo','Fernanda Lima'];
-function buildContactList(filter){
-  const list = document.getElementById('contactList');
-  list.innerHTML = '';
-  contacts.filter(c=>c.toLowerCase().includes(filter.toLowerCase())).forEach(c=>{
-    const el = document.createElement('div');
-    el.className = 'contact-item' + (state.selectedContact===c ? ' selected' : '');
-    el.textContent = c;
-    el.addEventListener('click', ()=>{ state.selectedContact = c; buildContactList(document.getElementById('destSearch').value); });
-    list.appendChild(el);
-  });
+function renderOrbitaHome(){document.getElementById('vitrineView').innerHTML=`<div class="app-head"><span class="brand-mark" style="width:34px;height:34px;font-size:17px">V</span><strong>Vitrine</strong><span style="margin-left:auto;font-size:12px;color:#6f7774">Olá, Ana</span></div><div class="app-content"><div id="storeHome"><div class="store-hero"><div class="store-logo"><span class="store-logo-mark">V</span><div><b>Vitrine</b><div class="fine">Compras para sua casa</div></div></div><strong>O que você está procurando?</strong><span class="fine">Encontre produtos, compare preços e compre com segurança.</span></div><div class="category-row"><button class="category">Todos</button><button class="category">Móveis</button><button class="category">Casa</button><button class="category">Tecnologia</button></div><div style="display:flex;justify-content:space-between;align-items:center;margin:4px 0 9px"><b>Ofertas para você</b><span class="fine">Ver tudo</span></div><div class="products"><div class="product"><div class="product-img">${productArt('Cadeira Ipê')}</div><strong>Cadeira Ipê</strong><small>Entrega grátis</small><div class="price-tag">R$ 650,00</div></div><div class="product"><div class="product-img">${productArt('Cadeira Slim')}</div><strong>Cadeira Slim</strong><small>Em estoque</small><div class="price-tag">R$ 480,00</div></div></div><div style="margin-top:14px;background:#f5f7fa;border-radius:12px;padding:12px"><b style="font-size:13px">Compra segura</b><p class="fine" style="margin:3px 0 0">Você escolhe como pagar somente no final da compra.</p></div></div><div id="storeShop" hidden></div><div id="accountArea" hidden></div></div><div class="app-nav"><button class="navbtn active" data-o="home">${svg('home')}Início</button><button class="navbtn" data-o="shop">${svg('bag')}Loja</button><button class="navbtn" data-o="account">${svg('user')}Conta</button></div>`;document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>{const t=b.dataset.o;if(t==='shop'&&state.step==='d3')openStore();else if(t==='account'&&state.step==='d2')openAccount();else if(t==='home'){document.getElementById('storeHome').hidden=false;document.getElementById('storeShop').hidden=true;document.getElementById('accountArea').hidden=true;setNav('home')}else{if(state[state.step]&&'decoys' in state[state.step])state[state.step].decoys++;track('decoy_click',{item:'aba-'+t,step_atual:state.step})}});document.querySelectorAll('[data-home]').forEach(x=>x.onclick=openHome)}
+function setNav(t){document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.o===t))}
+function openStore(){setNav('shop');document.getElementById('storeHome').hidden=true;document.getElementById('accountArea').hidden=true;document.getElementById('storeShop').hidden=false;renderStore()}
+const products=[{name:'Cadeira Ipê',price:650,stock:true},{name:'Cadeira Slim',price:480,stock:true},{name:'Cadeira Premium',price:899,stock:true},{name:'Banco Cumaru',price:450,stock:true},{name:'Aparador Sucupira',price:990,stock:false},{name:'Mesa Angico',price:2100,stock:true}];
+function renderStore(){document.getElementById('storeShop').innerHTML=`<div class="store-tools"><input class="search" placeholder="Buscar produto"><button class="filter-button" id="filterBtn">Filtrar</button></div><div class="filter-panel" id="filterPanel"><div class="filter-title">Filtrar produtos</div><div class="filter-grid"><label class="check"><input type="checkbox" id="catFurniture"> Móveis</label><label class="check"><input type="checkbox" id="stock"> Em estoque</label></div><div style="margin-top:10px;font-size:11px;font-weight:700">Preço</div><div class="price"><input id="min" placeholder="Mínimo"><input id="max" placeholder="Máximo"></div><button class="btn primary apply-filter" id="applyFilter">Aplicar filtros</button></div><div class="chips" id="chips"></div><div class="products" id="products"></div>`;document.getElementById('filterBtn').onclick=()=>document.getElementById('filterPanel').classList.toggle('open');document.getElementById('applyFilter').onclick=()=>{state.d3.filters=true;renderProducts();document.getElementById('filterPanel').classList.remove('open');track('filter_applied',{task:'compra',faixa_etaria:state.faixa})};renderProducts()}
+function productArt(name){const chair=name.toLowerCase().includes('cadeira');const slim=name.toLowerCase().includes('slim');if(chair)return `<svg viewBox="0 0 120 100" fill="none" aria-hidden="true"><path d="M34 18h48v34H34z" fill="${slim?'#d8e2e8':'#b9c8bd'}"/><path d="M38 52h44l9 35H29l9-35z" fill="${slim?'#9aaebb':'#718477'}"/><path d="M45 87v8M75 87v8M35 87v8M85 87v8" stroke="#35403b" stroke-width="5" stroke-linecap="round"/><path d="M40 25h36" stroke="#fff" stroke-width="3" opacity=".65"/></svg>`;return `<svg viewBox="0 0 120 100" fill="none" aria-hidden="true"><path d="M25 67h70v10H25z" fill="#a9b4b0"/><path d="M34 40h52v27H34z" fill="#d7dfdc"/><path d="M40 77v16M80 77v16" stroke="#45514c" stroke-width="5" stroke-linecap="round"/><path d="M40 45h40" stroke="#fff" stroke-width="3" opacity=".7"/></svg>`} 
+function renderProducts(){const min=parseFloat(document.getElementById('min')?.value)||0,max=parseFloat(document.getElementById('max')?.value)||Infinity,only=document.getElementById('stock')?.checked;const q=document.querySelector('.search')?.value.toLowerCase()||'';const arr=products.filter(p=>p.price>=min&&p.price<=max&&(!only||p.stock)&&p.name.toLowerCase().includes(q));document.getElementById('products').innerHTML=arr.map(p=>`<div class="product ${p.name!=='Cadeira Ipê'?'wrong':''}"><div class="product-img">${productArt(p.name)}</div><strong>${p.name}</strong><small>${p.stock?'Em estoque':'Indisponível'}</small><div class="price-tag">R$ ${p.price.toFixed(2).replace('.',',')}</div><button class="mini" data-product="${p.name}">${p.stock?'Ver produto':'Indisponível'}</button></div>`).join('')||'<p class="fine">Nenhum produto encontrado.</p>';document.querySelectorAll('[data-product]').forEach(b=>b.onclick=()=>{const p=products.find(x=>x.name===b.dataset.product);if(p.name!=='Cadeira Ipê'){state.d3.wrongProduct++;track('wrong_product',{produto:p.name,faixa_etaria:state.faixa});return}state.cart=p;renderCheckout()});document.querySelector('.search')?.addEventListener('input',renderProducts)}
+function renderCheckout(){
+  document.getElementById('storeShop').innerHTML=`<div class="checkout-card"><small class="fine">Resumo da compra</small><div style="display:flex;gap:10px;align-items:center;margin-top:8px"><div class="product-img" style="width:78px;height:68px!important;flex:none">${productArt(state.cart.name)}</div><div><strong>${state.cart.name}</strong><small>1 unidade · Entrega grátis</small><div class="price-tag">R$ ${state.cart.price.toFixed(2).replace('.',',')}</div></div></div></div><h3>Pagamento</h3><p class="fine">Escolha Pix para gerar o código de pagamento. O pagamento será feito no aplicativo do banco em um próximo desafio.</p><div class="payment-list"><label class="payment selected"><input type="radio" checked disabled> Pix</label></div><button class="btn primary" id="generatePix" style="width:100%">Gerar código Pix</button>`;
+  document.getElementById('generatePix').onclick=()=>{
+    state.pixPending={product:state.cart.name,price:state.cart.price,code:'00020126580014BR.GOV.BCB.PIX0136vitrine-pedido-3381-'+Date.now()};
+    finishTask('d3',{filtros_aplicados:state.d3.filters,produto_errado:state.d3.wrongProduct});
+    document.getElementById('storeShop').innerHTML=`<div class="success"><b>Pix gerado</b><br><span style="font-size:12px">Agora o pedido está aguardando pagamento.</span></div><div class="pix-payment-card"><div class="mock-qr" aria-label="QR Code Pix">${mockQr()}</div><b>${state.cart.name}</b><div class="price-tag">R$ ${state.cart.price.toFixed(2).replace('.',',')}</div><p class="fine">Abra o aplicativo Banco no próximo desafio para pagar este pedido.</p><details><summary>Pix copia e cola</summary><textarea readonly>${state.pixPending.code}</textarea></details></div><button class="btn primary" id="nextD4" style="width:100%;margin-top:12px">Continuar</button>`;
+    document.getElementById('nextD4').onclick=()=>showStep('d4');
+  };
 }
-document.getElementById('destSearch').addEventListener('input', (e)=>{
-  if(!state.t4.searchUsed){ state.t4.searchUsed = true; track('search_used', {task:'transferencia', faixa_etaria:state.faixa}); }
-  buildContactList(e.target.value);
-});
-document.getElementById('valorTransf').addEventListener('input', (e)=>{
-  let v = e.target.value.replace(/\D/g,'');
-  v = (parseInt(v||'0',10)/100).toFixed(2);
-  e.target.value = 'R$ ' + v.replace('.',',');
-});
-document.querySelectorAll('#quandoGroup .choice-pill').forEach(pill=>{
-  pill.addEventListener('click', ()=>{
-    document.querySelectorAll('#quandoGroup .choice-pill').forEach(p=>p.classList.remove('selected'));
-    pill.classList.add('selected');
-    document.getElementById('dataTransfWrap').hidden = pill.dataset.value !== 'agendar';
-  });
-});
-document.getElementById('btnRevisarTransf').addEventListener('click', ()=>{
-  const valorRaw = document.getElementById('valorTransf').value.replace(/\D/g,'');
-  const errBox = document.getElementById('transfError');
-  if(!state.selectedContact || !valorRaw || parseInt(valorRaw,10)===0){
-    errBox.classList.add('show');
-    state.t4.errors++;
-    track('form_error', {task:'transferencia', faixa_etaria:state.faixa});
-    return;
-  }
-  errBox.classList.remove('show');
-  const quandoPill = document.querySelector('#quandoGroup .choice-pill.selected');
-  const quando = quandoPill ? quandoPill.textContent : 'Hoje';
-  document.getElementById('transfReviewContent').innerHTML =
-    '<div class="rlabel">Destinatário</div><div class="rvalue">'+state.selectedContact+'</div>'+
-    '<div class="rlabel">Valor</div><div class="rvalue">'+document.getElementById('valorTransf').value+'</div>'+
-    '<div class="rlabel">Quando</div><div class="rvalue">'+quando+'</div>';
-  document.getElementById('transfReview').hidden = false;
-});
-document.getElementById('btnEditarTransf').addEventListener('click', ()=>{document.getElementById('transfReview').hidden=true;});
-document.getElementById('checkRevisado').addEventListener('change', (e)=>{
-  document.getElementById('btnConfirmarTransf').disabled = !e.target.checked;
-  document.getElementById('btnConfirmarNovoDest').disabled = !e.target.checked;
-});
-document.getElementById('btnConfirmarTransf').addEventListener('click', ()=>{
-  state.t4.end = Date.now();
-  const seconds = ((state.t4.end - state.t4.start)/1000).toFixed(1);
-  track('task_complete', {task:'transferencia', tempo_segundos:seconds, tentativas_isca:state.t4.decoyClicks, erros:state.t4.errors, usou_busca:!!state.t4.searchUsed, cliques_confirmar_errado:state.t4.wrongConfirmClicks, faixa_etaria:state.faixa});
-  document.getElementById('protocoloNum').textContent = Math.floor(100000+Math.random()*900000);
-  document.getElementById('transfReview').hidden = true;
-  document.getElementById('transfSucesso').hidden = false;
-});
-document.getElementById('btnConfirmarNovoDest').addEventListener('click', ()=>{
-  state.t4.wrongConfirmClicks++;
-  track('ambiguous_cta_click', {task:'transferencia', cta:'confirmar-novo-destinatario', faixa_etaria:state.faixa});
-  document.getElementById('confirmDecoyMsg').classList.add('show');
-});
-document.getElementById('btnContinuarT4').addEventListener('click', ()=>goTo('task5'));
 
-/* -------- tarefa 5: notificações / phishing -------- */
-document.querySelectorAll('.notif-report').forEach(btn=>{
-  btn.addEventListener('click', (e)=>{
-    e.stopPropagation();
-    const key = btn.dataset.key;
-    if(steps[currentIndex] !== 'task5'){ closeAllDropdowns(); return; }
-    if(key === 'premio'){
-      state.t5.end = Date.now();
-      const seconds = ((state.t5.end - state.t5.start)/1000).toFixed(1);
-      track('phishing_identified', {tempo_segundos:seconds, falsos_positivos:state.t5.falsePositives, faixa_etaria:state.faixa});
-      closeAllDropdowns();
-      document.getElementById('t5Sucesso').hidden = false;
-    } else {
-      state.t5.falsePositives++;
-      track('false_positive_report', {item:key, faixa_etaria:state.faixa});
-      document.getElementById('t5Feedback').innerHTML = '<div class="task-banner">Essa notificação parece legítima. Continue procurando.</div>';
-    }
-  });
-});
-document.getElementById('btnContinuarT5').addEventListener('click', ()=>goTo('task6'));
+function mockQr(){const cells=[];for(let r=0;r<21;r++){for(let c=0;c<21;c++){const finder=(r<7&&c<7)||(r<7&&c>13)||(r>13&&c<7);const edge=(r===0||r===6||c===0||c===6)||(r===14||r===20||c===14||c===20);const inner=r>1&&r<5&&c>1&&c<5;const fill=finder?(edge||inner):((r*7+c*11+r*c)%5===0);if(fill)cells.push(`<rect x="${c+1}" y="${r+1}" width="1" height="1"/>`)}}return `<svg viewBox="0 0 23 23" role="img">${cells.join('')}</svg>`}
 
-/* -------- tarefa 6: acessibilidade -------- */
-function syncConfigUI(){
-  document.getElementById('contrastToggle').classList.toggle('on', state.highContrast);
-  document.getElementById('fontStepLabel').textContent = state.fontStep === 0 ? 'Padrão' : (state.fontStep>0?'+':'')+state.fontStep;
-  document.getElementById('btnSalvarConfig').disabled = !(state.highContrast && state.fontStep > 0);
-}
-document.getElementById('contrastToggle').addEventListener('click', ()=>{
-  state.highContrast = !state.highContrast;
-  document.body.classList.toggle('high-contrast', state.highContrast);
-  syncConfigUI();
-});
-document.getElementById('fontPlusSettings').addEventListener('click', ()=>{adjustFont(1); syncConfigUI();});
-document.getElementById('fontMinusSettings').addEventListener('click', ()=>{adjustFont(-1); syncConfigUI();});
-document.getElementById('btnSalvarConfig').addEventListener('click', ()=>{
-  state.t6.end = Date.now();
-  const seconds = ((state.t6.end - state.t6.start)/1000).toFixed(1);
-  track('task_complete', {task:'acessibilidade', tempo_segundos:seconds, encontrado_via:state.t6.foundVia||'menu', faixa_etaria:state.faixa});
-  document.getElementById('configSucesso').hidden = false;
-});
-document.getElementById('btnContinuarT6').addEventListener('click', ()=>goTo('sus'));
-
-/* -------- SUS -------- */
-document.querySelectorAll('.likert-q').forEach(q=>{
-  const scaleEl = q.querySelector('.likert-scale');
-  for(let i=1;i<=5;i++){
-    const opt = document.createElement('div');
-    opt.className='likert-opt';
-    opt.textContent=i;
-    opt.addEventListener('click', ()=>{
-      scaleEl.querySelectorAll('.likert-opt').forEach(o=>o.classList.remove('selected'));
-      opt.classList.add('selected');
-      state.sus[parseInt(q.dataset.q)-1] = i;
-      document.getElementById('btnSusSubmit').disabled = state.sus.includes(null);
-    });
-    scaleEl.appendChild(opt);
-  }
-});
-document.getElementById('btnSusSubmit').addEventListener('click', ()=>{
-  track('sus_submitted', {q1:state.sus[0], q2:state.sus[1], q3:state.sus[2], q4:state.sus[3], faixa_etaria:state.faixa});
-  showResult();
-  goTo('result');
-});
-
-/* -------- resultado -------- */
-function showResult(){
-  const t1 = (state.t1.end - state.t1.start)/1000;
-  const t2 = (state.t2.end - state.t2.start)/1000;
-  const t3 = (state.t3.end - state.t3.start)/1000;
-  const t4 = (state.t4.end - state.t4.start)/1000;
-  const t5 = (state.t5.end - state.t5.start)/1000;
-  const t6 = (state.t6.end - state.t6.start)/1000;
-  const tempoTotal = (t1+t2+t3+t4+t5+t6).toFixed(1);
-  const atritos = state.t1.decoyClicks + state.t2.decoyClicks + state.t3.decoyClicks + state.t4.decoyClicks +
-                  state.t1.errors + state.t4.errors + state.t5.falsePositives + state.t4.wrongConfirmClicks;
-
-  let perfil, desc;
-  if(atritos >= 5){
-    perfil = 'Explorador(a)'; desc = 'Você testa vários caminhos antes de encontrar o certo — natural em interfaces novas ou confusas.';
-  } else if(tempoTotal > 150){
-    perfil = 'Cauteloso(a)'; desc = 'Você lê com calma e confere cada passo antes de agir.';
+/* account */
+function openAccount(){setNav('account');document.getElementById('storeHome').hidden=true;document.getElementById('storeShop').hidden=true;document.getElementById('accountArea').hidden=false;renderAccount('profile')}
+function renderAccount(stage){
+  const a=document.getElementById('accountArea');
+  if(stage==='profile'){
+    a.innerHTML=`<div class="profile-head"><div class="avatar">AS</div><div><b>Ana Silva</b><div class="fine">ana.silva@email.com</div></div></div><h3>Dados pessoais</h3><div class="field"><label>Telefone</label><input id="phoneEdit" value="(31) 98888-1200"></div><button class="btn primary" id="saveProfile" style="width:100%">Salvar alterações</button>`;
+    document.getElementById('saveProfile').onclick=()=>{
+      if(document.getElementById('phoneEdit').value.replace(/\D/g,'').length>=8){track('profile_edit_complete',{faixa_etaria:state.faixa});renderAccount('menu');}
+      else alert('Informe um telefone válido.');
+    };
+  } else if(stage==='menu'){
+    a.innerHTML=`<h3>Minha conta</h3><p class="fine">Encontre nas opções abaixo o recurso que deseja usar.</p><button class="account-row">Seus pedidos <span>›</span></button><button class="account-row" id="openTextSettings"><span style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:8px;background:#e8f2ef;display:grid;place-items:center;font-weight:850;color:var(--brand)">Aa</span> Acessibilidade e texto</span><span>›</span></button><button class="account-row">Métodos de pagamento <span>›</span></button><button class="account-row">Endereços <span>›</span></button><button class="account-row">Preferências <span>›</span></button><button class="account-row">Central de ajuda <span>›</span></button><button class="account-row logout" id="logoutBtn">Sair <span>›</span></button>`;
+    document.getElementById('openTextSettings').onclick=()=>{track('nav_item_click',{item:'acessibilidade-texto',step_atual:'d2'});renderAccount('accessibility')};
+    document.getElementById('logoutBtn').onclick=()=>{track('nav_item_click',{item:'sair',step_atual:'d2'});document.getElementById('logoutModal').classList.add('open')};
+  } else if(stage==='accessibility'){
+    a.innerHTML=`<div style="display:flex;align-items:center;gap:9px;margin-bottom:12px"><button class="back" id="backAccountMenu">‹</button><div><h3 style="margin:0">Tamanho do texto</h3><div class="fine">Ajuste a leitura do aplicativo</div></div></div><div class="font-control"><div class="aa-row"><b style="font-size:14px">A</b><b style="font-size:24px">A+</b></div><div class="font-size-preview" id="fontPreview">Exemplo de texto da sua conta</div><input class="font-slider" id="fontSlider" type="range" min="14" max="22" value="16"></div><button class="btn primary" id="fontContinue" style="width:100%;margin-top:13px" disabled>Concluir</button>`;
+    document.getElementById('backAccountMenu').onclick=()=>renderAccount('menu');
+    document.getElementById('fontSlider').oninput=e=>{state.font=+e.target.value;document.getElementById('fontPreview').style.fontSize=state.font+'px';if(state.font>16){state.d2.fontFound=true;document.getElementById('fontContinue').disabled=false;}};
+    document.getElementById('fontContinue').onclick=()=>renderAccount('menuAfterFont');
   } else {
-    perfil = 'Direto(a) ao ponto'; desc = 'Você reconhece o caminho certo rapidamente e vai direto a ele.';
-  }
-
-  document.getElementById('resultTitle').textContent = perfil;
-  document.getElementById('resultDesc').textContent = desc;
-
-  const statRow = document.getElementById('statRow');
-  statRow.innerHTML = '';
-  [
-    {num: tempoTotal+'s', lbl:'Tempo total'},
-    {num: atritos, lbl:'Pontos de atrito'},
-    {num: state.t6.foundVia==='floating'?'Botão flutuante':'Menu', lbl:'Achou acessibilidade via'}
-  ].forEach(s=>{
-    const el = document.createElement('div');
-    el.className='stat';
-    el.innerHTML = '<div class="num">'+s.num+'</div><div class="lbl">'+s.lbl+'</div>';
-    statRow.appendChild(el);
-  });
-
-  track('flow_completed', {
-    faixa_etaria:state.faixa, afinidade_tecnologica:state.afinidade, dispositivo:state.dispositivo,
-    tempo_total_segundos:tempoTotal, pontos_atrito:atritos, perfil_resultado:perfil
-  });
-}
-document.getElementById('btnCopyLink').addEventListener('click', ()=>{
-  navigator.clipboard.writeText(window.location.href).then(()=>{
-    const btn = document.getElementById('btnCopyLink');
-    const original = btn.textContent;
-    btn.textContent = 'Link copiado!';
-    track('share_link_copied', {faixa_etaria:state.faixa});
-    setTimeout(()=>{btn.textContent = original;}, 2000);
-  });
-});
-
-/* -------- botão flutuante de acessibilidade -------- */
-let a11yUsed = false;
-function adjustFont(delta){
-  state.fontStep = Math.max(-2, Math.min(3, state.fontStep + delta));
-  document.documentElement.style.fontSize = (100 + state.fontStep*10) + '%';
-  if(!a11yUsed){
-    a11yUsed = true;
-    track('accessibility_button_used', {faixa_etaria:state.faixa, step_atual:steps[currentIndex]});
-    if(steps[currentIndex] !== 'task6') state.a11yUsedEarly = true;
-  }
-  if(steps[currentIndex] !== 'task6' && !state.t6.foundVia && state.a11yUsedEarly){
-    state.t6.foundVia = 'floating';
+    a.innerHTML=`<h3>Minha conta</h3><p class="fine">Encontre a opção para encerrar sua sessão.</p><button class="account-row">Seus pedidos <span>›</span></button><button class="account-row">Métodos de pagamento <span>›</span></button><button class="account-row">Endereços <span>›</span></button><button class="account-row">Preferências <span>›</span></button><button class="account-row">Central de ajuda <span>›</span></button><button class="account-row logout" id="logoutBtn">Sair <span>›</span></button>`;
+    document.getElementById('logoutBtn').onclick=()=>{track('nav_item_click',{item:'sair',step_atual:'d2'});document.getElementById('logoutModal').classList.add('open')};
   }
 }
-document.getElementById('a11yPlus').addEventListener('click', ()=>adjustFont(1));
-document.getElementById('a11yMinus').addEventListener('click', ()=>adjustFont(-1));
+document.getElementById('cancelLogout').onclick=()=>document.getElementById('logoutModal').classList.remove('open');document.getElementById('confirmLogout').onclick=()=>{document.getElementById('logoutModal').classList.remove('open');state.logged=false;finishTask('d2',{fonte_encontrada:state.d2.fontFound,cliques_isca:state.d2.decoys});document.getElementById('vitrineView').innerHTML='';showStep('d3')}
 
-/* -------- rage click -------- */
-let lastClick = {target:null, time:0, count:0};
-document.addEventListener('click', (e)=>{
-  const now = Date.now();
-  if(e.target === lastClick.target && (now - lastClick.time) < 700){
-    lastClick.count++;
-    if(lastClick.count === 2){
-      track('rage_click', {elemento:e.target.tagName+(e.target.id?'#'+e.target.id:''), faixa_etaria:state.faixa, step_atual:steps[currentIndex]});
-    }
-  } else { lastClick = {target:e.target, time:now, count:0}; }
-  lastClick.time = now;
-}, true);
+/* bank */
+function renderBank(){document.getElementById('bancoView').innerHTML=`<div class="app-head"><button class="back" data-home>‹</button>Banco Mercantil</div><div class="app-content"><div id="bankHome"><div class="bank-head"><small>Saldo disponível</small><div class="balance">R$ 1.590,00</div><small>Agência 0123 · Conta 45678-9</small></div><div class="bank-actions"><button class="bank-action" id="bankPix">${svg('pix')}Pix</button><button class="bank-action" data-bank-decoy>Pagar</button><button class="bank-action" data-bank-decoy>Extrato</button><button class="bank-action" data-bank-decoy>Cartões</button></div><div class="statement"><b style="font-size:13px">Últimas movimentações</b><div class="transaction"><span>Supermercado BH<small>Hoje · 14:32</small></span><b>- R$ 82,40</b></div><div class="transaction"><span>Salário<small>Ontem</small></span><b class="positive">+ R$ 2.100,00</b></div><div class="transaction"><span>Uber<small>Ontem · 19:08</small></span><b>- R$ 18,90</b></div></div></div><div id="pixArea" hidden></div></div>`;document.getElementById('bankPix').onclick=renderPix;document.querySelectorAll('[data-bank-decoy]').forEach(b=>b.onclick=()=>track('decoy_click',{item:'banco-'+b.textContent.toLowerCase(),step_atual:state.step}));document.querySelectorAll('[data-home]').forEach(x=>x.onclick=openHome)}
+const contacts=[{name:'Carlos Eduardo',key:'CPF •••.•••.321-09'},{name:'Marcos Aurélio',key:'CPF •••.•••.789-00'},{name:'Juliana Prado',key:'e-mail ju.p•••@email.com'},{name:'Fernanda Lima',key:'telefone (31) •••••-4021'}];
+function renderPix(){const a=document.getElementById('pixArea');document.getElementById('bankHome').hidden=true;a.hidden=false;const pending=state.pixPending||{product:'Cadeira Ipê',price:650,code:'demo'};a.innerHTML=`<div class="pix-brand"><div class="pix-logo">PIX</div><div><b>Pagar com Pix</b><div class="fine">Pedido da Vitrine aguardando pagamento</div></div></div><div class="checkout-card"><div style="display:flex;justify-content:space-between;gap:10px"><span><b>${pending.product}</b><br><span class="fine">Vitrine · Pedido #3381</span></span><b>R$ ${pending.price.toFixed(2).replace('.',',')}</b></div></div><button class="btn primary" id="scanPix" style="width:100%">Ler QR Code</button><button class="btn secondary" id="pastePix" style="width:100%;margin-top:8px">Usar Pix copia e cola</button><div id="pixPayArea" style="margin-top:14px"></div>`;document.getElementById('scanPix').onclick=()=>showPixConfirmation(pending);document.getElementById('pastePix').onclick=()=>{state.d4.search=true;document.getElementById('pixPayArea').innerHTML=`<div class="field"><label>Código Pix</label><textarea readonly style="width:100%;min-height:74px;border:1px solid var(--line);border-radius:10px;padding:8px;font-size:10px">${pending.code}</textarea></div><button class="btn primary" id="continuePaste" style="width:100%">Continuar</button>`;document.getElementById('continuePaste').onclick=()=>showPixConfirmation(pending)}}
+function showPixConfirmation(pending){const a=document.getElementById('pixPayArea');a.innerHTML=`<div class="pix-review"><div class="review-line"><span>Recebedor</span><b>Vitrine Comércio</b></div><div class="review-line"><span>Pedido</span><b>#3381</b></div><div class="review-line"><span>Valor</span><b>R$ ${pending.price.toFixed(2).replace('.',',')}</b></div></div><div class="consent"><input id="pixCheck" type="checkbox"><label for="pixCheck">Confira o recebedor e o valor antes de confirmar.</label></div><button class="btn primary" id="confirmPix" disabled style="width:100%;margin-top:12px">Confirmar pagamento</button>`;document.getElementById('pixCheck').onchange=e=>document.getElementById('confirmPix').disabled=!e.target.checked;document.getElementById('confirmPix').onclick=()=>{finishTask('d4',{usou_qr:!state.d4.search,usou_copia_cola:state.d4.search});state.pixPending=null;a.innerHTML='<div class="success"><b>Desafio 4 concluído</b><br><span style="font-size:12px">Pagamento da Vitrine confirmado com sucesso.</span></div><button class="btn primary" id="nextD5" style="width:100%;margin-top:12px">Continuar</button>';document.getElementById('nextD5').onclick=()=>showStep('d5')}}
 
-goTo('welcome');
+function drawContacts(q){const el=document.getElementById('contacts');el.innerHTML=contacts.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())).map(c=>`<button class="contact ${state.selectedContact===c.name?'selected':''}" data-contact="${c.name}" style="width:100%;text-align:left;background:none;border:0">${c.name}<br><span class="fine">${c.key}</span></button>`).join('');document.querySelectorAll('[data-contact]').forEach(b=>b.onclick=()=>{state.selectedContact=b.dataset.contact;drawContacts(document.getElementById('pixSearch').value)})}
+
+/* email */
+const mails=[{id:'order',sender:'Vitrine',subject:'Seu pedido foi enviado',preview:'Seu pedido #3381 saiu para entrega.',time:'09:14',body:'Seu pedido #3381 saiu para entrega. Você pode acompanhar a entrega pelo aplicativo Vitrine.',scam:false},{id:'invoice',sender:'Vitrine Faturas',subject:'Sua fatura está disponível',preview:'A fatura de outubro já está disponível.',time:'08:02',body:'Sua fatura de outubro já está disponível para consulta dentro do aplicativo.',scam:false},{id:'security',sender:'seguranca-vitrine@protonmail.com',subject:'URGENTE: sua conta será bloqueada',preview:'Confirme seus dados imediatamente para evitar bloqueio.',time:'07:41',body:'Detectamos uma atividade incomum. Sua conta será bloqueada hoje. Clique no link abaixo e confirme seus dados bancários imediatamente.',scam:true}];
+function renderMail(){document.getElementById('emailView').innerHTML=`<div class="app-head"><button class="back" data-home>‹</button><div class="mail-brand"><span class="mail-logo">@</span><b>E-mail</b></div></div><div class="app-content" style="padding:0" id="mailContent"></div>`;drawMailList();document.querySelectorAll('[data-home]').forEach(x=>x.onclick=openHome)}
+function drawMailList(){const recovery=state.recoverySent?`<button class="mail-row unread" data-recovery-mail><span class="mail-dot"></span><span class="mail-main"><span class="mail-sender">Vitrine</span><br><span class="mail-subject">Código para redefinir sua senha</span><br><span class="mail-preview">Seu código de verificação é 4821.</span></span><span class="mail-time">agora</span></button>`:'';document.getElementById('mailContent').innerHTML=`<div style="padding:12px 15px;font-size:11px;color:var(--muted)"><b>Caixa de entrada</b> · ${state.recoverySent?'4':'3'} mensagens</div>`+recovery+mails.map(m=>`<button class="mail-row unread" data-mail="${m.id}"><span class="mail-dot"></span><span class="mail-main"><span class="mail-sender">${m.sender}</span><br><span class="mail-subject">${m.subject}</span><br><span class="mail-preview">${m.preview}</span></span><span class="mail-time">${m.time}</span></button>`).join('');document.querySelectorAll('[data-mail]').forEach(b=>b.onclick=()=>openMail(b.dataset.mail));document.querySelector('[data-recovery-mail]')?.addEventListener('click',()=>openRecoveryMail())}
+function openRecoveryMail(){document.getElementById('mailContent').innerHTML=`<div class="mail-detail"><button class="link" id="backInboxRecovery">‹ Caixa de entrada</button><h3>Código para redefinir sua senha</h3><p class="fine">De: Vitrine &lt;nao-responda@vitrine.com&gt;</p><p style="font-size:13px">Use o código abaixo para continuar a recuperação da sua conta.</p><div class="success" style="text-align:center;font-size:24px;letter-spacing:.15em"><b>4821</b></div><button class="btn primary" id="backOrbitaRecovery" style="width:100%;margin-top:12px">Voltar ao Vitrine</button></div>`;document.getElementById('backInboxRecovery').onclick=drawMailList;document.getElementById('backOrbitaRecovery').onclick=()=>{openApp('vitrine');renderRecoveryCode()}}
+function openMail(id){const m=mails.find(x=>x.id===id);document.getElementById('mailContent').innerHTML=`<div class="mail-detail"><button class="link" id="backInbox">‹ Caixa de entrada</button><div class="suspicious-label" style="color:${m.scam?'#9e3329':'#66716d'}">${m.scam?'Verifique esta mensagem com atenção':'Mensagem recebida'}</div><h3 style="margin-top:6px">${m.subject}</h3><p class="fine">De: ${m.sender}</p><p style="font-size:13px">${m.body}</p>${m.scam?'<div class="warning-box"><b>Antes de clicar:</b><br>Confira o remetente, a urgência do pedido e para onde o link levaria.<br><a href="#" id="suspiciousLink" style="display:inline-block;margin-top:8px;color:#b13b30;font-weight:800">Clique aqui para confirmar seus dados</a></div>':''}<div class="mail-actions"><button class="btn secondary" id="archive">Arquivar</button><button class="btn danger" id="report">Marcar como suspeita</button></div><div class="error" id="mailErr" style="margin-top:10px">Não é necessário abrir o link para concluir a tarefa. Analise a mensagem e decida o que fazer.</div></div>`;document.getElementById('backInbox').onclick=drawMailList;document.getElementById('suspiciousLink')?.addEventListener('click',e=>{e.preventDefault();track('suspicious_link_click',{task:'email',faixa_etaria:state.faixa});document.getElementById('mailErr')?.classList.add('show')});document.getElementById('archive').onclick=()=>{if(m.scam){state.d5.falsePositive++;document.getElementById('mailErr').classList.add('show');track('false_positive',{task:'email',faixa_etaria:state.faixa})}else drawMailList()};document.getElementById('report').onclick=()=>{if(m.scam){finishTask('d5',{falsos_positivos:state.d5.falsePositive});document.getElementById('mailContent').innerHTML='<div class="mail-detail"><div class="success"><b>Desafio 5 concluído</b><br><span style="font-size:12px">Mensagem marcada como suspeita.</span><br><span style="font-size:12px">Você identificou corretamente o risco.</span></div><button class="btn primary" id="finishD5" style="width:100%;margin-top:12px">Continuar</button></div>';document.getElementById('finishD5').onclick=()=>showStep('sus')}else{state.d5.falsePositive++;document.getElementById('mailErr').classList.add('show');track('false_positive',{task:'email',faixa_etaria:state.faixa})}}}
+
+/* app opening */
+document.querySelectorAll('.app-tile').forEach(tile=>tile.onclick=()=>openApp(tile.dataset.app));
+function openApp(app){track('app_opened',{app,step_atual:state.step});if(app==='vitrine'){setHomeView('vitrineView');if(!state.logged)renderOrbitaLogin();else {renderOrbitaHome();if(state.step==='d2')openAccount();}return}if(app==='banco'){setHomeView('bancoView');renderBank();return}if(app==='email'){setHomeView('emailView');renderMail();return}document.getElementById('inertText').textContent='Este aplicativo não faz parte desta simulação.';setHomeView('inertView');track('decoy_click',{item:app,step_atual:state.step})}
+
+/* final */
+const qs=['Você conseguiu concluir todos os desafios sem ajuda externa?','Você se sentiu confortável usando o celular simulado?','Você conseguiu encontrar as funções que precisava?','Você se sentiu seguro(a) para tomar as decisões durante as tarefas?'];const lk=document.getElementById('likert');lk.innerHTML=qs.map((q,i)=>`<div style="margin:0 0 22px"><b style="font-size:15px">${i+1}. ${q}</b><div class="choices" data-q="${i}" style="margin-top:9px"><button class="choice" data-v="sim">Sim</button><button class="choice" data-v="nao">Não</button></div></div>`).join('');document.querySelectorAll('[data-q]').forEach(g=>g.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{g.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');state.answers[+g.dataset.q]=b.dataset.v;document.getElementById('finish').disabled=state.answers.length<4||state.answers.some(x=>!x)}));document.getElementById('finish').onclick=()=>{const payload={faixa_etaria:state.faixa,afinidade_tecnologica:state.afinidade,respostas:{concluiu_todos:state.answers[0],confortavel:state.answers[1],encontrou_funcoes:state.answers[2],sentiu_seguranca:state.answers[3]}};track('survey_complete',payload);const concluidos=['d1','d2','d3','d4','d5'].filter(k=>!state[k].skipped).length;const pulados=['d1','d2','d3','d4','d5'].filter(k=>state[k].skipped).length;document.getElementById('resultStats').innerHTML=`<div class="success"><b>Resultado registrado.</b><br><span style="font-size:12px">Desafios concluídos: ${concluidos} · Desafios pulados: ${pulados}</span><br><span style="font-size:12px">Suas respostas foram enviadas para a análise da pesquisa.</span></div>`;showStep('result');setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),50)}
+
+
+
+const recentBtn=document.getElementById('recentBtn');
+if(recentBtn){recentBtn.onclick=()=>{track('decoy_click',{item:'android-recentes',step_atual:state.step});};}
+
+showStep('welcome');
 </script>
 </body>
 </html>

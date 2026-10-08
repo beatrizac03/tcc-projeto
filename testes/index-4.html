@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Órbita — Estudo de Comportamento Digital</title>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#F1F3EF; --paper:#FFFFFF; --ink:#1A2421; --ink-soft:#4B564F; --ink-faint:#7C877F;
+    --teal:#2F6F63; --teal-dark:#1E4A42; --teal-pale:#DCEAE5;
+    --mustard:#C98A2B; --mustard-pale:#F4E6C9;
+    --rust:#A6432B; --rust-pale:#F3DFD8;
+    --line:rgba(26,36,33,0.14); --radius:14px;
+    --font-display:'Fraunces', serif; --font-body:'Inter', sans-serif; --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.15;margin:0 0 .5em;letter-spacing:-0.01em;}
+  p{margin:0 0 1em;}
+  button{font-family:inherit;}
+  a{color:var(--teal-dark);}
+  :focus-visible{outline:3px solid var(--mustard); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important; transition-duration:.01ms !important;}}
+
+  .app{max-width:800px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
+
+  .stepper{padding:20px 20px 0;}
+  .stepper-track{display:flex;align-items:center;gap:3px;}
+  .stepper-seg{flex:1;height:3px;background:var(--line);border-radius:3px;position:relative;overflow:hidden;}
+  .stepper-seg::after{content:'';position:absolute;inset:0;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+  .stepper-seg.done::after{transform:scaleX(1);}
+  .stepper-seg.active::after{transform:scaleX(1); background:var(--mustard);}
+  .stepper-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint);text-transform:uppercase;margin-top:8px;}
+  .stepper-label b{color:var(--teal-dark);}
+
+  main{flex:1;padding:28px 20px 60px;}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-dark);background:var(--teal-pale);display:inline-block;padding:4px 10px;border-radius:20px;margin-bottom:14px;}
+  .lead{color:var(--ink-soft); font-size:16px;}
+
+  .btn{appearance:none;border:none;border-radius:10px;padding:14px 22px;font-size:16px;font-weight:600;cursor:pointer;transition:transform .15s ease, background .15s ease, border-color .15s ease;min-height:48px;}
+  .btn:active{transform:scale(.98);}
+  .btn-primary{background:var(--teal); color:#fff;}
+  .btn-primary:hover{background:var(--teal-dark);}
+  .btn-primary:disabled{background:#B9C2BE; cursor:not-allowed;}
+  .btn-ghost{background:transparent; color:var(--teal-dark); border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--teal);}
+  .btn-outline-teal{background:#fff;color:var(--teal-dark);border:2px solid var(--teal);}
+  .btn-outline-teal:hover{background:var(--teal-pale);}
+  .btn-sm{padding:8px 14px;font-size:13px;min-height:36px;}
+  .btn-row{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;}
+  .link-btn{background:none;border:none;text-decoration:underline;cursor:pointer;color:var(--teal-dark);padding:0;font-size:14px;}
+
+  .choice-group{margin-bottom:24px;}
+  .choice-group>label.group-label{display:block;font-weight:600;margin-bottom:10px;font-size:15px;}
+  .choice-options{display:flex; flex-wrap:wrap; gap:10px;}
+  .choice-pill{border:1.5px solid var(--line);border-radius:10px;padding:12px 16px;cursor:pointer;font-size:15px;background:#fff;min-height:48px;display:flex;align-items:center;transition:border-color .15s, background .15s;flex:1 1 auto;justify-content:center;text-align:center;}
+  .choice-pill.selected{border-color:var(--teal); background:var(--teal-pale); color:var(--teal-dark); font-weight:600;}
+
+  .consent-box{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:16px;font-size:14px;color:var(--ink-soft);}
+  .consent-box input{margin-top:3px; width:18px; height:18px; flex-shrink:0;}
+
+  .task-banner{background:var(--mustard-pale);border:1px solid var(--mustard);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:15px;}
+  .task-banner .tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a5f1e;display:block;margin-bottom:4px;}
+
+  input[type=text], input[type=email], input[type=date]{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit;min-height:46px;background:#fff;}
+  input:focus{border-color:var(--teal);}
+  .field{margin-bottom:16px; position:relative;}
+  .field label{display:block; font-size:14px; font-weight:600; margin-bottom:6px;}
+  .field-error{color:var(--rust);background:var(--rust-pale);border:1px solid var(--rust);border-radius:8px;padding:8px 12px;font-size:13px;margin-top:6px;display:none;}
+  .field-error.show{display:block;}
+
+  .a11y-btn{position:fixed;right:16px;bottom:16px;z-index:40;background:var(--ink);color:#fff;border:none;border-radius:50px;padding:12px 16px;display:flex;gap:10px;font-family:var(--font-mono);font-size:13px;box-shadow:0 6px 20px rgba(26,36,33,0.25);cursor:pointer;}
+  .a11y-btn span{padding:0 4px; cursor:pointer;}
+  .a11y-btn span:hover{color:var(--mustard);}
+
+  .likert-q{margin-bottom:26px;}
+  .likert-q p{font-weight:600; margin-bottom:10px;}
+  .likert-scale{display:flex; gap:6px; justify-content:space-between;}
+  .likert-opt{flex:1;text-align:center;border:1.5px solid var(--line);border-radius:8px;padding:10px 4px;cursor:pointer;font-size:13px;min-height:46px;display:flex;align-items:center;justify-content:center;}
+  .likert-opt.selected{border-color:var(--teal); background:var(--teal-pale); font-weight:700; color:var(--teal-dark);}
+  .likert-caption{display:flex; justify-content:space-between; font-size:11px; color:var(--ink-faint); margin-top:4px;}
+
+  .result-badge{text-align:center;padding:32px 20px;background:var(--teal-dark);color:#fff;border-radius:var(--radius);margin-bottom:20px;}
+  .result-badge .eyebrow{background:rgba(255,255,255,0.15); color:#fff;}
+  .result-badge h2{font-size:32px; color:#fff; margin-bottom:6px;}
+  .result-badge p{color:rgba(255,255,255,0.8); margin:0;}
+  .stat-row{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;}
+  .stat{flex:1 1 100px;background:var(--bg);border-radius:10px;padding:12px 14px;text-align:center;}
+  .stat .num{font-family:var(--font-mono); font-size:18px; font-weight:600; color:var(--teal-dark);}
+  .stat .lbl{font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em;}
+
+  .step-section{display:none;}
+  .step-section.active{display:block; animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .site-header{display:none; position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:1px solid var(--line);}
+  .site-header-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;position:relative;}
+  .site-header .brand{font-family:var(--font-display);font-weight:600;font-size:19px;color:var(--teal-dark);}
+  .nav-left{display:flex;align-items:center;gap:6px;}
+  .nav-group{position:relative;}
+  .nav-trigger{background:none;border:none;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;padding:9px 10px;border-radius:8px;}
+  .nav-trigger:hover{background:var(--bg);}
+  .nav-dropdown{position:absolute;top:110%;left:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(26,36,33,.14);min-width:230px;padding:8px;display:none;z-index:50;max-height:280px;overflow:auto;}
+  .nav-dropdown.open{display:block;}
+  .nav-dropdown button.nav-item{display:block;width:100%;text-align:left;background:none;border:none;padding:10px 12px;border-radius:8px;font-size:14px;cursor:pointer;color:var(--ink);font-family:inherit;}
+  .nav-dropdown button.nav-item:hover{background:var(--teal-pale);color:var(--teal-dark);}
+  .nav-dropdown button.nav-item.danger{color:var(--rust);}
+  .nav-right{display:flex;align-items:center;gap:2px;}
+  .bell-btn{position:relative;background:none;border:none;cursor:pointer;padding:9px;border-radius:8px;font-size:18px;}
+  .bell-btn:hover{background:var(--bg);}
+  .bell-badge{position:absolute;top:2px;right:2px;background:var(--rust);color:#fff;font-size:10px;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);}
+  .notif-panel{position:absolute;top:110%;right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(26,36,33,.14);width:300px;padding:10px;display:none;z-index:50;}
+  .notif-panel.open{display:block;}
+  .notif-item{border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:8px;font-size:13px;}
+  .notif-item.scam{background:linear-gradient(135deg,#fff3cd,#ffe0e0);border-color:#e0a500;}
+  .notif-item.alert{background:#fff8ec;border-color:#d9a404;}
+  .notif-item .notif-title{font-weight:700;margin-bottom:4px;}
+  .notif-report{margin-top:8px;font-size:12px;color:var(--teal-dark);background:none;border:1px solid var(--teal);border-radius:6px;padding:5px 9px;cursor:pointer;}
+
+  .app-dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
+  .dash-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;}
+  .dash-card .dash-num{font-family:var(--font-mono);font-size:20px;font-weight:600;color:var(--teal-dark);}
+  .dash-card .dash-lbl{font-size:12px;color:var(--ink-faint);}
+
+  .task-panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-top:6px;}
+  .task-panel[hidden]{display:none;}
+
+  .select-field{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit;background:#fff;min-height:46px;}
+
+  .review-card{background:var(--bg);border-radius:10px;padding:16px;margin:16px 0;font-size:14px;}
+  .review-card .rlabel{color:var(--ink-faint);font-size:12px;text-transform:uppercase;letter-spacing:.03em;margin-top:8px;}
+  .review-card .rvalue{margin:2px 0 0;font-weight:600;}
+
+  .contact-list{max-height:170px;overflow:auto;border:1px solid var(--line);border-radius:8px;margin-top:8px;}
+  .contact-item{padding:10px 12px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--line);}
+  .contact-item:last-child{border-bottom:none;}
+  .contact-item:hover{background:var(--teal-pale);}
+  .contact-item.selected{background:var(--teal-pale);font-weight:600;color:var(--teal-dark);}
+  .pix-preview{background:var(--teal-pale);border-radius:8px;padding:10px 14px;font-size:13px;margin-top:8px;color:var(--teal-dark);}
+
+  .hint-text{font-size:13px;color:#8a5f1e;margin-top:10px;font-style:italic;}
+  .decoy-msg{font-size:14px;color:var(--ink-soft);}
+  .skip-link{background:none;border:none;color:var(--ink-faint);text-decoration:underline;font-size:12px;cursor:pointer;margin-top:14px;display:block;padding:0;}
+
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:60;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal-box{background:#fff;border-radius:12px;padding:24px;max-width:380px;width:100%;}
+  .modal-box .fine{font-size:12px;color:var(--ink-faint);}
+  .modal-box .manage-link{background:none;border:none;color:var(--ink-faint);text-decoration:underline;font-size:13px;cursor:pointer;padding:6px 0;}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+  .filter-drawer{border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px;background:var(--bg);}
+  .filter-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;}
+  .filter-group{flex:1 1 160px;}
+  .filter-group .flabel{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-faint);margin-bottom:6px;display:block;}
+  .checkbox-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:14px;}
+  .checkbox-row input{width:16px;height:16px;flex-shrink:0;}
+  .price-range{display:flex;gap:8px;align-items:center;}
+  .price-range input{width:90px;min-height:40px;padding:8px 10px;}
+  .filter-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .filter-chip{background:var(--teal-pale);color:var(--teal-dark);border-radius:20px;padding:6px 10px;font-size:12px;display:flex;align-items:center;gap:6px;}
+  .filter-chip button{background:none;border:none;color:var(--teal-dark);cursor:pointer;font-weight:700;padding:0;font-size:13px;}
+
+  .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+  .product-card{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fafaf8;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
+  .product-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(26,36,33,.10);border-color:var(--teal);}
+  .product-card .thumb{height:64px;border-radius:6px;background:var(--teal-pale);margin-bottom:8px;}
+  .product-card .pname{font-size:13.5px;font-weight:600;margin-bottom:2px;}
+  .product-card .pcat{font-size:11px;color:var(--ink-faint);margin-bottom:2px;}
+  .product-card .pprice{font-family:var(--font-mono);font-size:13px;color:var(--teal-dark);margin-bottom:8px;}
+  .product-card .pbtns{display:flex;flex-direction:column;gap:6px;}
+  .out-of-stock{opacity:.55;}
+
+  .payment-options{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+  .payment-card{border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+  .payment-card.selected{border-color:var(--teal);background:var(--teal-pale);}
+  .payment-card .pm-badge{font-size:11px;background:var(--mustard);color:#fff;padding:2px 8px;border-radius:10px;margin-left:8px;}
+  .payment-card input{width:18px;height:18px;margin-right:10px;}
+
+  .preview-card{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px;padding-right:50px;}
+  .aa-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font-family:var(--font-mono);font-weight:700;font-size:11px;cursor:pointer;position:absolute;top:14px;right:14px;}
+  .aa-popover{position:absolute;top:50px;right:14px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 20px rgba(26,36,33,.14);padding:8px;display:none;gap:8px;z-index:20;}
+  .aa-popover.open{display:flex;}
+  .font-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line);background:#fff;font-family:var(--font-mono);font-weight:600;cursor:pointer;}
+
+  body.high-contrast{background:#000; color:#fff;}
+  body.high-contrast .card, body.high-contrast .task-panel, body.high-contrast .site-header,
+  body.high-contrast .review-card, body.high-contrast .dash-card, body.high-contrast .modal-box,
+  body.high-contrast .nav-dropdown, body.high-contrast .notif-panel, body.high-contrast .product-card,
+  body.high-contrast .preview-card, body.high-contrast .aa-popover, body.high-contrast .filter-drawer{background:#000;border-color:#FFD400;color:#fff;}
+  body.high-contrast .btn-primary{background:#FFD400;color:#000;}
+  body.high-contrast a{color:#FFD400;}
+  body.high-contrast .eyebrow{background:#FFD400;color:#000;}
+  body.high-contrast .nav-trigger{color:#fff;}
+
+  @media (max-width:480px){
+    main{padding:20px 16px 50px;}
+    .card{padding:22px 18px;}
+    .site-header-inner{padding:10px 14px;}
+    .nav-trigger{font-size:13px;padding:8px;}
+  }
+</style>
+</head>
+<body>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<header class="site-header" id="siteHeader">
+  <div class="site-header-inner">
+    <div class="nav-left">
+      <span class="brand">Órbita</span>
+      <div class="nav-group">
+        <button class="nav-trigger" data-dd="servicos">Serviços ▾</button>
+        <div class="nav-dropdown" id="dd-servicos">
+          <button class="nav-item" data-key="comprar-produto">Comprar produtos</button>
+          <button class="nav-item" data-key="fazer-pix">Fazer um Pix</button>
+          <button class="nav-item" data-key="ver-extrato">Ver extrato</button>
+          <button class="nav-item" data-key="pagar-contas">Pagar contas</button>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button class="nav-trigger" data-dd="conta">Minha Conta ▾</button>
+        <div class="nav-dropdown" id="dd-conta">
+          <button class="nav-item" data-key="meus-dados">Meus dados</button>
+          <button class="nav-item" data-key="pedidos">Seus pedidos</button>
+          <button class="nav-item" data-key="pagamento-salvo">Métodos de pagamento</button>
+          <button class="nav-item" data-key="enderecos">Endereços</button>
+          <button class="nav-item" data-key="notificacoes-pref">Preferências de notificação</button>
+          <button class="nav-item" data-key="ajuda">Central de ajuda</button>
+          <button class="nav-item" data-key="trocar-conta">Trocar de conta</button>
+          <button class="nav-item danger" data-key="sair">Sair</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <div class="nav-group">
+        <button class="bell-btn" id="bellBtn">🔔<span class="bell-badge">4</span></button>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-item" data-key="consulta">
+            <div class="notif-title">Pedido a caminho</div>
+            <div>Seu pedido #3381 saiu para entrega e chega amanhã.</div>
+            <button class="notif-report" data-key="consulta">Reportar como suspeita</button>
+          </div>
+          <div class="notif-item" data-key="fatura">
+            <div class="notif-title">Fatura disponível</div>
+            <div>Sua fatura de outubro já está disponível para consulta.</div>
+            <button class="notif-report" data-key="fatura">Reportar como suspeita</button>
+          </div>
+          <div class="notif-item alert" data-key="acesso">
+            <div class="notif-title">🔒 Novo acesso detectado</div>
+            <div>Identificamos um acesso à sua conta a partir de um novo aparelho. Se foi você, nenhuma ação é necessária.</div>
+            <button class="notif-report" data-key="acesso">Reportar como suspeita</button>
+          </div>
+          <div class="notif-item scam" data-key="premio">
+            <div class="notif-title">🎉 VOCÊ GANHOU!!</div>
+            <div>Parabéns!! Vc foi sorteado(a) p/ receber R$500,00 AGORA. Clique e resgate em ATÉ 2 HORAS antes que expire!!!</div>
+            <button class="notif-report" data-key="premio">Reportar como suspeita</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+  <div class="stepper" id="stepper">
+    <div class="stepper-track" id="stepperTrack"></div>
+    <div class="stepper-label" id="stepperLabel"></div>
+  </div>
+
+  <main>
+
+    <section class="step-section" data-step="welcome">
+      <div class="card">
+        <span class="eyebrow">Pesquisa acadêmica · TCC</span>
+        <h1>Como as gerações usam a internet?</h1>
+        <p class="lead">Você vai usar um app fictício (Órbita) e passar por 5 desafios do dia a dia: entrar na conta, gerenciar seu perfil, comprar um produto, fazer um Pix e identificar uma mensagem suspeita. Leva de 9 a 12 minutos.</p>
+        <p class="lead">Nenhum dado pessoal identificável é coletado. As respostas são usadas de forma agregada e anônima para um Trabalho de Conclusão de Curso em Sistemas de Informação. Se travar em algum desafio, terá sempre a opção de pular para o próximo.</p>
+        <div class="consent-box">
+          <input type="checkbox" id="consentCheck">
+          <label for="consentCheck">Li as informações acima e concordo em participar voluntariamente desta pesquisa, ciente de que meus dados serão tratados de forma anônima e agregada, conforme a LGPD.</label>
+        </div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnStart" disabled>Começar</button></div>
+      </div>
+    </section>
+
+    <section class="step-section" data-step="profile">
+      <div class="card">
+        <span class="eyebrow">Etapa 1 de 8</span>
+        <h2>Rapidamente, sobre você</h2>
+        <p class="lead">Só isso — nada de nome, e-mail ou dados de contato reais.</p>
+        <div class="choice-group">
+          <label class="group-label">Sua faixa etária</label>
+          <div class="choice-options" data-group="faixa">
+            <label class="choice-pill" data-value="18-29">18–29</label>
+            <label class="choice-pill" data-value="30-49">30–49</label>
+            <label class="choice-pill" data-value="50-64">50–64</label>
+            <label class="choice-pill" data-value="65+">65+</label>
+          </div>
+        </div>
+        <div class="choice-group">
+          <label class="group-label">Como você avalia sua familiaridade com tecnologia?</label>
+          <div class="choice-options" data-group="afinidade">
+            <label class="choice-pill" data-value="baixa">Baixa</label>
+            <label class="choice-pill" data-value="media">Média</label>
+            <label class="choice-pill" data-value="alta">Alta</label>
+          </div>
+        </div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnProfileNext" disabled>Continuar</button></div>
+      </div>
+    </section>
+
+    <!-- DESAFIO 1: LOGIN + RECUPERAÇÃO DE SENHA -->
+    <section class="step-section" data-step="d1">
+      <div class="card">
+        <span class="eyebrow">Desafio 1 de 5</span>
+        <h2>Entrar na sua conta</h2>
+        <p class="lead" id="d1Instruction">Entre com o e-mail <b>ana.silva@email.com</b> e a senha <b>SenhaAntiga123</b>.</p>
+
+        <div id="loginPanel">
+          <div class="field"><label>E-mail</label><input type="text" id="loginEmail" value="ana.silva@email.com"></div>
+          <div class="field"><label>Senha</label><input type="text" id="loginSenha" placeholder="Digite sua senha"></div>
+          <div class="field-error" id="loginError">Senha incorreta. Verifique e tente novamente ou use "Esqueci minha senha".</div>
+          <div class="btn-row"><button class="btn btn-primary" id="btnEntrar">Entrar</button></div>
+          <p style="margin-top:14px"><button class="link-btn" id="linkEsqueciSenha">Esqueci minha senha</button></p>
+          <div class="btn-row" style="margin-top:10px;border-top:1px solid var(--line);padding-top:16px">
+            <button class="btn btn-ghost btn-sm" id="btnCriarConta">Criar conta</button>
+            <button class="btn btn-outline-teal btn-sm" id="btnGoogleLogin">Entrar com Google</button>
+          </div>
+        </div>
+
+        <div id="recuperarPanel" hidden>
+          <div id="recStageEmail">
+            <h3 style="font-size:18px">Recuperar senha</h3>
+            <div class="field"><label>Confirme seu e-mail</label><input type="text" id="recEmail" value="ana.silva@email.com"></div>
+            <div class="btn-row"><button class="btn btn-primary" id="btnEnviarCodigo">Enviar código</button></div>
+          </div>
+          <div id="recStageCode" hidden>
+            <p class="hint-text" style="color:var(--teal-dark)">📩 Código Órbita: <b>4821</b> (simulado para este teste)</p>
+            <div class="field"><label>Código de verificação</label><input type="text" id="recCodigo" placeholder="0000"></div>
+            <div class="field-error" id="recCodigoError">Código inválido.</div>
+            <div class="btn-row"><button class="btn btn-primary" id="btnConfirmarCodigo">Confirmar código</button></div>
+          </div>
+          <div id="recStageNewPass" hidden>
+            <div class="field"><label>Nova senha</label><input type="text" id="novaSenha1"></div>
+            <div class="field"><label>Confirmar nova senha</label><input type="text" id="novaSenha2"></div>
+            <div class="field-error" id="novaSenhaError">As senhas não coincidem ou têm menos de 6 caracteres.</div>
+            <div class="btn-row"><button class="btn btn-primary" id="btnRedefinirSenha">Redefinir senha</button></div>
+          </div>
+          <div id="recStageSucesso" hidden>
+            <p class="lead">✅ Senha redefinida com sucesso.</p>
+            <div class="btn-row"><button class="btn btn-primary" id="btnVoltarLogin">Voltar para login</button></div>
+          </div>
+        </div>
+
+        <div class="hint-text" id="hint-d1" hidden>💡 Dica: use o link "Esqueci minha senha" abaixo do botão Entrar.</div>
+        <button class="skip-link" id="skip-d1" hidden>Não estou conseguindo — pular este desafio</button>
+      </div>
+    </section>
+
+    <!-- DESAFIO 2: PERFIL + FONTE + SAIR -->
+    <section class="step-section" data-step="d2">
+      <div class="task-banner" id="d2Banner">
+        <span class="tag">Desafio 2 de 5</span>
+        Edite seu telefone de contato e salve as alterações.
+      </div>
+      <div class="app-dashboard">
+        <div class="dash-card"><div class="dash-num">0</div><div class="dash-lbl">Pedidos</div></div>
+        <div class="dash-card"><div class="dash-num">R$ 1.240,00</div><div class="dash-lbl">Saldo disponível</div></div>
+        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
+      </div>
+
+      <div class="task-panel" id="perfilPanel">
+        <h3>Meus dados</h3>
+        <div class="field"><label>Nome</label><input type="text" id="perfilNome" value="Ana Silva"></div>
+        <div class="field"><label>E-mail</label><input type="text" id="perfilEmail" value="ana.silva@email.com" disabled></div>
+        <div class="field"><label>Telefone</label><input type="text" id="perfilTelefone" placeholder="(00) 00000-0000"></div>
+        <div class="field-error" id="perfilError">Informe um telefone válido.</div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnSalvarPerfil">Salvar alterações</button></div>
+      </div>
+
+      <div class="task-panel" id="fontePanel" hidden>
+        <div class="preview-card">
+          <button class="aa-btn" id="aaBtn">Aa</button>
+          <div class="aa-popover" id="aaPopover">
+            <button class="font-btn" id="fontMinusInline">A−</button>
+            <button class="font-btn" id="fontPlusInline">A+</button>
+          </div>
+          <h3>Prévia do seu perfil</h3>
+          <p>Ana Silva é membro da Órbita desde 2022. Gosta de decoração autoral, acompanha pedidos com frequência e prefere pagar suas compras via Pix.</p>
+        </div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnContinuarFonte" disabled>Continuar</button></div>
+      </div>
+
+      <div class="task-panel" id="sairHuntPanel" hidden>
+        <p class="lead" style="margin:0">Use o menu <b>"Minha Conta"</b> no topo da página para sair da sua conta.</p>
+      </div>
+
+      <div id="d2Sucesso" hidden>
+        <div class="card">
+          <p class="lead" style="margin:0">✅ Você saiu da sua conta.</p>
+          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarD2">Continuar</button></div>
+        </div>
+      </div>
+
+      <div class="hint-text" id="hint-d2" hidden>💡 Dica: veja o menu "Minha Conta" no topo.</div>
+      <button class="skip-link" id="skip-d2" hidden>Não estou conseguindo — pular este desafio</button>
+    </section>
+
+    <!-- DESAFIO 3: FILTRO + COMPRA + PAGAMENTO -->
+    <section class="step-section" data-step="d3">
+      <div class="task-banner">
+        <span class="tag">Desafio 3 de 5</span>
+        Use o menu <b>Serviços → Comprar produtos</b>. Filtre por categoria <b>"Móveis pequenos"</b>, preço entre <b>R$ 400 e R$ 700</b>, e adicione ao carrinho a <b>"Cadeira Ipê"</b> (não a Slim, nem a Premium). Finalize pagando no <b>Pix</b>.
+        <div class="hint-text" id="hint-d3" hidden>💡 Dica: clique em "Serviços" → "Comprar produtos", depois use os filtros à esquerda.</div>
+      </div>
+      <div class="app-dashboard">
+        <div class="dash-card"><div class="dash-num">0</div><div class="dash-lbl">Pedidos</div></div>
+        <div class="dash-card"><div class="dash-num">R$ 1.240,00</div><div class="dash-lbl">Saldo disponível</div></div>
+        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
+      </div>
+
+      <div class="task-panel" id="filtroPanel" hidden>
+        <h3>Loja Órbita</h3>
+        <div class="filter-drawer">
+          <div class="filter-row">
+            <div class="filter-group">
+              <span class="flabel">Categoria</span>
+              <div class="checkbox-row"><input type="checkbox" class="catCheck" value="pequenos" id="catPequenos"><label for="catPequenos">Móveis pequenos</label></div>
+              <div class="checkbox-row"><input type="checkbox" class="catCheck" value="grandes" id="catGrandes"><label for="catGrandes">Móveis grandes</label></div>
+              <div class="checkbox-row"><input type="checkbox" class="catCheck" value="decoracao" id="catDecoracao"><label for="catDecoracao">Decoração</label></div>
+              <div class="checkbox-row"><input type="checkbox" class="catCheck" value="iluminacao" id="catIluminacao"><label for="catIluminacao">Iluminação</label></div>
+            </div>
+            <div class="filter-group">
+              <span class="flabel">Faixa de preço</span>
+              <div class="price-range"><input type="text" id="precoMin" placeholder="De R$"><span>—</span><input type="text" id="precoMax" placeholder="Até R$"></div>
+            </div>
+            <div class="filter-group">
+              <span class="flabel">Disponibilidade</span>
+              <div class="checkbox-row"><input type="checkbox" id="somenteEstoque"><label for="somenteEstoque">Somente em estoque</label></div>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:0">
+            <button class="btn btn-primary btn-sm" id="btnAplicarFiltro">Aplicar filtros</button>
+            <button class="btn btn-ghost btn-sm" id="btnLimparFiltro">Limpar filtros</button>
+          </div>
+        </div>
+        <div class="filter-chips" id="filterChips"></div>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+
+      <div class="task-panel" id="pagamentoPanel" hidden>
+        <h3>Finalizar compra</h3>
+        <div class="review-card"><div class="rlabel">Produto</div><div class="rvalue" id="checkoutProdutoNome"></div></div>
+        <p class="lead" style="margin-top:14px;margin-bottom:0">Escolha a forma de pagamento:</p>
+        <div class="payment-options" id="paymentOptions">
+          <label class="payment-card selected" data-method="cartao"><span><input type="radio" name="pm" checked> Cartão de crédito</span></label>
+          <label class="payment-card" data-method="pix"><span><input type="radio" name="pm"> Pix</span><span class="pm-badge">5% off</span></label>
+          <label class="payment-card" data-method="boleto"><span><input type="radio" name="pm"> Boleto bancário</span></label>
+        </div>
+        <div class="field-error" id="pagamentoError">Verifique a forma de pagamento selecionada — o desafio pede Pix.</div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnFinalizarCompra">Finalizar compra</button></div>
+      </div>
+
+      <div class="task-panel" id="genericDecoyD3" hidden>
+        <p class="decoy-msg">Essa opção não é necessária para este desafio.</p>
+        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarDecoyD3">Voltar</button></div>
+      </div>
+
+      <div id="d3Sucesso" hidden>
+        <div class="card">
+          <p class="lead" style="margin:0">✅ Compra finalizada com pagamento via Pix.</p>
+          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarD3">Continuar</button></div>
+        </div>
+      </div>
+      <button class="skip-link" id="skip-d3" hidden>Não estou conseguindo — pular este desafio</button>
+    </section>
+
+    <!-- DESAFIO 4: PIX -->
+    <section class="step-section" data-step="d4">
+      <div class="task-banner">
+        <span class="tag">Desafio 4 de 5</span>
+        Use o menu <b>Serviços</b> para fazer um <b>Pix</b>.
+        <div class="hint-text" id="hint-d4" hidden>💡 Dica: clique em "Serviços" → "Fazer um Pix".</div>
+      </div>
+      <div class="app-dashboard">
+        <div class="dash-card"><div class="dash-num">1</div><div class="dash-lbl">Pedidos</div></div>
+        <div class="dash-card"><div class="dash-num">R$ 590,00</div><div class="dash-lbl">Saldo disponível</div></div>
+        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
+      </div>
+
+      <div class="task-panel" id="pixPanel" hidden>
+        <h3>Fazer um Pix</h3>
+        <div class="field"><label>Buscar destinatário favorito</label><input type="text" id="destSearch" placeholder="Digite um nome"></div>
+        <div class="contact-list" id="contactList"></div>
+        <div class="pix-preview" id="pixPreview" hidden></div>
+        <div class="field" style="margin-top:14px"><label>Valor</label><input type="text" id="valorPix" placeholder="R$ 0,00"></div>
+        <div class="field-error" id="pixError">Selecione um destinatário e informe um valor válido.</div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnRevisarPix">Revisar Pix</button></div>
+
+        <div id="pixReview" hidden>
+          <div class="review-card" id="pixReviewContent"></div>
+          <div class="consent-box"><input type="checkbox" id="checkRevisadoPix"><label for="checkRevisadoPix">Confirmo que revisei os dados acima.</label></div>
+          <div class="field-error" id="confirmDecoyPixMsg">Isso adicionaria o destinatário aos favoritos. Use o botão à esquerda para confirmar o Pix.</div>
+          <div class="btn-row">
+            <button class="btn btn-ghost" id="btnEditarPix">Editar</button>
+            <button class="btn btn-primary" id="btnConfirmarPix" disabled>Confirmar Pix</button>
+            <button class="btn btn-outline-teal" id="btnConfirmarPixFavorito" disabled>Confirmar e salvar como favorito</button>
+          </div>
+        </div>
+        <div id="pixSucesso" hidden>
+          <p class="lead" style="margin-top:14px">✅ Pix enviado. Comprovante <span id="protocoloPix"></span>.</p>
+          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarD4">Continuar</button></div>
+        </div>
+      </div>
+
+      <div class="task-panel" id="genericDecoyD4" hidden>
+        <p class="decoy-msg">Essa opção não é necessária para este desafio.</p>
+        <div class="btn-row"><button class="btn btn-ghost" id="btnVoltarDecoyD4">Voltar</button></div>
+      </div>
+      <button class="skip-link" id="skip-d4" hidden>Não estou conseguindo — pular este desafio</button>
+    </section>
+
+    <!-- DESAFIO 5: PHISHING -->
+    <section class="step-section" data-step="d5">
+      <div class="task-banner">
+        <span class="tag">Desafio 5 de 5</span>
+        Abra o ícone de <b>notificações (🔔)</b> no topo e identifique a mensagem que é uma <b>tentativa de golpe</b>, reportando-a. Cuidado: nem toda mensagem urgente é golpe.
+        <div class="hint-text" id="hint-d5" hidden>💡 Dica: clique no sino no canto superior direito.</div>
+      </div>
+      <div class="app-dashboard">
+        <div class="dash-card"><div class="dash-num">1</div><div class="dash-lbl">Pedidos</div></div>
+        <div class="dash-card"><div class="dash-num">R$ 590,00</div><div class="dash-lbl">Saldo disponível</div></div>
+        <div class="dash-card"><div class="dash-num">4</div><div class="dash-lbl">Notificações novas</div></div>
+      </div>
+      <div id="d5Feedback"></div>
+      <div id="d5Sucesso" hidden>
+        <div class="card">
+          <p class="lead" style="margin:0">✅ Mensagem identificada corretamente como tentativa de golpe.</p>
+          <div class="btn-row"><button class="btn btn-primary" id="btnContinuarD5">Continuar</button></div>
+        </div>
+      </div>
+      <button class="skip-link" id="skip-d5" hidden>Não estou conseguindo — pular este desafio</button>
+    </section>
+
+    <section class="step-section" data-step="sus">
+      <div class="card">
+        <span class="eyebrow">Etapa 8 de 8</span>
+        <h2>Últimas perguntas</h2>
+        <div class="likert-q" data-q="1"><p>1. Consegui concluir os desafios sem ajuda externa.</p><div class="likert-scale"></div><div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div></div>
+        <div class="likert-q" data-q="2"><p>2. Em algum momento me senti perdido(a) ou inseguro(a).</p><div class="likert-scale"></div><div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div></div>
+        <div class="likert-q" data-q="3"><p>3. Em algum momento cliquei em algo achando que era outra coisa.</p><div class="likert-scale"></div><div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div></div>
+        <div class="likert-q" data-q="4"><p>4. Eu usaria um app como este no dia a dia sem dificuldade.</p><div class="likert-scale"></div><div class="likert-caption"><span>Discordo totalmente</span><span>Concordo totalmente</span></div></div>
+        <div class="btn-row"><button class="btn btn-primary" id="btnSusSubmit" disabled>Ver resultado</button></div>
+      </div>
+    </section>
+
+    <section class="step-section" data-step="result">
+      <div class="result-badge">
+        <span class="eyebrow">Seu perfil</span>
+        <h2 id="resultTitle">—</h2>
+        <p id="resultDesc">—</p>
+      </div>
+      <div class="card">
+        <div class="stat-row" id="statRow"></div>
+        <p class="lead" style="margin-top:20px">Obrigada por participar! Se quiser ajudar ainda mais a pesquisa, envie este link para alguém de uma geração diferente da sua.</p>
+        <div class="btn-row"><button class="btn btn-ghost" id="btnCopyLink">Copiar link do estudo</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="a11y-btn" id="a11yBtn" aria-label="Ajustar tamanho do texto">
+  <span id="a11yMinus">A−</span><span id="a11yPlus">A+</span>
+</button>
+
+<div class="modal-overlay" id="sairModal">
+  <div class="modal-box">
+    <h3>Tem certeza que deseja sair?</h3>
+    <p class="lead">Você precisará entrar novamente para acessar sua conta.</p>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="btnCancelarSair">Cancelar</button>
+      <button class="btn btn-primary" id="btnConfirmarSair">Sair mesmo assim</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="cookieModal">
+  <div class="modal-box">
+    <h3>Este site usa cookies</h3>
+    <p class="fine">Usamos cookies para melhorar sua experiência, personalizar conteúdo e analisar o tráfego. Ao continuar, você concorda com nossa política de privacidade.</p>
+    <div class="btn-row"><button class="btn btn-primary" id="btnAceitarCookies" style="width:100%">Aceitar tudo</button></div>
+    <button class="manage-link" id="btnGerenciarCookies">Gerenciar preferências</button>
+  </div>
+</div>
+
+<script>
+window.dataLayer = window.dataLayer || [];
+function track(event, params){
+  window.dataLayer.push(Object.assign({event:event}, params || {}));
+  console.log('[dataLayer]', event, params || {});
+}
+
+const state = {
+  faixa:null, afinidade:null,
+  dispositivo: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+  newPassword:null,
+  d1:{start:0,end:0,errors:0,usedRecovery:false,skipped:false},
+  d2:{start:0,end:0,decoyClicks:0,errors:0,fontFoundVia:null,stage:'perfil',skipped:false},
+  d3:{start:0,end:0,decoyClicks:0,wrongProduct:0,wrongPayment:0,filtersApplied:false,skipped:false},
+  d4:{start:0,end:0,decoyClicks:0,errors:0,wrongConfirmClicks:0,searchUsed:false,skipped:false},
+  d5:{start:0,end:0,falsePositives:0,skipped:false},
+  sus:[null,null,null,null],
+  fontStep:0, highContrast:false, a11yUsedEarly:false,
+  selectedContact:null, cookieChoice:null,
+  cart:null, skipsCount:0
+};
+
+const steps = ['welcome','profile','d1','d2','d3','d4','d5','sus','result'];
+const stepLabels = {welcome:'Início',profile:'Perfil',d1:'Desafio 1',d2:'Desafio 2',d3:'Desafio 3',d4:'Desafio 4',d5:'Desafio 5',sus:'Avaliação',result:'Resultado'};
+let currentIndex = 0;
+let hintTimer = null, skipTimer = null;
+const challengeSteps = ['d1','d2','d3','d4','d5'];
+const headerSteps = ['d2','d3','d4','d5'];
+
+function renderStepper(){
+  const trackEl = document.getElementById('stepperTrack');
+  const label = document.getElementById('stepperLabel');
+  trackEl.innerHTML = '';
+  steps.forEach((s,i)=>{
+    const seg = document.createElement('div');
+    seg.className = 'stepper-seg' + (i < currentIndex ? ' done' : '') + (i === currentIndex ? ' active' : '');
+    trackEl.appendChild(seg);
+  });
+  label.innerHTML = 'Etapa ' + (currentIndex+1) + ' de ' + steps.length + ' · <b>' + stepLabels[steps[currentIndex]] + '</b>';
+}
+
+function goTo(name){
+  document.querySelectorAll('.step-section').forEach(el=>el.classList.remove('active'));
+  document.querySelector('[data-step="'+name+'"]').classList.add('active');
+  currentIndex = steps.indexOf(name);
+  renderStepper();
+  window.scrollTo({top:0, behavior:'smooth'});
+  closeAllDropdowns();
+  document.getElementById('siteHeader').style.display = headerSteps.includes(name) ? 'flex' : 'none';
+  track('step_view', {step_name:name, faixa_etaria:state.faixa, afinidade_tecnologica:state.afinidade, dispositivo:state.dispositivo});
+
+  if(hintTimer) clearTimeout(hintTimer);
+  if(skipTimer) clearTimeout(skipTimer);
+  if(challengeSteps.includes(name)){
+    const hintEl = document.getElementById('hint-'+name);
+    const skipEl = document.getElementById('skip-'+name);
+    hintTimer = setTimeout(()=>{ if(hintEl){ hintEl.hidden = false; track('hint_shown', {step_name:name, faixa_etaria:state.faixa}); } }, 18000);
+    skipTimer = setTimeout(()=>{ if(skipEl){ skipEl.hidden = false; } }, 50000);
+  }
+  if(name==='d1'){ state.d1.start = Date.now(); if(!state.cookieChoice) document.getElementById('cookieModal').classList.add('open'); }
+  if(name==='d2') state.d2.start = Date.now();
+  if(name==='d3') state.d3.start = Date.now();
+  if(name==='d4') state.d4.start = Date.now();
+  if(name==='d5') state.d5.start = Date.now();
+}
+
+function skipChallenge(name){
+  state[name].skipped = true;
+  state.skipsCount++;
+  track('challenge_skipped', {challenge:name, faixa_etaria:state.faixa});
+  const next = steps[steps.indexOf(name)+1];
+  goTo(next);
+}
+challengeSteps.forEach(name=>{
+  document.getElementById('skip-'+name).addEventListener('click', ()=>skipChallenge(name));
+});
+
+/* -------- cookie modal -------- */
+document.getElementById('btnAceitarCookies').addEventListener('click', ()=>{
+  state.cookieChoice = 'aceitar_tudo';
+  document.getElementById('cookieModal').classList.remove('open');
+  track('cookie_consent', {escolha:'aceitar_tudo', faixa_etaria:state.faixa});
+});
+document.getElementById('btnGerenciarCookies').addEventListener('click', ()=>{
+  state.cookieChoice = 'gerenciar';
+  document.getElementById('cookieModal').classList.remove('open');
+  track('cookie_consent', {escolha:'gerenciar_preferencias', faixa_etaria:state.faixa});
+});
+
+/* -------- 0. consentimento -------- */
+const consentCheck = document.getElementById('consentCheck');
+const btnStart = document.getElementById('btnStart');
+consentCheck.addEventListener('change', ()=>{ btnStart.disabled = !consentCheck.checked; });
+btnStart.addEventListener('click', ()=>{ track('consent_given', {}); goTo('profile'); });
+
+/* -------- 1. perfil -------- */
+document.querySelectorAll('.choice-options[data-group]').forEach(group=>{
+  const key = group.dataset.group;
+  group.querySelectorAll('.choice-pill').forEach(pill=>{
+    pill.addEventListener('click', ()=>{
+      group.querySelectorAll('.choice-pill').forEach(p=>p.classList.remove('selected'));
+      pill.classList.add('selected');
+      state[key] = pill.dataset.value;
+      document.getElementById('btnProfileNext').disabled = !(state.faixa && state.afinidade);
+    });
+  });
+});
+document.getElementById('btnProfileNext').addEventListener('click', ()=>{
+  track('profile_submitted', {faixa_etaria:state.faixa, afinidade_tecnologica:state.afinidade, dispositivo:state.dispositivo});
+  goTo('d1');
+});
+
+/* ================= DESAFIO 1: LOGIN ================= */
+document.getElementById('btnEntrar').addEventListener('click', ()=>{
+  const senha = document.getElementById('loginSenha').value;
+  const errBox = document.getElementById('loginError');
+  if(state.newPassword && senha === state.newPassword){
+    errBox.classList.remove('show');
+    state.d1.end = Date.now();
+    const seconds = ((state.d1.end - state.d1.start)/1000).toFixed(1);
+    track('task_complete', {task:'login', tempo_segundos:seconds, erros:state.d1.errors, usou_recuperacao:state.d1.usedRecovery, faixa_etaria:state.faixa});
+    goTo('d2');
+  } else {
+    errBox.classList.add('show');
+    state.d1.errors++;
+    track('form_error', {task:'login', faixa_etaria:state.faixa});
+  }
+});
+document.getElementById('btnCriarConta').addEventListener('click', ()=>{ track('ambiguous_cta_click', {task:'login', cta:'criar-conta', faixa_etaria:state.faixa}); });
+document.getElementById('btnGoogleLogin').addEventListener('click', ()=>{ track('ambiguous_cta_click', {task:'login', cta:'google-login', faixa_etaria:state.faixa}); });
+
+document.getElementById('linkEsqueciSenha').addEventListener('click', ()=>{
+  state.d1.usedRecovery = true;
+  track('nav_item_click', {item:'esqueci-senha', step_atual:'d1'});
+  document.getElementById('loginPanel').hidden = true;
+  document.getElementById('recuperarPanel').hidden = false;
+  document.getElementById('recStageEmail').hidden = false;
+  document.getElementById('recStageCode').hidden = true;
+  document.getElementById('recStageNewPass').hidden = true;
+  document.getElementById('recStageSucesso').hidden = true;
+});
+document.getElementById('btnEnviarCodigo').addEventListener('click', ()=>{
+  document.getElementById('recStageEmail').hidden = true;
+  document.getElementById('recStageCode').hidden = false;
+});
+document.getElementById('btnConfirmarCodigo').addEventListener('click', ()=>{
+  const val = document.getElementById('recCodigo').value.trim();
+  if(val === '4821'){
+    document.getElementById('recCodigoError').classList.remove('show');
+    document.getElementById('recStageCode').hidden = true;
+    document.getElementById('recStageNewPass').hidden = false;
+  } else {
+    document.getElementById('recCodigoError').classList.add('show');
+  }
+});
+document.getElementById('btnRedefinirSenha').addEventListener('click', ()=>{
+  const p1 = document.getElementById('novaSenha1').value;
+  const p2 = document.getElementById('novaSenha2').value;
+  if(p1 && p1===p2 && p1.length>=6){
+    state.newPassword = p1;
+    document.getElementById('novaSenhaError').classList.remove('show');
+    document.getElementById('recStageNewPass').hidden = true;
+    document.getElementById('recStageSucesso').hidden = false;
+  } else {
+    document.getElementById('novaSenhaError').classList.add('show');
+  }
+});
+document.getElementById('btnVoltarLogin').addEventListener('click', ()=>{
+  document.getElementById('recuperarPanel').hidden = true;
+  document.getElementById('loginPanel').hidden = false;
+  document.getElementById('loginSenha').value = '';
+  document.getElementById('loginError').classList.remove('show');
+  document.getElementById('d1Instruction').innerHTML = 'Agora entre com a <b>nova senha</b> que você acabou de criar.';
+});
+
+/* ================= NAV: dropdowns ================= */
+function closeAllDropdowns(){
+  document.querySelectorAll('.nav-dropdown, .notif-panel, .aa-popover').forEach(d=>d.classList.remove('open'));
+}
+document.querySelectorAll('.nav-trigger').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const dd = document.getElementById('dd-'+btn.dataset.dd);
+    const wasOpen = dd.classList.contains('open');
+    closeAllDropdowns();
+    if(!wasOpen) dd.classList.add('open');
+  });
+});
+document.getElementById('bellBtn').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  const p = document.getElementById('notifPanel');
+  const wasOpen = p.classList.contains('open');
+  closeAllDropdowns();
+  if(!wasOpen) p.classList.add('open');
+});
+document.addEventListener('click', closeAllDropdowns);
+
+const navTargets = {d3:'comprar-produto', d4:'fazer-pix'};
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const key = item.dataset.key;
+    const stepName = steps[currentIndex];
+    track('nav_item_click', {item:key, step_atual:stepName});
+    if(key === 'sair'){ document.getElementById('sairModal').classList.add('open'); closeAllDropdowns(); return; }
+    if(navTargets[stepName] === key){ revealTarget(key, stepName); }
+    else { handleDecoy(key, stepName); }
+    closeAllDropdowns();
+  });
+});
+document.getElementById('btnCancelarSair').addEventListener('click', ()=>{
+  document.getElementById('sairModal').classList.remove('open');
+  track('decoy_click', {item:'sair-cancelar', step_atual:steps[currentIndex]});
+});
+document.getElementById('btnConfirmarSair').addEventListener('click', ()=>{
+  document.getElementById('sairModal').classList.remove('open');
+  if(steps[currentIndex] === 'd2' && state.d2.stage === 'sair'){
+    state.d2.end = Date.now();
+    const seconds = ((state.d2.end - state.d2.start)/1000).toFixed(1);
+    track('task_complete', {task:'conta', tempo_segundos:seconds, tentativas_isca:state.d2.decoyClicks, fonte_encontrada_via:state.d2.fontFoundVia||'menu', faixa_etaria:state.faixa});
+    document.getElementById('sairHuntPanel').hidden = true;
+    document.getElementById('d2Sucesso').hidden = false;
+  } else {
+    track('decoy_click', {item:'sair-fora-de-contexto', step_atual:steps[currentIndex]});
+  }
+});
+
+function revealTarget(key, stepName){
+  if(key==='comprar-produto'){ document.getElementById('filtroPanel').hidden=false; renderProductGrid(products); }
+  if(key==='fazer-pix'){ document.getElementById('pixPanel').hidden=false; buildContactList(''); }
+}
+function handleDecoy(key, stepName){
+  if(stepName==='d2'){ state.d2.decoyClicks++; }
+  if(stepName==='d3'){ state.d3.decoyClicks++; document.getElementById('genericDecoyD3').hidden=false; }
+  if(stepName==='d4'){ state.d4.decoyClicks++; document.getElementById('genericDecoyD4').hidden=false; }
+  track('decoy_click', {item:key, step_atual:stepName});
+}
+document.getElementById('btnVoltarDecoyD3').addEventListener('click', ()=>{document.getElementById('genericDecoyD3').hidden=true;});
+document.getElementById('btnVoltarDecoyD4').addEventListener('click', ()=>{document.getElementById('genericDecoyD4').hidden=true;});
+
+/* ================= DESAFIO 2: PERFIL / FONTE / SAIR ================= */
+document.getElementById('btnSalvarPerfil').addEventListener('click', ()=>{
+  const tel = document.getElementById('perfilTelefone').value.trim();
+  const errBox = document.getElementById('perfilError');
+  if(tel.replace(/\D/g,'').length < 8){
+    errBox.classList.add('show');
+    state.d2.errors++;
+    track('form_error', {task:'editar-perfil', faixa_etaria:state.faixa});
+    return;
+  }
+  errBox.classList.remove('show');
+  track('nav_item_click', {item:'perfil-salvo', step_atual:'d2'});
+  document.getElementById('perfilPanel').hidden = true;
+  document.getElementById('fontePanel').hidden = false;
+  document.getElementById('d2Banner').innerHTML = '<span class="tag">Desafio 2 de 5</span>Agora aumente o tamanho do texto usando o ícone ao lado do texto abaixo.';
+  state.d2.stage = 'fonte';
+});
+document.getElementById('aaBtn').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  document.getElementById('aaPopover').classList.toggle('open');
+});
+document.getElementById('fontPlusInline').addEventListener('click', ()=>{ adjustFont(1,'inline-icon'); });
+document.getElementById('fontMinusInline').addEventListener('click', ()=>{ adjustFont(-1,'inline-icon'); });
+document.getElementById('btnContinuarFonte').addEventListener('click', ()=>{
+  document.getElementById('fontePanel').hidden = true;
+  document.getElementById('sairHuntPanel').hidden = false;
+  document.getElementById('d2Banner').innerHTML = '<span class="tag">Desafio 2 de 5</span>Agora saia da sua conta usando o menu "Minha Conta" no topo.';
+  state.d2.stage = 'sair';
+});
+document.getElementById('btnContinuarD2').addEventListener('click', ()=>goTo('d3'));
+
+/* ================= DESAFIO 3: FILTRO / CATÁLOGO / PAGAMENTO ================= */
+const catLabels = {pequenos:'Móveis pequenos', grandes:'Móveis grandes', decoracao:'Decoração', iluminacao:'Iluminação'};
+const products = [
+  {name:'Luminária Peroba', price:320, cat:'iluminacao', stock:true},
+  {name:'Banco Cumaru', price:450, cat:'pequenos', stock:true},
+  {name:'Tapete Baru', price:610, cat:'decoracao', stock:true},
+  {name:'Cadeira Ipê', price:650, cat:'pequenos', stock:true},
+  {name:'Cadeira Ipê Slim', price:480, cat:'pequenos', stock:true},
+  {name:'Aparador Sucupira', price:990, cat:'pequenos', stock:false},
+  {name:'Mesa Angico', price:2100, cat:'grandes', stock:true},
+  {name:'Estante Jatobá', price:1780, cat:'grandes', stock:true},
+  {name:'Poltrona Vinhático', price:1450, cat:'grandes', stock:true},
+  {name:'Cadeira Ipê Premium', price:1290, cat:'pequenos', stock:true}
+];
+function getFilteredProducts(){
+  const cats = Array.from(document.querySelectorAll('.catCheck:checked')).map(c=>c.value);
+  const min = parseFloat(document.getElementById('precoMin').value)||0;
+  const max = parseFloat(document.getElementById('precoMax').value)||Infinity;
+  const onlyStock = document.getElementById('somenteEstoque').checked;
+  return products.filter(p=>{
+    if(cats.length && !cats.includes(p.cat)) return false;
+    if(p.price<min || p.price>max) return false;
+    if(onlyStock && !p.stock) return false;
+    return true;
+  });
+}
+function renderChips(){
+  const chips = document.getElementById('filterChips');
+  chips.innerHTML = '';
+  document.querySelectorAll('.catCheck:checked').forEach(c=>{
+    chips.innerHTML += '<div class="filter-chip">'+catLabels[c.value]+'<button data-clear="cat" data-val="'+c.value+'">×</button></div>';
+  });
+  const min = document.getElementById('precoMin').value, max = document.getElementById('precoMax').value;
+  if(min || max){ chips.innerHTML += '<div class="filter-chip">R$ '+(min||'0')+' — R$ '+(max||'∞')+'<button data-clear="preco">×</button></div>'; }
+  if(document.getElementById('somenteEstoque').checked){ chips.innerHTML += '<div class="filter-chip">Somente em estoque<button data-clear="estoque">×</button></div>'; }
+  chips.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const type = btn.dataset.clear;
+      if(type==='cat') document.querySelector('.catCheck[value="'+btn.dataset.val+'"]').checked=false;
+      if(type==='preco'){ document.getElementById('precoMin').value=''; document.getElementById('precoMax').value=''; }
+      if(type==='estoque') document.getElementById('somenteEstoque').checked=false;
+      renderChips();
+      renderProductGrid(getFilteredProducts());
+    });
+  });
+}
+function renderProductGrid(list){
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  list.forEach(p=>{
+    const el = document.createElement('div');
+    el.className = 'product-card' + (!p.stock ? ' out-of-stock' : '');
+    el.innerHTML = '<div class="thumb"></div><div class="pname">'+p.name+'</div><div class="pcat">'+catLabels[p.cat]+(p.stock?'':' · fora de estoque')+'</div><div class="pprice">R$ '+p.price.toLocaleString('pt-BR')+',00</div>'+
+      '<div class="pbtns"><button class="btn btn-primary btn-sm add-cart" data-name="'+p.name+'">Adicionar ao carrinho</button><button class="btn btn-ghost btn-sm ver-detalhes">Ver detalhes</button></div>';
+    grid.appendChild(el);
+  });
+  grid.querySelectorAll('.add-cart').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(btn.dataset.name === 'Cadeira Ipê'){
+        state.cart = btn.dataset.name;
+        document.getElementById('filtroPanel').hidden = true;
+        document.getElementById('checkoutProdutoNome').textContent = btn.dataset.name;
+        document.getElementById('pagamentoPanel').hidden = false;
+      } else {
+        state.d3.wrongProduct++;
+        track('wrong_click', {task:'catalogo', alvo_clicado:btn.dataset.name, faixa_etaria:state.faixa});
+      }
+    });
+  });
+  grid.querySelectorAll('.ver-detalhes').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ track('ambiguous_cta_click', {task:'catalogo', cta:'ver-detalhes', faixa_etaria:state.faixa}); });
+  });
+}
+document.getElementById('btnAplicarFiltro').addEventListener('click', ()=>{
+  state.d3.filtersApplied = true;
+  const cats = Array.from(document.querySelectorAll('.catCheck:checked')).map(c=>c.value);
+  track('filter_applied', {categorias:cats.join(','), preco_min:document.getElementById('precoMin').value, preco_max:document.getElementById('precoMax').value, faixa_etaria:state.faixa});
+  renderChips();
+  renderProductGrid(getFilteredProducts());
+});
+document.getElementById('btnLimparFiltro').addEventListener('click', ()=>{
+  document.querySelectorAll('.catCheck').forEach(c=>c.checked=false);
+  document.getElementById('precoMin').value=''; document.getElementById('precoMax').value='';
+  document.getElementById('somenteEstoque').checked=false;
+  track('filter_cleared', {faixa_etaria:state.faixa});
+  renderChips();
+  renderProductGrid(products);
+});
+document.querySelectorAll('#paymentOptions .payment-card').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    document.querySelectorAll('#paymentOptions .payment-card').forEach(c=>{c.classList.remove('selected'); c.querySelector('input').checked=false;});
+    card.classList.add('selected');
+    card.querySelector('input').checked = true;
+  });
+});
+document.getElementById('btnFinalizarCompra').addEventListener('click', ()=>{
+  const selected = document.querySelector('#paymentOptions .payment-card.selected').dataset.method;
+  const errBox = document.getElementById('pagamentoError');
+  if(selected !== 'pix'){
+    errBox.classList.add('show');
+    state.d3.wrongPayment++;
+    track('wrong_payment_method', {escolhido:selected, faixa_etaria:state.faixa});
+    return;
+  }
+  errBox.classList.remove('show');
+  state.d3.end = Date.now();
+  const seconds = ((state.d3.end - state.d3.start)/1000).toFixed(1);
+  track('task_complete', {task:'compra', tempo_segundos:seconds, tentativas_isca:state.d3.decoyClicks, produtos_errados:state.d3.wrongProduct, pagamentos_errados:state.d3.wrongPayment, faixa_etaria:state.faixa});
+  document.getElementById('pagamentoPanel').hidden = true;
+  document.getElementById('d3Sucesso').hidden = false;
+});
+document.getElementById('btnContinuarD3').addEventListener('click', ()=>goTo('d4'));
+
+/* ================= DESAFIO 4: PIX ================= */
+const contacts = [
+  {name:'Marcos Aurélio', key:'CPF •••.•••.789-00'},
+  {name:'Juliana Prado', key:'e-mail ju.p•••@email.com'},
+  {name:'Beatriz Nunes', key:'telefone (31) •••••-4021'},
+  {name:'Carlos Eduardo', key:'chave aleatória a1b2•••'},
+  {name:'Fernanda Lima', key:'CPF •••.•••.556-11'}
+];
+function buildContactList(filter){
+  const list = document.getElementById('contactList');
+  list.innerHTML = '';
+  contacts.filter(c=>c.name.toLowerCase().includes(filter.toLowerCase())).forEach(c=>{
+    const el = document.createElement('div');
+    el.className = 'contact-item' + (state.selectedContact===c.name ? ' selected' : '');
+    el.textContent = c.name;
+    el.addEventListener('click', ()=>{
+      state.selectedContact = c.name;
+      buildContactList(document.getElementById('destSearch').value);
+      document.getElementById('pixPreview').hidden = false;
+      document.getElementById('pixPreview').textContent = 'Chave Pix: ' + c.key + ' — Favorecido: ' + c.name;
+    });
+    list.appendChild(el);
+  });
+}
+document.getElementById('destSearch').addEventListener('input', (e)=>{
+  if(!state.d4.searchUsed){ state.d4.searchUsed = true; track('search_used', {task:'pix', faixa_etaria:state.faixa}); }
+  buildContactList(e.target.value);
+});
+document.getElementById('valorPix').addEventListener('input', (e)=>{
+  let v = e.target.value.replace(/\D/g,'');
+  v = (parseInt(v||'0',10)/100).toFixed(2);
+  e.target.value = 'R$ ' + v.replace('.',',');
+});
+document.getElementById('btnRevisarPix').addEventListener('click', ()=>{
+  const valorRaw = document.getElementById('valorPix').value.replace(/\D/g,'');
+  const errBox = document.getElementById('pixError');
+  if(!state.selectedContact || !valorRaw || parseInt(valorRaw,10)===0){
+    errBox.classList.add('show');
+    state.d4.errors++;
+    track('form_error', {task:'pix', faixa_etaria:state.faixa});
+    return;
+  }
+  errBox.classList.remove('show');
+  document.getElementById('pixReviewContent').innerHTML =
+    '<div class="rlabel">Destinatário</div><div class="rvalue">'+state.selectedContact+'</div>'+
+    '<div class="rlabel">Valor</div><div class="rvalue">'+document.getElementById('valorPix').value+'</div>';
+  document.getElementById('pixReview').hidden = false;
+});
+document.getElementById('btnEditarPix').addEventListener('click', ()=>{document.getElementById('pixReview').hidden=true;});
+document.getElementById('checkRevisadoPix').addEventListener('change', (e)=>{
+  document.getElementById('btnConfirmarPix').disabled = !e.target.checked;
+  document.getElementById('btnConfirmarPixFavorito').disabled = !e.target.checked;
+});
+document.getElementById('btnConfirmarPix').addEventListener('click', ()=>{
+  state.d4.end = Date.now();
+  const seconds = ((state.d4.end - state.d4.start)/1000).toFixed(1);
+  track('task_complete', {task:'pix', tempo_segundos:seconds, tentativas_isca:state.d4.decoyClicks, erros:state.d4.errors, usou_busca:!!state.d4.searchUsed, cliques_confirmar_errado:state.d4.wrongConfirmClicks, faixa_etaria:state.faixa});
+  document.getElementById('protocoloPix').textContent = 'E' + Math.floor(10000000+Math.random()*90000000);
+  document.getElementById('pixReview').hidden = true;
+  document.getElementById('pixSucesso').hidden = false;
+});
+document.getElementById('btnConfirmarPixFavorito').addEventListener('click', ()=>{
+  state.d4.wrongConfirmClicks++;
+  track('ambiguous_cta_click', {task:'pix', cta:'confirmar-e-favoritar', faixa_etaria:state.faixa});
+  document.getElementById('confirmDecoyPixMsg').classList.add('show');
+});
+document.getElementById('btnContinuarD4').addEventListener('click', ()=>goTo('d5'));
+
+/* ================= DESAFIO 5: PHISHING ================= */
+document.querySelectorAll('.notif-report').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const key = btn.dataset.key;
+    if(steps[currentIndex] !== 'd5'){ closeAllDropdowns(); return; }
+    if(key === 'premio'){
+      state.d5.end = Date.now();
+      const seconds = ((state.d5.end - state.d5.start)/1000).toFixed(1);
+      track('phishing_identified', {tempo_segundos:seconds, falsos_positivos:state.d5.falsePositives, faixa_etaria:state.faixa});
+      closeAllDropdowns();
+      document.getElementById('d5Sucesso').hidden = false;
+    } else {
+      state.d5.falsePositives++;
+      track('false_positive_report', {item:key, faixa_etaria:state.faixa});
+      document.getElementById('d5Feedback').innerHTML = '<div class="task-banner">Essa notificação parece legítima. Continue procurando.</div>';
+    }
+  });
+});
+document.getElementById('btnContinuarD5').addEventListener('click', ()=>goTo('sus'));
+
+/* -------- SUS -------- */
+document.querySelectorAll('.likert-q').forEach(q=>{
+  const scaleEl = q.querySelector('.likert-scale');
+  for(let i=1;i<=5;i++){
+    const opt = document.createElement('div');
+    opt.className='likert-opt';
+    opt.textContent=i;
+    opt.addEventListener('click', ()=>{
+      scaleEl.querySelectorAll('.likert-opt').forEach(o=>o.classList.remove('selected'));
+      opt.classList.add('selected');
+      state.sus[parseInt(q.dataset.q)-1] = i;
+      document.getElementById('btnSusSubmit').disabled = state.sus.includes(null);
+    });
+    scaleEl.appendChild(opt);
+  }
+});
+document.getElementById('btnSusSubmit').addEventListener('click', ()=>{
+  track('sus_submitted', {q1:state.sus[0], q2:state.sus[1], q3:state.sus[2], q4:state.sus[3], faixa_etaria:state.faixa});
+  showResult();
+  goTo('result');
+});
+
+/* -------- resultado -------- */
+function dur(obj){ return (obj.end && obj.end > obj.start) ? (obj.end-obj.start)/1000 : 0; }
+function showResult(){
+  const tempoTotal = (dur(state.d1)+dur(state.d2)+dur(state.d3)+dur(state.d4)+dur(state.d5)).toFixed(1);
+  const atritos = state.d1.errors + state.d2.decoyClicks + state.d3.decoyClicks + state.d3.wrongProduct + state.d3.wrongPayment +
+                  state.d4.decoyClicks + state.d4.errors + state.d4.wrongConfirmClicks + state.d5.falsePositives + state.skipsCount*2;
+
+  let perfil, desc;
+  if(state.skipsCount >= 2 || atritos >= 6){
+    perfil = 'Explorador(a)'; desc = 'Você testa vários caminhos antes de encontrar o certo — natural em interfaces novas ou confusas.';
+  } else if(tempoTotal > 150){
+    perfil = 'Cauteloso(a)'; desc = 'Você lê com calma e confere cada passo antes de agir.';
+  } else {
+    perfil = 'Direto(a) ao ponto'; desc = 'Você reconhece o caminho certo rapidamente e vai direto a ele.';
+  }
+
+  document.getElementById('resultTitle').textContent = perfil;
+  document.getElementById('resultDesc').textContent = desc;
+
+  const statRow = document.getElementById('statRow');
+  statRow.innerHTML = '';
+  [
+    {num: tempoTotal+'s', lbl:'Tempo total'},
+    {num: atritos, lbl:'Pontos de atrito'},
+    {num: state.skipsCount, lbl:'Desafios pulados'}
+  ].forEach(s=>{
+    const el = document.createElement('div');
+    el.className='stat';
+    el.innerHTML = '<div class="num">'+s.num+'</div><div class="lbl">'+s.lbl+'</div>';
+    statRow.appendChild(el);
+  });
+
+  track('flow_completed', {
+    faixa_etaria:state.faixa, afinidade_tecnologica:state.afinidade, dispositivo:state.dispositivo,
+    tempo_total_segundos:tempoTotal, pontos_atrito:atritos, desafios_pulados:state.skipsCount, perfil_resultado:perfil
+  });
+}
+document.getElementById('btnCopyLink').addEventListener('click', ()=>{
+  navigator.clipboard.writeText(window.location.href).then(()=>{
+    const btn = document.getElementById('btnCopyLink');
+    const original = btn.textContent;
+    btn.textContent = 'Link copiado!';
+    track('share_link_copied', {faixa_etaria:state.faixa});
+    setTimeout(()=>{btn.textContent = original;}, 2000);
+  });
+});
+
+/* -------- fonte (botão flutuante + ícone inline) -------- */
+let a11yUsed = false;
+function adjustFont(delta, source){
+  state.fontStep = Math.max(-2, Math.min(3, state.fontStep + delta));
+  document.documentElement.style.fontSize = (100 + state.fontStep*10) + '%';
+  if(!a11yUsed){
+    a11yUsed = true;
+    track('accessibility_button_used', {faixa_etaria:state.faixa, step_atual:steps[currentIndex], origem:source||'floating'});
+  }
+  if(!state.d2.fontFoundVia && state.fontStep !== 0){ state.d2.fontFoundVia = source||'floating'; }
+  if(document.getElementById('fontePanel') && !document.getElementById('fontePanel').hidden){
+    document.getElementById('btnContinuarFonte').disabled = state.fontStep <= 0;
+  }
+}
+document.getElementById('a11yPlus').addEventListener('click', ()=>adjustFont(1,'floating'));
+document.getElementById('a11yMinus').addEventListener('click', ()=>adjustFont(-1,'floating'));
+
+/* -------- rage click -------- */
+let lastClick = {target:null, time:0, count:0};
+document.addEventListener('click', (e)=>{
+  const now = Date.now();
+  if(e.target === lastClick.target && (now - lastClick.time) < 700){
+    lastClick.count++;
+    if(lastClick.count === 2){
+      track('rage_click', {elemento:e.target.tagName+(e.target.id?'#'+e.target.id:''), faixa_etaria:state.faixa, step_atual:steps[currentIndex]});
+    }
+  } else { lastClick = {target:e.target, time:now, count:0}; }
+  lastClick.time = now;
+}, true);
+
+goTo('welcome');
+</script>
+</body>
+</html>
