@@ -12,8 +12,21 @@
         display: none;
       }
     </style>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TCQZM9PZ');</script>
+    <!-- End Google Tag Manager -->
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TCQZM9PZ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div class="app">
       <header class="top">
         <div class="progress"><i id="progressBar"></i></div>
@@ -371,8 +384,13 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function track(event, params = {}) {
-        window.dataLayer.push({ event, ...params });
-        console.log("[dataLayer]", event, params);
+        // Os quatro eventos analisados no TCC levam sempre a faixa etária.
+        const eventosPesquisa = ["wrong_product", "decoy_click", "study_result", "survey_complete"];
+        const dados = eventosPesquisa.includes(event)
+          ? { faixa_etaria: state.faixa, ...params }
+          : params;
+        window.dataLayer.push({ event, ...dados });
+        console.log("[dataLayer]", event, dados);
       }
       const state = {
         startedAt: Date.now(),
@@ -1170,15 +1188,14 @@
         ),
       );
       document.getElementById("finish").onclick = () => {
+        // Parâmetros simples: o GTM consegue ler cada resposta diretamente.
         const payload = {
           faixa_etaria: state.faixa,
           afinidade_tecnologica: state.afinidade,
-          respostas: {
-            concluiu_todos: state.answers[0],
-            confortavel: state.answers[1],
-            encontrou_funcoes: state.answers[2],
-            sentiu_seguranca: state.answers[3],
-          },
+          resposta_sem_ajuda: state.answers[0],
+          resposta_conforto: state.answers[1],
+          resposta_encontrou_funcoes: state.answers[2],
+          resposta_seguranca: state.answers[3],
         };
         track("survey_complete", payload);
         const orderMetrics = ["d1", "d2", "d3", "d4", "d5"];
@@ -1187,8 +1204,23 @@
           (k) => state[k].skipped,
         ).length;
         const fmt = ms => { const sec=Math.max(0,Math.round(ms/1000)); return `${Math.floor(sec/60)} min ${sec%60} s`; };
-        const tempos = orderMetrics.filter(k=>state[k].start && state[k].end).map(k=>state[k].end-state[k].start);
+        const tempos = orderMetrics.filter(k=>!state[k].skipped && state[k].start && state[k].end).map(k=>state[k].end-state[k].start);
         const media = tempos.length ? tempos.reduce((a,b)=>a+b,0)/tempos.length : 0;
+        track("study_result", {
+          faixa_etaria: state.faixa,
+          tempo_total_segundos: Math.round(
+            (Date.now() - state.startedAt) / 1000
+          ),
+          tempo_medio_segundos: Math.round(media / 1000),
+          desafios_pulados: pulados,
+          desafios_concluidos: concluidos,
+          // null = desafio pulado ou não concluído
+          tempo_d1_segundos: (!state.d1.skipped && state.d1.end) ? Math.round((state.d1.end - state.d1.start)/1000) : null,
+          tempo_d2_segundos: (!state.d2.skipped && state.d2.end) ? Math.round((state.d2.end - state.d2.start)/1000) : null,
+          tempo_d3_segundos: (!state.d3.skipped && state.d3.end) ? Math.round((state.d3.end - state.d3.start)/1000) : null,
+          tempo_d4_segundos: (!state.d4.skipped && state.d4.end) ? Math.round((state.d4.end - state.d4.start)/1000) : null,
+          tempo_d5_segundos: (!state.d5.skipped && state.d5.end) ? Math.round((state.d5.end - state.d5.start)/1000) : null
+        });
         const detalhes = orderMetrics.map(k => `<li>${labels[k]}: ${state[k].skipped ? "pulado" : state[k].end ? fmt(state[k].end-state[k].start) : "não concluído"}</li>`).join("");
         document.getElementById("resultStats").innerHTML = `<div class="success"><b>Resultado registrado.</b><br><span style="font-size:12px">Desafios concluídos: ${concluidos} · Desafios pulados: ${pulados}</span></div><div class="checkout-card" style="margin-top:12px"><h3>Métricas da sessão</h3><p><b>Tempo total:</b> ${fmt(Date.now()-state.startedAt)}</p><p><b>Tempo médio por desafio concluído:</b> ${fmt(media)}</p><p><b>Desafios pulados:</b> ${pulados} de 5</p><details><summary>Tempo em cada desafio</summary><ul>${detalhes}</ul></details></div><p class="fine">Métricas calculadas nesta sessão de teste.</p>`;
         showStep("result");
