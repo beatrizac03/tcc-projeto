@@ -1,0 +1,1257 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estudo de Usabilidade — Protótipo Intergeracional</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Mantém apenas o botão de olho criado pelo protótipo; oculta o controle nativo do navegador. */
+      input[type="password"]::-ms-reveal,
+      input[type="password"]::-ms-clear {
+        display: none;
+      }
+    </style>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TCQZM9PZ');</script>
+    <!-- End Google Tag Manager -->
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TCQZM9PZ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="app">
+      <header class="top">
+        <div class="progress"><i id="progressBar"></i></div>
+        <div class="progress-label" id="progressLabel">Início</div>
+      </header>
+      <main>
+        <section class="step active" data-step="welcome">
+          <div class="card">
+            <span class="eyebrow">Pesquisa acadêmica · TCC</span>
+            <h1>Como diferentes gerações usam interfaces digitais?</h1>
+            <p class="lead">
+              Nesta pesquisa, você irá realizar uma simulação de uso de celular
+              e tecnologia. O protótipo imita um aparelho real, com uma tela
+              inicial e aplicativos que fazem parte do nosso dia a dia, como
+              loja, banco e e-mail.
+            </p>
+            <p class="lead">
+              Durante a simulação, você receberá cinco situações para resolver.
+              Não existe uma resposta “certa” de conhecimento: queremos observar
+              como você navega, encontra funções e toma decisões.
+            </p>
+            <p class="lead">
+              A pesquisa observa navegação, descoberta de funcionalidades,
+              acessibilidade, tomada de decisão e percepção de segurança.
+            </p>
+            <div class="consent">
+              <input id="consent" type="checkbox" /><label for="consent"
+                >Li as informações e concordo em participar voluntariamente
+                desta pesquisa. Os dados serão analisados de forma anônima e
+                agregada.</label
+              >
+            </div>
+            <div class="actions">
+              <button class="btn primary" id="start" disabled>Começar</button>
+            </div>
+          </div>
+        </section>
+        <section class="step" data-step="profile">
+          <div class="card">
+            <span class="eyebrow">Antes de começar</span>
+            <h2>Sobre você</h2>
+            <p class="lead">
+              Não informe nome, e-mail ou qualquer dado pessoal real.
+            </p>
+            <div class="choice-group">
+              <span class="group-label">Faixa etária</span>
+              <div class="choices" data-key="faixa">
+                <button class="choice" data-value="<18">Menos de 18</button><button class="choice" data-value="18-29">18–29</button
+                ><button class="choice" data-value="30-49">30–49</button
+                ><button class="choice" data-value="50-64">50–64</button
+                ><button class="choice" data-value="65+">65+</button>
+              </div>
+            </div>
+            <div class="choice-group">
+              <span class="group-label">Familiaridade com tecnologia</span>
+              <div class="choices" data-key="afinidade">
+                <button class="choice" data-value="baixa">Baixa</button
+                ><button class="choice" data-value="media">Média</button
+                ><button class="choice" data-value="alta">Alta</button>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn primary" id="profileNext" disabled>
+                Continuar
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" data-step="phone-flow">
+          <div class="task" id="taskBox"></div>
+          <div class="phone-stage">
+            <div class="phone">
+              <div class="screen">
+                <div class="island"></div>
+                <div class="status">
+                  <span>9:41</span
+                  ><span class="status-icons"
+                    ><svg viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M2 18h3v4H2zm5-4h3v8H7zm5-4h3v12h-3zm5-4h3v16h-3z"
+                      /></svg
+                    ><svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <rect x="2" y="6" width="18" height="12" rx="2" />
+                      <path d="M22 10v4" /></svg
+                  ></span>
+                </div>
+                <div class="screen-body">
+                  <!-- HOME -->
+                  <div class="view active home" id="homeView">
+                    <div class="home-date">terça-feira · 9 de outubro</div>
+                    <div class="grid">
+                      <button class="app-tile" data-app="fotos">
+                        <span class="icon app-system"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                          >
+                            <rect x="3" y="5" width="18" height="15" rx="3" />
+                            <circle cx="12" cy="12" r="3" />
+                            <path d="M7 5l1.5-2h7L17 5" /></svg></span
+                        ><span class="label">Fotos</span>
+                      </button>
+                      <button class="app-tile" data-app="calc">
+                        <span class="icon app-blue"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            stroke-width="1.7"
+                          >
+                            <rect x="5" y="2.5" width="14" height="19" rx="2" />
+                            <path
+                              d="M8 6h8M8 10h2m4 0h2M8 14h2m4 0h2M8 18h2m4 0h2"
+                            /></svg></span
+                        ><span class="label">Calculadora</span>
+                      </button>
+                      <button class="app-tile" data-app="mapas">
+                        <span class="icon app-green"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            stroke-width="1.7"
+                          >
+                            <path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2z" />
+                            <path d="M9 3v16m6-14v16" /></svg></span
+                        ><span class="label">Mapas</span>
+                      </button>
+                      <button class="app-tile" data-app="ajustes">
+                        <span class="icon app-system"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            stroke-width="1.8"
+                          >
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                              d="M19.4 15a1.8 1.8 0 000-6l1-1.7-1.7-1-1.4 1a8 8 0 00-2-.8L15 4h-2l-.3 2.5a8 8 0 00-2 .8l-1.4-1-1.7 1 1 1.7a1.8 1.8 0 000 6l-1 1.7 1.7 1 1.4-1a8 8 0 002 .8L11 20h2l.3-2.5a8 8 0 002-.8l1.4 1 1.7-1z"
+                            /></svg></span
+                        ><span class="label">Ajustes</span>
+                      </button>
+                      <button class="app-tile" data-app="vitrine">
+                        <span class="icon app-vitrine"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            stroke-width="1.8"
+                          >
+                            <path d="M4 9h16l-1 11H5L4 9z" />
+                            <path d="M8 9V7a4 4 0 0 1 8 0v2" />
+                            <path d="M9 13h6" /></svg></span
+                        ><span class="label">Vitrine</span>
+                      </button>
+                      <button class="app-tile" data-app="banco">
+                        <span class="icon app-bank"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                          >
+                            <path d="M3 9l9-5 9 5" />
+                            <path
+                              d="M5 10v8m4-8v8m6-8v8m4-8v8M3 20h18M2 10h20"
+                            /></svg></span
+                        ><span class="label">Banco</span>
+                      </button>
+                      <button class="app-tile" data-app="email">
+                        <span class="icon app-mail"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            stroke-width="1.8"
+                          >
+                            <rect x="3" y="5" width="18" height="14" rx="2" />
+                            <path d="M4 7l8 6 8-6" /></svg
+                          ><span class="badge">3</span></span
+                        ><span class="label">E-mail</span>
+                      </button>
+                      <button class="app-tile" data-app="notas">
+                        <span class="icon app-note"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#5c4b05"
+                            stroke-width="1.7"
+                          >
+                            <path d="M6 3h10l3 3v15H6z" />
+                            <path
+                              d="M16 3v4h4M9 11h7M9 15h7M9 19h4"
+                            /></svg></span
+                        ><span class="label">Notas</span>
+                      </button>
+                    </div>
+                    <div class="dock">
+                      <button class="app-tile" data-app="telefone">
+                        <span class="icon app-green"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            stroke-width="2"
+                          >
+                            <path
+                              d="M7 3l3 2-2 4c1 2 3 4 5 5l4-2 2 3c-2 4-5 5-8 3-4-2-8-7-8-11 0-3 1-4 4-4z"
+                            /></svg
+                        ></span>
+                      </button>
+                      <button class="app-tile" data-app="mensagens">
+                        <span class="icon app-green"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            stroke-width="1.8"
+                          >
+                            <path d="M4 5h16v11H9l-4 4v-4H4z" />
+                            <path d="M8 10h8M8 13h5" /></svg
+                        ></span>
+                      </button>
+                      <button class="app-tile" data-app="navegador">
+                        <span class="icon app-blue"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            stroke-width="1.7"
+                          >
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M15 9l-2 5-5 2 2-5z" /></svg
+                        ></span>
+                      </button>
+                      <button class="app-tile" data-app="musica">
+                        <span class="icon app-red"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            stroke-width="1.8"
+                          >
+                            <path d="M9 18V5l10-2v13" />
+                            <circle cx="6" cy="18" r="3" />
+                            <circle cx="16" cy="16" r="3" /></svg
+                        ></span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- VITRINE -->
+                  <div class="view app" id="vitrineView"></div>
+                  <!-- BANCO -->
+                  <div class="view app" id="bancoView"></div>
+                  <!-- EMAIL -->
+                  <div class="view app" id="emailView"></div>
+                  <!-- INERT -->
+                  <div class="view app" id="inertView">
+                    <div class="app-head">
+                      <button class="back" data-home>‹</button>Aplicativo
+                    </div>
+                    <div
+                      class="app-content"
+                      style="
+                        display: grid;
+                        place-items: center;
+                        text-align: center;
+                      "
+                    >
+                      <div>
+                        <div style="font-size: 34px; margin-bottom: 10px">
+                          Não disponível
+                        </div>
+                        <p class="lead" id="inertText"></p>
+                        <button class="btn secondary" data-home>
+                          Voltar à tela inicial
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="homebar android-nav"
+                  aria-label="Navegação do Android"
+                >
+                  <button data-home aria-label="Voltar">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M16 5L9 12l7 7" fill="none" />
+                    </svg>
+                  </button>
+                  <button data-home aria-label="Tela inicial">
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="7" />
+                    </svg>
+                  </button>
+                  <button aria-label="Aplicativos recentes" id="recentBtn">
+                    <svg viewBox="0 0 24 24">
+                      <rect x="7" y="7" width="10" height="10" rx="1" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" data-step="sus">
+          <div class="card">
+            <span class="eyebrow">Avaliação final</span>
+            <h2>Como foi sua experiência?</h2>
+            <div id="likert"></div>
+            <div class="actions">
+              <button class="btn primary" id="finish" disabled>
+                Ver resultado
+              </button>
+            </div>
+          </div>
+        </section>
+        <section class="step" data-step="result">
+          <div class="card">
+            <span class="eyebrow">Pesquisa concluída</span>
+            <h2>Obrigada por participar!</h2>
+            <p class="lead">
+              Sua participação ajudará a analisar diferenças de usabilidade e
+              acessibilidade entre gerações.
+            </p>
+            <div id="resultStats"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal" id="logoutModal">
+      <div class="modal-box">
+        <h3>Sair da conta?</h3>
+        <p class="lead" style="font-size: 13px">
+          Você será desconectado do Vitrine.
+        </p>
+        <div class="actions">
+          <button class="btn secondary" id="cancelLogout">Cancelar</button
+          ><button class="btn danger" id="confirmLogout">Sair</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function track(event, params = {}) {
+        // Os quatro eventos analisados no TCC levam sempre a faixa etária.
+        const eventosPesquisa = ["wrong_product", "decoy_click", "study_result", "survey_complete"];
+        const dados = eventosPesquisa.includes(event)
+          ? { faixa_etaria: state.faixa, ...params }
+          : params;
+        window.dataLayer.push({ event, ...dados });
+        console.log("[dataLayer]", event, dados);
+      }
+      const state = {
+        startedAt: Date.now(),
+        category: "Todos",
+        faixa: null,
+        afinidade: null,
+        step: "welcome",
+        logged: false,
+        newPassword: null,
+        selectedContact: null,
+        cart: null,
+        font: 16,
+        recoverySent: false,
+        pixPending: null,
+        d1: { start: 0, end: 0, errors: 0, recovery: false, skipped: false },
+        d2: { start: 0, end: 0, decoys: 0, fontFound: false, skipped: false },
+        d3: {
+          start: 0,
+          end: 0,
+          filters: false,
+          wrongProduct: 0,
+          skipped: false,
+        },
+        d4: { start: 0, end: 0, errors: 0, search: false, skipped: false },
+        d5: { start: 0, end: 0, falsePositive: 0, skipped: false },
+        answers: [],
+      };
+      const steps = [
+        "welcome",
+        "profile",
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d5",
+        "sus",
+        "result",
+      ];
+      const labels = {
+        welcome: "Início",
+        profile: "Perfil",
+        d1: "Desafio 1",
+        d2: "Desafio 2",
+        d3: "Desafio 3",
+        d4: "Desafio 4",
+        d5: "Desafio 5",
+        sus: "Avaliação",
+        result: "Concluído",
+      };
+      const tasks = {
+        d1: "Acesse a conta da Vitrine. Você não sabe a senha, então recupere o acesso usando o e-mail cadastrado.",
+        d2: "Entre no aplicativo Vitrine. Atualize seu telefone, encontre uma forma de aumentar o tamanho do texto e depois saia da conta.",
+        d3: "Na tela inicial do celular, abra o aplicativo Vitrine. Encontre uma cadeira entre R$ 400 e R$ 700, disponível em estoque, e gere o pagamento por Pix para essa compra.",
+        d4: "Na tela inicial do celular, abra o aplicativo Banco e use o Pix para pagar o pedido da Vitrine que está aguardando pagamento.",
+        d5: "Na tela inicial do celular, abra o aplicativo E-mail. Analise as mensagens recebidas, encontre uma mensagem suspeita e marque-a como tal.",
+      };
+      function svg(name) {
+        const s = {
+          home: `<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>`,
+          bag: `<path d="M5 8h14l1 13H4z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>`,
+          user: `<circle cx="12" cy="8" r="3"/><path d="M5 21a7 7 0 0 1 14 0"/>`,
+          arrow: `<path d="M19 12H5m7-7-7 7 7 7"/>`,
+          pix: `<path d="M7 7l5-5 5 5-5 5zM7 17l5-5 5 5-5 5zM2 12l5-5 5 5-5 5zM12 12l5-5 5 5-5 5z"/>`,
+        };
+        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${s[name] || ""}</svg>`;
+      }
+      function showStep(name) {
+        document
+          .querySelectorAll(".step")
+          .forEach((x) => x.classList.remove("active"));
+        const target =
+          steps.includes(name) && ["d1", "d2", "d3", "d4", "d5"].includes(name)
+            ? "phone-flow"
+            : name;
+        document
+          .querySelector('[data-step="' + target + '"]')
+          .classList.add("active");
+        state.step = name;
+        document.body.classList.toggle(
+          "study-active",
+          ["d1", "d2", "d3", "d4", "d5"].includes(name),
+        );
+        const i = steps.indexOf(name);
+        document.getElementById("progressBar").style.width =
+          (i / (steps.length - 1)) * 100 + "%";
+        document.getElementById("progressLabel").textContent =
+          "Etapa " + (i + 1) + " de " + steps.length + " · " + labels[name];
+        track("step_view", {
+          step_name: name,
+          faixa_etaria: state.faixa,
+          afinidade_tecnologica: state.afinidade,
+        });
+        if (["d1", "d2", "d3", "d4", "d5"].includes(name)) {
+          const taskNumber = Number(name.slice(1));
+          document.getElementById("taskBox").innerHTML =
+            `<div class="task-top"><small>DESAFIO ${taskNumber} DE 5</small><strong>${labels[name]}</strong></div><p>${tasks[name]}</p><div class="task-actions"><button class="btn secondary skip-btn" id="skipTask">Pular desafio</button></div>`;
+          document.getElementById("skipTask").onclick = () => skipTask(name);
+          openHome();
+          state[name].start = Date.now();
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      function nextChallenge(key) {
+        const order = ["d1", "d2", "d3", "d4", "d5"];
+        const i = order.indexOf(key);
+        return order[i + 1] || "sus";
+      }
+      function skipTask(key) {
+        state[key].skipped = true;
+        state[key].end = Date.now();
+        track("task_skipped", {
+          task: key,
+          tempo_segundos: ((state[key].end - state[key].start) / 1000).toFixed(
+            1,
+          ),
+          faixa_etaria: state.faixa,
+        });
+        showStep(nextChallenge(key));
+      }
+
+      function setHomeView(id) {
+        document
+          .querySelectorAll(
+            "#homeView,#vitrineView,#bancoView,#emailView,#inertView",
+          )
+          .forEach((x) => x.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+      }
+      function openHome() {
+        setHomeView("homeView");
+      }
+      document
+        .querySelectorAll("[data-home]")
+        .forEach((x) => x.addEventListener("click", openHome));
+      function finishTask(key, extra = {}) {
+        state[key].end = Date.now();
+        track("task_complete", {
+          task: key,
+          tempo_segundos: ((state[key].end - state[key].start) / 1000).toFixed(
+            1,
+          ),
+          faixa_etaria: state.faixa,
+          ...extra,
+        });
+      }
+
+      /* profile */
+      document
+        .getElementById("consent")
+        .addEventListener(
+          "change",
+          (e) =>
+            (document.getElementById("start").disabled = !e.target.checked),
+        );
+      document.getElementById("start").onclick = () => showStep("profile");
+      document.querySelectorAll(".choices").forEach((group) =>
+        group.querySelectorAll(".choice").forEach(
+          (btn) =>
+            (btn.onclick = () => {
+              group
+                .querySelectorAll(".choice")
+                .forEach((b) => b.classList.remove("selected"));
+              btn.classList.add("selected");
+              state[group.dataset.key] = btn.dataset.value;
+              document.getElementById("profileNext").disabled = !(
+                state.faixa && state.afinidade
+              );
+            }),
+        ),
+      );
+      document.getElementById("profileNext").onclick = () => {
+        track("profile_submitted", {
+          faixa_etaria: state.faixa,
+          afinidade_tecnologica: state.afinidade,
+        });
+        showStep("d1");
+      };
+
+      /* ---------- VITRINE TEMPLATES ---------- */
+      function passwordEyeIcon(showing = false) {
+        return showing
+          ? '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.9 5.2A10.8 10.8 0 0112 5c5.2 0 8.8 4.5 9.5 6-.3.7-1.2 2-2.8 3.5"/><path d="M6.2 6.2C3.9 7.6 2.7 9.8 2.5 11c.7 1.5 4.3 6 9.5 6 1 0 2-.2 2.9-.5"/></svg>'
+          : '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.5"/></svg>';
+      }
+      function renderOrbitaLogin() {
+        document.getElementById("vitrineView").innerHTML =
+          `<div class="app-head"><button class="back" data-home>‹</button><div class="brand-lockup" style="margin:0"><span class="brand-mark">V</span><strong>Vitrine</strong></div></div><div class="app-content"><div class="brand-lockup"><span class="brand-mark">V</span><div><strong>Olá, Ana</strong><div class="fine">Acesse sua conta para continuar</div></div></div><div id="loginArea"><div class="field"><label>E-mail</label><input id="loginEmail" value="ana.silva@email.com"></div><div class="field"><label>Senha</label><div class="password"><input id="loginPass" type="password"><button class="eye" type="button" id="togglePass" aria-label="Mostrar senha" title="Mostrar senha">${passwordEyeIcon()}</button></div></div><div class="error" id="loginErr">A senha informada não confere. Você pode tentar novamente ou recuperar o acesso.</div><div class="actions"><button class="btn primary" id="loginBtn" style="width:100%">Entrar</button></div><button class="link" id="forgot">Esqueci minha senha</button></div><div id="recoveryArea" hidden></div></div>`;
+        document.getElementById("loginBtn").onclick = () => {
+          if (
+            state.newPassword &&
+            document.getElementById("loginPass").value === state.newPassword
+          ) {
+            state.logged = true;
+            if (state.step === "d1") {
+              finishTask("d1", {
+                erros: state.d1.errors,
+                usou_recuperacao: state.d1.recovery,
+              });
+              renderOrbitaHome();
+              showStep("d2");
+            } else if (state.step === "d3") {
+              track("vitrine_login", { task: "d3", faixa_etaria: state.faixa });
+              renderOrbitaHome();
+            } else {
+              renderOrbitaHome();
+            }
+          } else {
+            state.d1.errors++;
+            document.getElementById("loginErr").classList.add("show");
+            track("form_error", { task: "login", faixa_etaria: state.faixa });
+          }
+        };
+        document.getElementById("togglePass").onclick = () => {
+          const input = document.getElementById("loginPass");
+          const showing = input.type === "password";
+          input.type = showing ? "text" : "password";
+          const button = document.getElementById("togglePass");
+          button.innerHTML = passwordEyeIcon(showing);
+          button.setAttribute("aria-label", showing ? "Ocultar senha" : "Mostrar senha");
+          button.title = showing ? "Ocultar senha" : "Mostrar senha";
+        };
+        document.getElementById("forgot").onclick = showRecovery;
+        document
+          .querySelectorAll("[data-home]")
+          .forEach((x) => (x.onclick = openHome));
+      }
+      function showRecovery() {
+        state.d1.recovery = true;
+        track("nav_item_click", { item: "esqueci-senha", step_atual: "d1" });
+        const area = document.getElementById("recoveryArea");
+        document.getElementById("loginArea").hidden = true;
+        area.hidden = false;
+        if (state.recoverySent) {
+          renderRecoveryCode();
+          return;
+        }
+        area.innerHTML = `<h3>Recuperar senha</h3><p class="fine">Informe o e-mail cadastrado para receber um código de verificação.</p><div class="field"><label>E-mail</label><input id="recEmail" value="ana.silva@email.com"></div><button class="btn primary" id="sendCode" style="width:100%">Enviar código</button>`;
+        document.getElementById("sendCode").onclick = () => {
+          state.recoverySent = true;
+          renderRecoveryCode();
+        };
+      }
+      function renderRecoveryCode() {
+        const area = document.getElementById("recoveryArea");
+        area.innerHTML = `<div class="success"><b>Código enviado para seu e-mail.</b><br><span style="font-size:12px">Volte para a tela inicial do celular e abra o aplicativo <b>E-mail</b> para consultar a mensagem.</span></div><div class="field" style="margin-top:13px"><label>Código de verificação</label><input id="code" inputmode="numeric" placeholder="0000"></div><div class="error" id="codeErr">Código incorreto.</div><button class="btn primary" id="confirmCode" style="width:100%">Confirmar código</button>`;
+        document.getElementById("confirmCode").onclick = () => {
+          if (document.getElementById("code").value === "4821") {
+            area.innerHTML = `<h3>Crie uma nova senha</h3><div class="field"><label>Nova senha</label><div class="password"><input id="new1" type="password"><button class="eye" type="button" id="toggleNew1" aria-label="Mostrar senha" title="Mostrar senha">${passwordEyeIcon()}</button></div></div><div class="field"><label>Confirmar nova senha</label><div class="password"><input id="new2" type="password"><button class="eye" type="button" id="toggleNew2" aria-label="Mostrar senha" title="Mostrar senha">${passwordEyeIcon()}</button></div></div><div class="error" id="newErr">Use pelo menos 6 caracteres e repita a mesma senha.</div><button class="btn primary" id="saveNew" style="width:100%">Redefinir senha</button>`;
+            [ ["toggleNew1", "new1"], ["toggleNew2", "new2"] ].forEach(([buttonId, inputId]) => {
+              document.getElementById(buttonId).onclick = () => {
+                const input = document.getElementById(inputId);
+                const showing = input.type === "password";
+                input.type = showing ? "text" : "password";
+                const button = document.getElementById(buttonId);
+                button.innerHTML = passwordEyeIcon(showing);
+                button.setAttribute("aria-label", showing ? "Ocultar senha" : "Mostrar senha");
+                button.title = showing ? "Ocultar senha" : "Mostrar senha";
+              };
+            });
+            document.getElementById("saveNew").onclick = () => {
+              const a = document.getElementById("new1").value,
+                b = document.getElementById("new2").value;
+              if (a.length >= 6 && a === b) {
+                state.newPassword = a;
+                area.innerHTML =
+                  '<div class="success"><b>Senha redefinida.</b><br><span style="font-size:12px">Agora volte ao login.</span></div><button class="btn primary" id="backLogin" style="width:100%;margin-top:12px">Voltar para login</button>';
+                document.getElementById("backLogin").onclick =
+                  renderOrbitaLogin;
+              } else document.getElementById("newErr").classList.add("show");
+            };
+          } else document.getElementById("codeErr").classList.add("show");
+        };
+      }
+
+      function renderOrbitaHome() {
+        document.getElementById("vitrineView").innerHTML =
+          `<div class="app-head"><span class="brand-mark" style="width:34px;height:34px;font-size:17px">V</span><strong>Vitrine</strong><span style="margin-left:auto;font-size:12px;color:#6f7774">Olá, Ana</span></div><div class="app-content"><div id="storeHome"><div class="store-hero"><div class="store-logo"><span class="store-logo-mark">V</span><div><b>Vitrine</b><div class="fine">Compras para sua casa</div></div></div><strong>O que você está procurando?</strong><span class="fine">Encontre produtos, compare preços e compre com segurança.</span></div><div class="category-row"><button class="category" data-category="Todos">Todos</button><button class="category" data-category="Móveis">Móveis</button><button class="category" data-category="Casa">Casa</button><button class="category" data-category="Tecnologia">Tecnologia</button></div><div style="display:flex;justify-content:space-between;align-items:center;margin:4px 0 9px"><b>Ofertas para você</b><button class="link" id="viewAll">Ver tudo</button></div><div class="products"><div class="product featured-product" data-featured-product="Cadeira Ipê" role="button" aria-label="Selecionar Cadeira Ipê" tabindex="0" style="cursor:pointer"><div class="product-img">${productArt("Cadeira Ipê")}</div><strong>Cadeira Ipê</strong><small>Entrega grátis · Em estoque</small><div class="price-tag">R$ 650,00</div></div><div class="product featured-product" data-featured-product="Cadeira Slim" role="button" aria-label="Selecionar Cadeira Slim" tabindex="0" style="cursor:pointer"><div class="product-img">${productArt("Cadeira Slim")}</div><strong>Cadeira Slim</strong><small>Em estoque</small><div class="price-tag">R$ 480,00</div></div></div><div style="margin-top:14px;background:#f5f7fa;border-radius:12px;padding:12px"><b style="font-size:13px">Compra segura</b><p class="fine" style="margin:3px 0 0">Você escolhe como pagar somente no final da compra.</p></div></div><div id="storeShop" hidden></div><div id="accountArea" hidden></div></div><div class="app-nav"><button class="navbtn active" data-o="home">${svg("home")}Início</button><button class="navbtn" data-o="shop">${svg("bag")}Loja</button><button class="navbtn" data-o="account">${svg("user")}Conta</button></div>`;
+        const chooseFeaturedProduct = (name) => {
+          openStore();
+          const card = Array.from(document.querySelectorAll("[data-product-card]")).find(el => el.dataset.productCard === name);
+          if (card) card.click();
+        };
+        document.querySelectorAll("[data-featured-product]").forEach(card => {
+          card.addEventListener("click", () => chooseFeaturedProduct(card.dataset.featuredProduct));
+          card.addEventListener("keydown", e => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              chooseFeaturedProduct(card.dataset.featuredProduct);
+            }
+          });
+        });
+        document.querySelectorAll("[data-category]").forEach(b => b.onclick = () => { openStore(); state.d3.category = b.dataset.category; renderProducts(); });
+        document.getElementById("viewAll")?.addEventListener("click", () => { openStore(); state.d3.category = "Todos"; renderProducts(); });
+        document.querySelectorAll(".navbtn").forEach(
+          (b) =>
+            (b.onclick = () => {
+              const t = b.dataset.o;
+              if (t === "shop" && state.step === "d3") openStore();
+              else if (t === "account" && state.step === "d2") openAccount();
+              else if (t === "home") {
+                document.getElementById("storeHome").hidden = false;
+                document.getElementById("storeShop").hidden = true;
+                document.getElementById("accountArea").hidden = true;
+                setNav("home");
+              } else {
+                if (state[state.step] && "decoys" in state[state.step])
+                  state[state.step].decoys++;
+                track("decoy_click", {
+                  item: "aba-" + t,
+                  step_atual: state.step,
+                });
+              }
+            }),
+        );
+        document
+          .querySelectorAll("[data-home]")
+          .forEach((x) => (x.onclick = openHome));
+      }
+      function setNav(t) {
+        document
+          .querySelectorAll(".navbtn")
+          .forEach((b) => b.classList.toggle("active", b.dataset.o === t));
+      }
+      function openStore() {
+        setNav("shop");
+        document.getElementById("storeHome").hidden = true;
+        document.getElementById("accountArea").hidden = true;
+        document.getElementById("storeShop").hidden = false;
+        renderStore();
+      }
+      const products = [
+        { name: "Cadeira Ipê", price: 650, stock: true, category: "Móveis" },
+        { name: "Cadeira Slim", price: 480, stock: true, category: "Móveis" },
+        { name: "Cadeira Premium", price: 899, stock: true, category: "Móveis" },
+        { name: "Banco Cumaru", price: 450, stock: true, category: "Móveis" },
+        { name: "Aparador Sucupira", price: 990, stock: false, category: "Casa" },
+        { name: "Mesa Angico", price: 2100, stock: true, category: "Casa" },
+        { name: "Luminária Nuvem", price: 189, stock: true, category: "Casa" },
+        { name: "Fone Aurora", price: 299, stock: true, category: "Tecnologia" },
+        { name: "Caixa de som Brisa", price: 220, stock: true, category: "Tecnologia" },
+      ];
+      function renderStore() {
+        document.getElementById("storeShop").innerHTML =
+          `<div class="store-tools"><input class="search" placeholder="Buscar produto"><button class="filter-button" id="filterBtn">Filtrar</button></div><div class="filter-panel" id="filterPanel"><div class="filter-title">Filtrar produtos</div><div class="filter-grid"><label class="check"><input type="checkbox" id="catFurniture"> Móveis</label><label class="check"><input type="checkbox" id="stock"> Em estoque</label></div><div style="margin-top:10px;font-size:11px;font-weight:700">Preço</div><div class="price"><input id="min" placeholder="Mínimo"><input id="max" placeholder="Máximo"></div><button class="btn primary apply-filter" id="applyFilter">Aplicar filtros</button></div><div class="chips" id="chips"></div><div id="productFeedback" class="error" role="status" style="margin:10px 0"></div><div class="products" id="products"></div>`;
+        document.getElementById("filterBtn").onclick = () =>
+          document.getElementById("filterPanel").classList.toggle("open");
+        document.getElementById("applyFilter").onclick = () => {
+          state.d3.filters = true;
+          renderProducts();
+          document.getElementById("filterPanel").classList.remove("open");
+          track("filter_applied", {
+            task: "compra",
+            faixa_etaria: state.faixa,
+          });
+        };
+        renderProducts();
+      }
+      function productArt(name) {
+        const chair = name.toLowerCase().includes("cadeira");
+        const slim = name.toLowerCase().includes("slim");
+        if (chair)
+          return `<svg viewBox="0 0 120 100" fill="none" aria-hidden="true"><path d="M34 18h48v34H34z" fill="${slim ? "#d8e2e8" : "#b9c8bd"}"/><path d="M38 52h44l9 35H29l9-35z" fill="${slim ? "#9aaebb" : "#718477"}"/><path d="M45 87v8M75 87v8M35 87v8M85 87v8" stroke="#35403b" stroke-width="5" stroke-linecap="round"/><path d="M40 25h36" stroke="#fff" stroke-width="3" opacity=".65"/></svg>`;
+        return `<svg viewBox="0 0 120 100" fill="none" aria-hidden="true"><path d="M25 67h70v10H25z" fill="#a9b4b0"/><path d="M34 40h52v27H34z" fill="#d7dfdc"/><path d="M40 77v16M80 77v16" stroke="#45514c" stroke-width="5" stroke-linecap="round"/><path d="M40 45h40" stroke="#fff" stroke-width="3" opacity=".7"/></svg>`;
+      }
+      function renderProducts() {
+        const min = parseFloat(document.getElementById("min")?.value) || 0,
+          max = parseFloat(document.getElementById("max")?.value) || Infinity,
+          only = document.getElementById("stock")?.checked;
+        const q = document.querySelector(".search")?.value.toLowerCase() || "";
+        const arr = products.filter(
+          (p) =>
+            p.price >= min &&
+            p.price <= max &&
+            (!only || p.stock) &&
+            p.name.toLowerCase().includes(q) &&
+            (!state.d3.category || state.d3.category === "Todos" || p.category === state.d3.category),
+        );
+        document.getElementById("products").innerHTML =
+          arr
+            .map(
+              (p) =>
+                `<div class="product ${!(p.name.toLowerCase().includes("cadeira") && p.stock && p.price >= 400 && p.price <= 700) ? "wrong" : ""}" data-product-card="${p.name}" role="button" aria-label="Selecionar ${p.name}" tabindex="0" style="cursor:pointer"><div class="product-img">${productArt(p.name)}</div><strong>${p.name}</strong><small>${p.stock ? "Em estoque" : "Indisponível"}</small><div class="price-tag">R$ ${p.price.toFixed(2).replace(".", ",")}</div></div>`,
+            )
+            .join("") || '<p class="fine">Nenhum produto encontrado.</p>';
+        const selectProduct = (name) => {
+          const p = products.find((x) => x.name === name);
+          if (!p) return;
+          if (!p.stock || !p.name.toLowerCase().includes("cadeira") || p.price < 400 || p.price > 700) {
+            state.d3.wrongProduct++;
+            const motivo = !p.stock ? "indisponível em estoque" : "não atende aos critérios do desafio";
+            track("wrong_product", {
+              produto: p.name,
+              motivo,
+              faixa_etaria: state.faixa,
+              desafio: "d3",
+            });
+            const feedback = document.getElementById("productFeedback");
+            if (feedback) {
+              feedback.textContent = `${p.name}: este produto ${motivo}. Escolha uma cadeira entre R$ 400 e R$ 700 que esteja em estoque.`;
+              feedback.classList.add("show");
+              feedback.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+            return;
+          }
+          state.cart = p;
+          renderCheckout();
+        };
+        document.querySelectorAll("[data-product-card]").forEach(card => {
+          card.onclick = () => selectProduct(card.dataset.productCard);
+          card.onkeydown = e => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); selectProduct(card.dataset.productCard); } };
+        });
+        document
+          .querySelector(".search")
+          ?.addEventListener("input", renderProducts);
+      }
+      function renderCheckout() {
+        document.getElementById("storeShop").innerHTML =
+          `<button class="link" id="backToProducts" type="button" style="margin-bottom:10px">‹ Voltar aos produtos</button><div class="checkout-card"><small class="fine">Resumo da compra</small><div style="display:flex;gap:10px;align-items:center;margin-top:8px"><div class="product-img" style="width:78px;height:68px!important;flex:none">${productArt(state.cart.name)}</div><div><strong>${state.cart.name}</strong><small>1 unidade · Entrega grátis</small><div class="price-tag">R$ ${state.cart.price.toFixed(2).replace(".", ",")}</div></div></div></div><h3>Pagamento</h3><p class="fine">Você escolheu ${state.cart.name}. Gere o código Pix e use-o no aplicativo do banco para concluir o pagamento no próximo desafio.</p><div class="payment-list"><label class="payment selected"><input type="radio" checked disabled> Pix</label></div><button class="btn primary" id="generatePix" style="width:100%">Gerar código Pix</button>`;
+        document.getElementById("backToProducts").onclick = () => renderStore();
+        document.getElementById("generatePix").onclick = () => {
+          state.pixPending = {
+            product: state.cart.name,
+            price: state.cart.price,
+            code:
+              "00020126580014BR.GOV.BCB.PIX0136vitrine-pedido-3381-" +
+              Date.now(),
+          };
+          finishTask("d3", {
+            filtros_aplicados: state.d3.filters,
+            produto_errado: state.d3.wrongProduct,
+          });
+          document.getElementById("storeShop").innerHTML =
+            `<button class="link" id="backToCheckout" type="button" style="margin-bottom:10px">‹ Voltar ao resumo da compra</button><div class="success"><b>Pix gerado</b><br><span style="font-size:12px">Agora o pedido está aguardando pagamento.</span></div><div class="pix-payment-card"><b>${state.cart.name}</b><div class="price-tag">R$ ${state.cart.price.toFixed(2).replace(".", ",")}</div><p class="fine">No próximo desafio, abra o aplicativo do banco e <strong>copie o código Pix abaixo para colar no campo de pagamento</strong>.</p><div class="field"><label>Código Pix copia e cola</label><textarea readonly id="generatedPixCode">${state.pixPending.code}</textarea><button class="btn secondary" id="copyGeneratedPix" type="button">Copiar código Pix</button></div></div><button class="btn primary" id="nextD4" style="width:100%;margin-top:12px">Continuar</button>`;
+          document.getElementById("backToCheckout").onclick = () => renderCheckout();
+          document.getElementById("copyGeneratedPix")?.addEventListener("click", async () => { const el=document.getElementById("generatedPixCode"); el.select(); try { await navigator.clipboard.writeText(el.value); document.getElementById("copyGeneratedPix").textContent="Código copiado"; } catch(e) { document.execCommand("copy"); } });
+          document.getElementById("nextD4").onclick = () => showStep("d4");
+        };
+      }
+
+      function mockQr() {
+        const cells = [];
+        for (let r = 0; r < 21; r++) {
+          for (let c = 0; c < 21; c++) {
+            const finder =
+              (r < 7 && c < 7) || (r < 7 && c > 13) || (r > 13 && c < 7);
+            const edge =
+              r === 0 ||
+              r === 6 ||
+              c === 0 ||
+              c === 6 ||
+              r === 14 ||
+              r === 20 ||
+              c === 14 ||
+              c === 20;
+            const inner = r > 1 && r < 5 && c > 1 && c < 5;
+            const fill = finder
+              ? edge || inner
+              : (r * 7 + c * 11 + r * c) % 5 === 0;
+            if (fill)
+              cells.push(
+                `<rect x="${c + 1}" y="${r + 1}" width="1" height="1"/>`,
+              );
+          }
+        }
+        return `<svg viewBox="0 0 23 23" role="img">${cells.join("")}</svg>`;
+      }
+
+      /* account */
+      function openAccount() {
+        setNav("account");
+        document.getElementById("storeHome").hidden = true;
+        document.getElementById("storeShop").hidden = true;
+        document.getElementById("accountArea").hidden = false;
+        renderAccount("profile");
+      }
+      function renderAccount(stage) {
+        const a = document.getElementById("accountArea");
+        if (stage === "profile") {
+          a.innerHTML = `<div class="profile-head"><div class="avatar">AS</div><div><b>Ana Silva</b><div class="fine">ana.silva@email.com</div></div></div><h3>Dados pessoais</h3><div class="field"><label>Telefone</label><input id="phoneEdit" value="(31) 98888-1200"></div><button class="btn primary" id="saveProfile" style="width:100%">Salvar alterações</button>`;
+          document.getElementById("saveProfile").onclick = () => {
+            if (
+              document.getElementById("phoneEdit").value.replace(/\D/g, "")
+                .length >= 8
+            ) {
+              track("profile_edit_complete", { faixa_etaria: state.faixa });
+              renderAccount("menu");
+            } else alert("Informe um telefone válido.");
+          };
+        } else if (stage === "menu") {
+          a.innerHTML = `<h3>Minha conta</h3><p class="fine">Encontre nas opções abaixo o recurso que deseja usar.</p><button class="account-row">Seus pedidos <span>›</span></button><button class="account-row" id="openTextSettings"><span style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:8px;background:#e8f2ef;display:grid;place-items:center;font-weight:850;color:var(--brand)">Aa</span> Acessibilidade e texto</span><span>›</span></button><button class="account-row">Métodos de pagamento <span>›</span></button><button class="account-row">Endereços <span>›</span></button><button class="account-row">Preferências <span>›</span></button><button class="account-row">Central de ajuda <span>›</span></button><button class="account-row logout" id="logoutBtn">Sair <span>›</span></button>`;
+          document.getElementById("openTextSettings").onclick = () => {
+            track("nav_item_click", {
+              item: "acessibilidade-texto",
+              step_atual: "d2",
+            });
+            renderAccount("accessibility");
+          };
+          document.getElementById("logoutBtn").onclick = () => {
+            track("nav_item_click", { item: "sair", step_atual: "d2" });
+            document.getElementById("logoutModal").classList.add("open");
+          };
+        } else if (stage === "accessibility") {
+          a.innerHTML = `<div style="display:flex;align-items:center;gap:9px;margin-bottom:12px"><button class="back" id="backAccountMenu">‹</button><div><h3 style="margin:0">Tamanho do texto</h3><div class="fine">Ajuste a leitura do aplicativo</div></div></div><div class="font-control"><div class="aa-row"><b style="font-size:14px">A</b><b style="font-size:24px">A+</b></div><div class="font-size-preview" id="fontPreview">Exemplo de texto da sua conta</div><input class="font-slider" id="fontSlider" type="range" min="14" max="22" value="16"></div><button class="btn primary" id="fontContinue" style="width:100%;margin-top:13px" disabled>Concluir</button>`;
+          document.getElementById("backAccountMenu").onclick = () =>
+            renderAccount("menu");
+          document.getElementById("fontSlider").oninput = (e) => {
+            state.font = +e.target.value;
+            document.getElementById("fontPreview").style.fontSize =
+              state.font + "px";
+            if (state.font > 16) {
+              state.d2.fontFound = true;
+              document.getElementById("fontContinue").disabled = false;
+            }
+          };
+          document.getElementById("fontContinue").onclick = () =>
+            renderAccount("menuAfterFont");
+        } else {
+          a.innerHTML = `<h3>Minha conta</h3><p class="fine">Encontre a opção para encerrar sua sessão.</p><button class="account-row">Seus pedidos <span>›</span></button><button class="account-row">Métodos de pagamento <span>›</span></button><button class="account-row">Endereços <span>›</span></button><button class="account-row">Preferências <span>›</span></button><button class="account-row">Central de ajuda <span>›</span></button><button class="account-row logout" id="logoutBtn">Sair <span>›</span></button>`;
+          document.getElementById("logoutBtn").onclick = () => {
+            track("nav_item_click", { item: "sair", step_atual: "d2" });
+            document.getElementById("logoutModal").classList.add("open");
+          };
+        }
+      }
+      document.getElementById("cancelLogout").onclick = () =>
+        document.getElementById("logoutModal").classList.remove("open");
+      document.getElementById("confirmLogout").onclick = () => {
+        document.getElementById("logoutModal").classList.remove("open");
+        state.logged = false;
+        finishTask("d2", {
+          fonte_encontrada: state.d2.fontFound,
+          cliques_isca: state.d2.decoys,
+        });
+        document.getElementById("vitrineView").innerHTML = "";
+        showStep("d3");
+      };
+
+      /* bank */
+      function renderBank() {
+        document.getElementById("bancoView").innerHTML =
+          `<div class="app-head"><button class="back" data-home>‹</button>Banco Horizonte</div><div class="app-content"><div id="bankHome"><div class="bank-head"><small>Saldo disponível</small><div class="balance">R$ 1.590,00</div><small>Agência 0123 · Conta 45678-9</small></div><div class="bank-actions"><button class="bank-action" id="bankPix">${svg("pix")}Pix</button><button class="bank-action" data-bank-decoy>Pagar</button><button class="bank-action" data-bank-decoy>Extrato</button><button class="bank-action" data-bank-decoy>Cartões</button></div><div class="statement"><b style="font-size:13px">Últimas movimentações</b><div class="transaction"><span>Supermercado BH<small>Hoje · 14:32</small></span><b>- R$ 82,40</b></div><div class="transaction"><span>Salário<small>Ontem</small></span><b class="positive">+ R$ 2.100,00</b></div><div class="transaction"><span>Uber<small>Ontem · 19:08</small></span><b>- R$ 18,90</b></div></div></div><div id="pixArea" hidden></div></div>`;
+        document.getElementById("bankPix").onclick = renderPix;
+        document
+          .querySelectorAll("[data-bank-decoy]")
+          .forEach(
+            (b) =>
+              (b.onclick = () =>
+                track("decoy_click", {
+                  item: "banco-" + b.textContent.toLowerCase(),
+                  step_atual: state.step,
+                })),
+          );
+        document
+          .querySelectorAll("[data-home]")
+          .forEach((x) => (x.onclick = openHome));
+      }
+      const contacts = [
+        { name: "Carlos Eduardo", key: "CPF •••.•••.321-09" },
+        { name: "Marcos Aurélio", key: "CPF •••.•••.789-00" },
+        { name: "Juliana Prado", key: "e-mail ju.p•••@email.com" },
+        { name: "Fernanda Lima", key: "telefone (31) •••••-4021" },
+      ];
+      function renderPix() {
+        const a = document.getElementById("pixArea");
+        document.getElementById("bankHome").hidden = true;
+        a.hidden = false;
+        const pending = state.pixPending || {
+          product: "Cadeira Ipê",
+          price: 650,
+          code: "demo",
+        };
+        a.innerHTML = `<div class="pix-brand"><div class="pix-logo">PIX</div><div><b>Pagar com Pix</b><div class="fine">Pedido da Vitrine aguardando pagamento</div></div></div><div class="checkout-card"><div style="display:flex;justify-content:space-between;gap:10px"><span><b>${pending.product}</b><br><span class="fine">Vitrine · Pedido #3381</span></span><b>R$ ${pending.price.toFixed(2).replace(".", ",")}</b></div></div><p class="fine">Para pagar, <strong>copie o código Pix da tela anterior e cole no campo abaixo</strong>.</p><button class="btn secondary" id="pastePix" style="width:100%;margin-top:8px">Usar Pix copia e cola</button><div id="pixPayArea" style="margin-top:14px"></div>`;
+        document.getElementById("pastePix").onclick = () => {
+          state.d4.search = true;
+          document.getElementById("pixPayArea").innerHTML =
+            `<div class="field"><label>Código Pix copia e cola</label><textarea id="pixPasteCode" style="width:100%;min-height:74px;border:1px solid var(--line);border-radius:10px;padding:8px;font-size:10px" placeholder="Cole aqui o código Pix"></textarea><small class="fine">Use o código exibido no desafio anterior.</small></div><button class="btn primary" id="continuePaste" style="width:100%">Continuar</button>`;
+          document.getElementById("continuePaste").onclick = () => {
+            if(document.getElementById("pixPasteCode").value.trim() !== pending.code) { document.getElementById("pixPasteCode").style.borderColor="#c33"; return; }
+            showPixConfirmation(pending);
+          };
+        };
+      }
+      function showPixConfirmation(pending) {
+        const a = document.getElementById("pixPayArea");
+        a.innerHTML = `<div class="pix-review"><div class="review-line"><span>Recebedor</span><b>Vitrine Comércio</b></div><div class="review-line"><span>Pedido</span><b>#3381</b></div><div class="review-line"><span>Valor</span><b>R$ ${pending.price.toFixed(2).replace(".", ",")}</b></div></div><div class="consent"><input id="pixCheck" type="checkbox"><label for="pixCheck">Confirmo os dados de pagamento.</label></div><button class="btn primary" id="confirmPix" disabled style="width:100%;margin-top:12px">Confirmar pagamento</button>`;
+        document.getElementById("pixCheck").onchange = (e) =>
+          (document.getElementById("confirmPix").disabled = !e.target.checked);
+        document.getElementById("confirmPix").onclick = () => {
+          finishTask("d4", {
+            usou_copia_cola: state.d4.search,
+          });
+          state.pixPending = null;
+          a.innerHTML =
+            '<div class="success"><b>Desafio 4 concluído</b><br><span style="font-size:12px">Pagamento da Vitrine confirmado com sucesso.</span></div><button class="btn primary" id="nextD5" style="width:100%;margin-top:12px">Continuar</button>';
+          document.getElementById("nextD5").onclick = () => showStep("d5");
+        };
+      }
+
+      function drawContacts(q) {
+        const el = document.getElementById("contacts");
+        el.innerHTML = contacts
+          .filter((c) => c.name.toLowerCase().includes(q.toLowerCase()))
+          .map(
+            (c) =>
+              `<button class="contact ${state.selectedContact === c.name ? "selected" : ""}" data-contact="${c.name}" style="width:100%;text-align:left;background:none;border:0">${c.name}<br><span class="fine">${c.key}</span></button>`,
+          )
+          .join("");
+        document.querySelectorAll("[data-contact]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              state.selectedContact = b.dataset.contact;
+              drawContacts(document.getElementById("pixSearch").value);
+            }),
+        );
+      }
+
+      /* email */
+      const mails = [
+        {
+          id: "order",
+          sender: "Vitrine",
+          subject: "Seu pedido foi enviado",
+          preview: "Seu pedido #3381 saiu para entrega.",
+          time: "09:14",
+          body: "Seu pedido #3381 saiu para entrega. Você pode acompanhar a entrega pelo aplicativo Vitrine.",
+          scam: false,
+        },
+        {
+          id: "invoice",
+          sender: "Vitrine Faturas",
+          subject: "Sua fatura está disponível",
+          preview: "A fatura de outubro já está disponível.",
+          time: "08:02",
+          body: "Sua fatura de outubro já está disponível para consulta dentro do aplicativo.",
+          scam: false,
+        },
+        {
+          id: "security",
+          sender: "seguranca-vitrine@protonmail.com",
+          subject: "URGENTE: sua conta será bloqueada",
+          preview: "Confirme seus dados imediatamente para evitar bloqueio.",
+          time: "07:41",
+          body: "Detectamos uma atividade incomum. Sua conta será bloqueada hoje. Clique no link abaixo e confirme seus dados bancários imediatamente.",
+          scam: true,
+        },
+      ];
+      function renderMail() {
+        document.getElementById("emailView").innerHTML =
+          `<div class="app-head"><button class="back" data-home>‹</button><div class="mail-brand"><span class="mail-logo">@</span><b>E-mail</b></div></div><div class="app-content" style="padding:0" id="mailContent"></div>`;
+        drawMailList();
+        document
+          .querySelectorAll("[data-home]")
+          .forEach((x) => (x.onclick = openHome));
+      }
+      function drawMailList() {
+        const recovery = state.recoverySent
+          ? `<button class="mail-row unread" data-recovery-mail><span class="mail-dot"></span><span class="mail-main"><span class="mail-sender">Vitrine</span><br><span class="mail-subject">Código para redefinir sua senha</span><br><span class="mail-preview">Seu código de verificação é 4821.</span></span><span class="mail-time">agora</span></button>`
+          : "";
+        document.getElementById("mailContent").innerHTML =
+          `<div style="padding:12px 15px;font-size:11px;color:var(--muted)"><b>Caixa de entrada</b> · ${state.recoverySent ? "4" : "3"} mensagens</div>` +
+          recovery +
+          mails
+            .map(
+              (m) =>
+                `<button class="mail-row unread" data-mail="${m.id}"><span class="mail-dot"></span><span class="mail-main"><span class="mail-sender">${m.sender}</span><br><span class="mail-subject">${m.subject}</span><br><span class="mail-preview">${m.preview}</span></span><span class="mail-time">${m.time}</span></button>`,
+            )
+            .join("");
+        document
+          .querySelectorAll("[data-mail]")
+          .forEach((b) => (b.onclick = () => openMail(b.dataset.mail)));
+        document
+          .querySelector("[data-recovery-mail]")
+          ?.addEventListener("click", () => openRecoveryMail());
+      }
+      function openRecoveryMail() {
+        document.getElementById("mailContent").innerHTML =
+          `<div class="mail-detail"><button class="link" id="backInboxRecovery">‹ Caixa de entrada</button><h3>Código para redefinir sua senha</h3><p class="fine">De: Vitrine &lt;nao-responda@vitrine.com&gt;</p><p style="font-size:13px">Use o código abaixo para continuar a recuperação da sua conta.</p><div class="success" style="text-align:center;font-size:24px;letter-spacing:.15em"><b>4821</b></div><button class="btn primary" id="backOrbitaRecovery" style="width:100%;margin-top:12px">Voltar ao Vitrine</button></div>`;
+        document.getElementById("backInboxRecovery").onclick = drawMailList;
+        document.getElementById("backOrbitaRecovery").onclick = () => {
+          state.recoverySent = true;
+          openApp("vitrine");
+          // Recria a tela de login e abre diretamente a etapa de confirmação do código.
+          const loginArea = document.getElementById("loginArea");
+          const recoveryArea = document.getElementById("recoveryArea");
+          if (loginArea && recoveryArea) {
+            loginArea.hidden = true;
+            recoveryArea.hidden = false;
+            renderRecoveryCode();
+          }
+        };
+      }
+      function openMail(id) {
+        const m = mails.find((x) => x.id === id);
+        document.getElementById("mailContent").innerHTML =
+          `<div class="mail-detail"><button class="link" id="backInbox">‹ Caixa de entrada</button><div class="suspicious-label" style="color:${m.scam ? "#9e3329" : "#66716d"}">${m.scam ? "Verifique esta mensagem com atenção" : "Mensagem recebida"}</div><h3 style="margin-top:6px">${m.subject}</h3><p class="fine">De: ${m.sender}</p><p style="font-size:13px">${m.body}</p>${m.scam ? '<div class="warning-box"><b>Antes de clicar:</b><br>Confira o remetente, a urgência do pedido e para onde o link levaria.<br><a href="#" id="suspiciousLink" style="display:inline-block;margin-top:8px;color:#b13b30;font-weight:800">Clique aqui para confirmar seus dados</a></div>' : ""}<div class="mail-actions"><button class="btn secondary" id="archive">Arquivar</button><button class="btn danger" id="report">Marcar como suspeita</button></div><div class="error" id="mailErr" style="margin-top:10px">Não é necessário abrir o link para concluir a tarefa. Analise a mensagem e decida o que fazer.</div></div>`;
+        document.getElementById("backInbox").onclick = drawMailList;
+        document
+          .getElementById("suspiciousLink")
+          ?.addEventListener("click", (e) => {
+            e.preventDefault();
+            track("suspicious_link_click", {
+              task: "email",
+              faixa_etaria: state.faixa,
+            });
+            document.getElementById("mailErr")?.classList.add("show");
+          });
+        document.getElementById("archive").onclick = () => {
+          if (m.scam) {
+            state.d5.falsePositive++;
+            document.getElementById("mailErr").classList.add("show");
+            track("false_positive", {
+              task: "email",
+              faixa_etaria: state.faixa,
+            });
+          } else drawMailList();
+        };
+        document.getElementById("report").onclick = () => {
+          if (m.scam) {
+            finishTask("d5", { falsos_positivos: state.d5.falsePositive });
+            document.getElementById("mailContent").innerHTML =
+              '<div class="mail-detail"><div class="success"><b>Desafio 5 concluído</b><br><span style="font-size:12px">Mensagem marcada como suspeita.</span><br><span style="font-size:12px">Você identificou corretamente o risco.</span></div><button class="btn primary" id="finishD5" style="width:100%;margin-top:12px">Continuar</button></div>';
+            document.getElementById("finishD5").onclick = () => showStep("sus");
+          } else {
+            state.d5.falsePositive++;
+            document.getElementById("mailErr").classList.add("show");
+            track("false_positive", {
+              task: "email",
+              faixa_etaria: state.faixa,
+            });
+          }
+        };
+      }
+
+      /* app opening */
+      document
+        .querySelectorAll(".app-tile")
+        .forEach((tile) => (tile.onclick = () => openApp(tile.dataset.app)));
+      function openApp(app) {
+        track("app_opened", { app, step_atual: state.step });
+        if (app === "vitrine") {
+          setHomeView("vitrineView");
+          if (state.step === "d3") {
+            // Desafio 3 começa com a sessão já autenticada; não solicitar login novamente.
+            state.logged = true;
+            renderOrbitaHome();
+          } else if (!state.logged) renderOrbitaLogin();
+          else {
+            renderOrbitaHome();
+            if (state.step === "d2") openAccount();
+          }
+          return;
+        }
+        if (app === "banco") {
+          setHomeView("bancoView");
+          renderBank();
+          return;
+        }
+        if (app === "email") {
+          setHomeView("emailView");
+          renderMail();
+          return;
+        }
+        document.getElementById("inertText").textContent =
+          "Este aplicativo não faz parte desta simulação.";
+        setHomeView("inertView");
+        track("decoy_click", { item: app, step_atual: state.step });
+      }
+
+      /* final */
+      const qs = [
+        "Você conseguiu concluir todos os desafios sem ajuda externa?",
+        "Você se sentiu confortável usando o celular simulado?",
+        "Você conseguiu encontrar as funções que precisava?",
+        "Você se sentiu seguro(a) para tomar as decisões durante as tarefas?",
+      ];
+      const lk = document.getElementById("likert");
+      lk.innerHTML = qs
+        .map(
+          (q, i) =>
+            `<div style="margin:0 0 22px"><b style="font-size:15px">${i + 1}. ${q}</b><div class="choices" data-q="${i}" style="margin-top:9px"><button class="choice" data-v="sim">Sim</button><button class="choice" data-v="parcialmente">Às vezes</button><button class="choice" data-v="nao">Não</button></div></div>`,
+        )
+        .join("");
+      document.querySelectorAll("[data-q]").forEach((g) =>
+        g.querySelectorAll(".choice").forEach(
+          (b) =>
+            (b.onclick = () => {
+              g.querySelectorAll(".choice").forEach((x) =>
+                x.classList.remove("selected"),
+              );
+              b.classList.add("selected");
+              state.answers[+g.dataset.q] = b.dataset.v;
+              document.getElementById("finish").disabled =
+                state.answers.length < 4 || state.answers.some((x) => !x);
+            }),
+        ),
+      );
+      document.getElementById("finish").onclick = () => {
+        // Parâmetros simples: o GTM consegue ler cada resposta diretamente.
+        const payload = {
+          faixa_etaria: state.faixa,
+          afinidade_tecnologica: state.afinidade,
+          resposta_sem_ajuda: state.answers[0],
+          resposta_conforto: state.answers[1],
+          resposta_encontrou_funcoes: state.answers[2],
+          resposta_seguranca: state.answers[3],
+        };
+        track("survey_complete", payload);
+        const orderMetrics = ["d1", "d2", "d3", "d4", "d5"];
+        const concluidos = orderMetrics.filter(k => !state[k].skipped && state[k].end > 0).length;
+        const pulados = ["d1", "d2", "d3", "d4", "d5"].filter(
+          (k) => state[k].skipped,
+        ).length;
+        const fmt = ms => { const sec=Math.max(0,Math.round(ms/1000)); return `${Math.floor(sec/60)} min ${sec%60} s`; };
+        const tempos = orderMetrics.filter(k=>!state[k].skipped && state[k].start && state[k].end).map(k=>state[k].end-state[k].start);
+        const media = tempos.length ? tempos.reduce((a,b)=>a+b,0)/tempos.length : 0;
+        track("study_result", {
+          faixa_etaria: state.faixa,
+          tempo_total_segundos: Math.round(
+            (Date.now() - state.startedAt) / 1000
+          ),
+          tempo_medio_segundos: Math.round(media / 1000),
+          desafios_pulados: pulados,
+          desafios_concluidos: concluidos,
+          // null = desafio pulado ou não concluído
+          tempo_d1_segundos: (!state.d1.skipped && state.d1.end) ? Math.round((state.d1.end - state.d1.start)/1000) : null,
+          tempo_d2_segundos: (!state.d2.skipped && state.d2.end) ? Math.round((state.d2.end - state.d2.start)/1000) : null,
+          tempo_d3_segundos: (!state.d3.skipped && state.d3.end) ? Math.round((state.d3.end - state.d3.start)/1000) : null,
+          tempo_d4_segundos: (!state.d4.skipped && state.d4.end) ? Math.round((state.d4.end - state.d4.start)/1000) : null,
+          tempo_d5_segundos: (!state.d5.skipped && state.d5.end) ? Math.round((state.d5.end - state.d5.start)/1000) : null
+        });
+        const detalhes = orderMetrics.map(k => `<li>${labels[k]}: ${state[k].skipped ? "pulado" : state[k].end ? fmt(state[k].end-state[k].start) : "não concluído"}</li>`).join("");
+        document.getElementById("resultStats").innerHTML = `<div class="success"><b>Resultado registrado.</b><br><span style="font-size:12px">Desafios concluídos: ${concluidos} · Desafios pulados: ${pulados}</span></div><div class="checkout-card" style="margin-top:12px"><h3>Métricas da sessão</h3><p><b>Tempo total:</b> ${fmt(Date.now()-state.startedAt)}</p><p><b>Tempo médio por desafio concluído:</b> ${fmt(media)}</p><p><b>Desafios pulados:</b> ${pulados} de 5</p><details><summary>Tempo em cada desafio</summary><ul>${detalhes}</ul></details></div><p class="fine">Métricas calculadas nesta sessão de teste.</p>`;
+        showStep("result");
+        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
+      };
+
+      const recentBtn = document.getElementById("recentBtn");
+      if (recentBtn) {
+        recentBtn.onclick = () => {
+          track("decoy_click", {
+            item: "android-recentes",
+            step_atual: state.step,
+          });
+        };
+      }
+
+      function applyDebugFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("debug") !== "verdade") return false;
+        const desafio = (params.get("desafio") || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+        const etapa = (params.get("etapa") || "").toLowerCase().replace(/[^a-z0-9-]/g, "");
+        const aliases = { "1":"d1", "2":"d2", "3":"d3", "4":"d4", "5":"d5", d1:"d1", d2:"d2", d3:"d3", d4:"d4", d5:"d5", avaliacao:"sus", sus:"sus", concluido:"result", result:"result" };
+        let target = aliases[desafio] || aliases[etapa] || (steps.includes(etapa) ? etapa : null);
+        if (!target) target = "welcome";
+        state.faixa = state.faixa || "18-29"; state.afinidade = state.afinidade || "media";
+        if (["d1","d2","d3","d4","d5"].includes(target)) { showStep(target); if(target==="d1") { setHomeView("vitrineView"); renderOrbitaLogin(); } if(target==="d2") { setHomeView("vitrineView"); state.logged=true; renderOrbitaHome(); openAccount(); } if(target==="d3") { setHomeView("vitrineView"); state.logged=true; renderOrbitaHome(); } if(target==="d4") { setHomeView("bancoView"); renderBank(); renderPix(); } if(target==="d5") { setHomeView("emailView"); renderMail(); } }
+        else showStep(target);
+        console.info("[DEBUG] tela aberta:", target, {desafio, etapa});
+        return true;
+      }
+      if (!applyDebugFromUrl()) showStep("welcome");
+    </script>
+  </body>
+</html>

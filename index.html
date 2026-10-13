@@ -383,13 +383,33 @@
 
     <script>
       window.dataLayer = window.dataLayer || [];
+
+      // O GTM preserva o último valor de cada chave na camada de dados.
+      // Limpamos os campos de eventos anteriores no MESMO push do evento atual,
+      // evitando que uma tag leia, por exemplo, o produto de um erro anterior.
+      // Não mexemos nas chaves internas do GTM (gtm.*, event, etc.).
+      const camposDeRastreamento = [
+        "faixa_etaria", "afinidade_tecnologica", "step_name", "step_atual",
+        "task", "app", "item", "produto", "motivo", "desafio",
+        "tempo_segundos", "erros", "usou_recuperacao", "fonte_encontrada",
+        "cliques_isca", "filtros_aplicados", "produto_errado", "usou_copia_cola",
+        "falsos_positivos", "resposta_sem_ajuda", "resposta_conforto",
+        "resposta_encontrou_funcoes", "resposta_seguranca",
+        "tempo_total_segundos", "tempo_medio_segundos", "desafios_pulados",
+        "desafios_concluidos", "tempo_d1_segundos", "tempo_d2_segundos",
+        "tempo_d3_segundos", "tempo_d4_segundos", "tempo_d5_segundos"
+      ];
+      const camposLimpos = Object.fromEntries(
+        camposDeRastreamento.map(campo => [campo, undefined])
+      );
+
       function track(event, params = {}) {
         // Os quatro eventos analisados no TCC levam sempre a faixa etária.
         const eventosPesquisa = ["wrong_product", "decoy_click", "study_result", "survey_complete"];
         const dados = eventosPesquisa.includes(event)
           ? { faixa_etaria: state.faixa, ...params }
           : params;
-        window.dataLayer.push({ event, ...dados });
+        window.dataLayer.push({ ...camposLimpos, ...dados, event });
         console.log("[dataLayer]", event, dados);
       }
       const state = {
