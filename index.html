@@ -69,16 +69,15 @@
           <div class="card">
             <span class="eyebrow">Antes de começar</span>
             <h2>Sobre você</h2>
-            <p class="lead">
-              Não informe nome, e-mail ou qualquer dado pessoal real.
-            </p>
+
             <div class="choice-group">
               <span class="group-label">Faixa etária</span>
               <div class="choices" data-key="faixa">
-                <button class="choice" data-value="<18">Menos de 18</button><button class="choice" data-value="18-29">18–29</button
-                ><button class="choice" data-value="30-49">30–49</button
-                ><button class="choice" data-value="50-64">50–64</button
-                ><button class="choice" data-value="65+">65+</button>
+                <button class="choice" data-value="13-29">13–29 · Geração Z</button
+                ><button class="choice" data-value="30-45">30–45 · Millennials</button
+                ><button class="choice" data-value="46-61">46–61 · Geração X</button
+                ><button class="choice" data-value="62-80">62–80 · Baby Boomers</button
+                ><button class="choice" data-value="81+">81+ · Geração Silenciosa</button>
               </div>
             </div>
             <div class="choice-group">
@@ -455,6 +454,7 @@
         const dados = eventosPesquisa.includes(event)
           ? {
               faixa_etaria: state.faixa,
+              afinidade_tecnologica: state.afinidade,
               id_usuario: state.idUsuario,
               id_participacao: state.idParticipacao,
               tipo_coleta: tipoColeta,
@@ -1336,7 +1336,7 @@
         let target = aliases[desafio] || aliases[etapa] || (steps.includes(etapa) ? etapa : null);
         if (!target) target = "welcome";
         iniciarParticipacao();
-        state.faixa = state.faixa || "18-29"; state.afinidade = state.afinidade || "media";
+        state.faixa = state.faixa || "13-29"; state.afinidade = state.afinidade || "media";
         if (["d1","d2","d3","d4","d5"].includes(target)) { showStep(target); if(target==="d1") { setHomeView("vitrineView"); renderOrbitaLogin(); } if(target==="d2") { setHomeView("vitrineView"); state.logged=true; renderOrbitaHome(); openAccount(); } if(target==="d3") { setHomeView("vitrineView"); state.logged=true; renderOrbitaHome(); } if(target==="d4") { setHomeView("bancoView"); renderBank(); renderPix(); } if(target==="d5") { setHomeView("emailView"); renderMail(); } }
         else showStep(target);
         console.info("[DEBUG] tela aberta:", target, {desafio, etapa});
