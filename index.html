@@ -36,6 +36,7 @@
         <section class="step active" data-step="welcome">
           <div class="card">
             <span class="eyebrow">Pesquisa acadêmica · TCC</span>
+            <p id="studyModeNotice" class="fine" style="margin:5px 0 10px"></p>
             <h1>Como diferentes gerações usam interfaces digitais?</h1>
             <p class="lead">
               Nesta pesquisa, você irá realizar uma simulação de uso de celular
@@ -397,23 +398,79 @@
         "resposta_encontrou_funcoes", "resposta_seguranca",
         "tempo_total_segundos", "tempo_medio_segundos", "desafios_pulados",
         "desafios_concluidos", "tempo_d1_segundos", "tempo_d2_segundos",
-        "tempo_d3_segundos", "tempo_d4_segundos", "tempo_d5_segundos"
+        "tempo_d3_segundos", "tempo_d4_segundos", "tempo_d5_segundos",
+        "id_usuario", "id_participacao", "tipo_coleta",
+        "total_erros_produto", "total_cliques_distratores"
       ];
       const camposLimpos = Object.fromEntries(
         camposDeRastreamento.map(campo => [campo, undefined])
       );
 
+      // A URL normal é a coleta oficial. Para testes use ?coleta=teste.
+      // O modo de depuração (?debug=verdade) também é sempre classificado como teste.
+      const parametrosColeta = new URLSearchParams(window.location.search);
+      const tipoColeta = parametrosColeta.get("coleta") === "teste" ||
+        parametrosColeta.get("debug") === "verdade" ? "teste" : "oficial";
+
+      function novoIdAleatorio() {
+        if (window.crypto && typeof window.crypto.randomUUID === "function") {
+          return window.crypto.randomUUID();
+        }
+        // Alternativa para navegadores antigos: sem informação pessoal.
+        const bytes = new Uint8Array(16);
+        if (window.crypto && window.crypto.getRandomValues) window.crypto.getRandomValues(bytes);
+        else for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+        return Array.from(bytes, b => b.toString(16).padStart(2, "0")).join("");
+      }
+
+      function obterIdUsuario() {
+        // Identifica ESTE navegador, não prova a identidade de uma pessoa.
+        try {
+          const chave = "tcc_id_usuario_v1";
+          let id = localStorage.getItem(chave);
+          if (!id) {
+            id = novoIdAleatorio();
+            localStorage.setItem(chave, id);
+          }
+          return id;
+        } catch (erro) {
+          // Navegadores que bloqueiam armazenamento ainda podem concluir o estudo.
+          return novoIdAleatorio();
+        }
+      }
+
+      function iniciarParticipacao() {
+        state.idUsuario = obterIdUsuario();
+        state.idParticipacao = novoIdAleatorio();
+        state.startedAt = Date.now();
+        state.totalErrosProduto = 0;
+        state.totalCliquesDistratores = 0;
+        state.resultadoEnviado = false;
+      }
+
       function track(event, params = {}) {
-        // Os quatro eventos analisados no TCC levam sempre a faixa etária.
         const eventosPesquisa = ["wrong_product", "decoy_click", "study_result", "survey_complete"];
+        if (state.idParticipacao && event === "wrong_product") state.totalErrosProduto++;
+        if (state.idParticipacao && event === "decoy_click") state.totalCliquesDistratores++;
         const dados = eventosPesquisa.includes(event)
-          ? { faixa_etaria: state.faixa, ...params }
+          ? {
+              faixa_etaria: state.faixa,
+              id_usuario: state.idUsuario,
+              id_participacao: state.idParticipacao,
+              tipo_coleta: tipoColeta,
+              ...params
+            }
           : params;
         window.dataLayer.push({ ...camposLimpos, ...dados, event });
         console.log("[dataLayer]", event, dados);
       }
       const state = {
         startedAt: Date.now(),
+        idUsuario: null,
+        idParticipacao: null,
+        totalErrosProduto: 0,
+        totalCliquesDistratores: 0,
+        resultadoEnviado: false,
         category: "Todos",
         faixa: null,
         afinidade: null,
@@ -438,6 +495,10 @@
         d5: { start: 0, end: 0, falsePositive: 0, skipped: false },
         answers: [],
       };
+      document.getElementById("studyModeNotice").textContent = tipoColeta === "teste"
+        ? "Modo de teste — os eventos desta participação serão identificados como teste."
+        : "Coleta oficial da pesquisa.";
+
       const steps = [
         "welcome",
         "profile",
@@ -565,7 +626,10 @@
           (e) =>
             (document.getElementById("start").disabled = !e.target.checked),
         );
-      document.getElementById("start").onclick = () => showStep("profile");
+      document.getElementById("start").onclick = () => {
+        iniciarParticipacao();
+        showStep("profile");
+      };
       document.querySelectorAll(".choices").forEach((group) =>
         group.querySelectorAll(".choice").forEach(
           (btn) =>
@@ -1208,6 +1272,10 @@
         ),
       );
       document.getElementById("finish").onclick = () => {
+        // Evita envios acidentais duplicados do botão, sem bloquear novos testes.
+        if (state.resultadoEnviado) return;
+        if (!state.idParticipacao) iniciarParticipacao();
+        state.resultadoEnviado = true;
         // Parâmetros simples: o GTM consegue ler cada resposta diretamente.
         const payload = {
           faixa_etaria: state.faixa,
@@ -1234,6 +1302,8 @@
           tempo_medio_segundos: Math.round(media / 1000),
           desafios_pulados: pulados,
           desafios_concluidos: concluidos,
+          total_erros_produto: state.totalErrosProduto,
+          total_cliques_distratores: state.totalCliquesDistratores,
           // null = desafio pulado ou não concluído
           tempo_d1_segundos: (!state.d1.skipped && state.d1.end) ? Math.round((state.d1.end - state.d1.start)/1000) : null,
           tempo_d2_segundos: (!state.d2.skipped && state.d2.end) ? Math.round((state.d2.end - state.d2.start)/1000) : null,
@@ -1242,7 +1312,7 @@
           tempo_d5_segundos: (!state.d5.skipped && state.d5.end) ? Math.round((state.d5.end - state.d5.start)/1000) : null
         });
         const detalhes = orderMetrics.map(k => `<li>${labels[k]}: ${state[k].skipped ? "pulado" : state[k].end ? fmt(state[k].end-state[k].start) : "não concluído"}</li>`).join("");
-        document.getElementById("resultStats").innerHTML = `<div class="success"><b>Resultado registrado.</b><br><span style="font-size:12px">Desafios concluídos: ${concluidos} · Desafios pulados: ${pulados}</span></div><div class="checkout-card" style="margin-top:12px"><h3>Métricas da sessão</h3><p><b>Tempo total:</b> ${fmt(Date.now()-state.startedAt)}</p><p><b>Tempo médio por desafio concluído:</b> ${fmt(media)}</p><p><b>Desafios pulados:</b> ${pulados} de 5</p><details><summary>Tempo em cada desafio</summary><ul>${detalhes}</ul></details></div><p class="fine">Métricas calculadas nesta sessão de teste.</p>`;
+        document.getElementById("resultStats").innerHTML = `<div class="success"><b>Resultado registrado.</b><br><span style="font-size:12px">Desafios concluídos: ${concluidos} · Desafios pulados: ${pulados}</span></div><div class="checkout-card" style="margin-top:12px"><h3>Métricas da sessão</h3><p><b>Tempo total:</b> ${fmt(Date.now()-state.startedAt)}</p><p><b>Tempo médio por desafio concluído:</b> ${fmt(media)}</p><p><b>Desafios pulados:</b> ${pulados} de 5</p><details><summary>Tempo em cada desafio</summary><ul>${detalhes}</ul></details></div><p class="fine">Métricas calculadas nesta participação (${tipoColeta === "teste" ? "teste" : "coleta oficial"}).</p>`;
         showStep("result");
         setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
       };
@@ -1265,6 +1335,7 @@
         const aliases = { "1":"d1", "2":"d2", "3":"d3", "4":"d4", "5":"d5", d1:"d1", d2:"d2", d3:"d3", d4:"d4", d5:"d5", avaliacao:"sus", sus:"sus", concluido:"result", result:"result" };
         let target = aliases[desafio] || aliases[etapa] || (steps.includes(etapa) ? etapa : null);
         if (!target) target = "welcome";
+        iniciarParticipacao();
         state.faixa = state.faixa || "18-29"; state.afinidade = state.afinidade || "media";
         if (["d1","d2","d3","d4","d5"].includes(target)) { showStep(target); if(target==="d1") { setHomeView("vitrineView"); renderOrbitaLogin(); } if(target==="d2") { setHomeView("vitrineView"); state.logged=true; renderOrbitaHome(); openAccount(); } if(target==="d3") { setHomeView("vitrineView"); state.logged=true; renderOrbitaHome(); } if(target==="d4") { setHomeView("bancoView"); renderBank(); renderPix(); } if(target==="d5") { setHomeView("emailView"); renderMail(); } }
         else showStep(target);
